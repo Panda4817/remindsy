@@ -105,16 +105,19 @@ const EventScreen = (props: any) => {
 
 export const screenOptions = (navData: any) => {
 	let type = navData.route.params.type;
+	if (type == "Wedding Anniversary") {
+		type = "Anniversary";
+	}
 	let icon = navData.route.params.icon;
 	return {
 		headerTitle: () => (
-			<View>
+			<View style={styles.headerContainer}>
 				<FontAwesome5
-					icon={icon}
+					name={icon}
 					size={24}
 					color={colours.yellow}
 				/>
-				<Text>{type}</Text>
+				<Text style={styles.header}>{type}</Text>
 			</View>
 		),
 	};
@@ -127,6 +130,18 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	headerContainer: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	header: {
+		textAlignVertical: "center",
+		fontFamily: "open-sans",
+		fontSize: 24,
+		color: colours.yellow,
+		marginHorizontal: 10,
 	},
 	date: {},
 	names: {},

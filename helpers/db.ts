@@ -52,7 +52,7 @@ export const insertEvent = (
                     firstName, 
                     secondName, 
                     day,
-					month
+					month,
 					type,
 					startYear, 
                     noticeTime, 

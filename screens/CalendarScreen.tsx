@@ -1,11 +1,10 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { CalendarList } from "react-native-calendars";
 import {
 	Platform,
 	SafeAreaView,
 	StyleSheet,
-	Text,
-	View,
 } from "react-native";
 import {
 	HeaderButtons,
@@ -13,19 +12,15 @@ import {
 } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
-import Calendar from "../components/appSpecific/Calendar";
 import colours from "../constants/Colours";
 import { useSelector } from "react-redux";
-import {
-	compare,
-	convertToNextDate,
-} from "../helpers/format";
+import { convertToNextDate } from "../helpers/format";
 import Event from "../models/eventClass";
 
 const CalendarScreen = (props: any) => {
 	const maxPastMonths = 0;
 	const maxFutureMonths = 12;
-	const today = new Date();
+	const today = new Date().toISOString().split("T")[0];
 	const birthday = {
 		key: "birthday",
 		color: colours.darkBlue,
@@ -36,24 +31,36 @@ const CalendarScreen = (props: any) => {
 	};
 	const other = { key: "other", color: colours.yellow };
 
-	let events = useSelector(
+	const events = useSelector(
 		(state: any) => state.events.events
-	).sort(compare);
+	);
 	const markedDates: any = {};
 	events.map((item: Event) => {
-		let dateString = convertToNextDate(item.day, item.month)
-			.toISOString()
-			.split("T")[0];
+		let date = convertToNextDate(item.day, item.month);
+		let month =
+			(date.getMonth() + 1).toString().length == 1
+				? "0" + (date.getMonth() + 1).toString()
+				: (date.getMonth() + 1).toString();
+		let day =
+			date.getDate().toString().length == 1
+				? "0" + date.getDate().toString()
+				: date.getDate().toString();
+		let dateString = `${date.getFullYear()}-${month}-${day}`;
 		if (!markedDates.hasOwnProperty(dateString)) {
-			markedDates[dateString] = { dots: [] };
+			markedDates[dateString] = {
+				dots: Array(),
+			};
 		}
 		switch (item.type) {
 			case "Birthday":
 				markedDates[dateString].dots.push(birthday);
+				return;
 			case "Wedding Anniversary":
 				markedDates[dateString].dots.push(anniversary);
+				return;
 			default:
 				markedDates[dateString].dots.push(other);
+				return;
 		}
 	});
 
@@ -72,7 +79,7 @@ const CalendarScreen = (props: any) => {
 								: "ios-add"
 						}
 						onPress={() => {
-							props.navigation.navigate("AddEdit");
+							props.navigation.navigate("AddEdit", {});
 						}}
 					></Item>
 				</HeaderButtons>
@@ -81,12 +88,20 @@ const CalendarScreen = (props: any) => {
 	});
 	return (
 		<SafeAreaView>
-			<Calendar
-				navigation={props.navigation}
-				today={today.toISOString().split("T")[0]}
-				maxPastMonths={maxPastMonths}
-				maxFutureMonths={maxFutureMonths}
+			<CalendarList
+				onDayPress={(date) => {
+					props.navigation.navigate("List", {
+						filterDay: date.day,
+						filterMonth: date.month,
+						filterYear: date.year,
+					});
+				}}
+				current={today}
+				minDate={today}
+				pastScrollRange={maxPastMonths}
+				futureScrollRange={maxFutureMonths}
 				markedDates={markedDates}
+				markingType={"multi-dot"}
 			/>
 		</SafeAreaView>
 	);

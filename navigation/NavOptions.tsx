@@ -15,4 +15,5 @@ export const defaultNavOptions = {
 	},
 	headerTintColor: colours.yellow,
 	headerTitleAlign: "center",
+	headerBackTitle: "",
 } as StackNavigationOptions;

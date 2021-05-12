@@ -9,7 +9,8 @@ import {
 } from "react-native";
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../store/actions";
 import CustomPicker from "../components/UI/Picker";
 import Input from "../components/UI/Input";
 import CustomSwitch from "../components/UI/Switch";
@@ -63,24 +64,30 @@ const formSchema = Yup.object().shape({
 });
 
 const AddEditScreen = (props: any) => {
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState("");
 	const { navigation, route } = props;
 	let buttonText = "Create Remindsy";
+	const eventId = props.route.params
+		? props.route.params.eventId
+		: null;
+	const selectedEvent: Event = useSelector((state: any) =>
+		state.events.events.find(
+			(event: Event) => event.id === eventId
+		)
+	);
+
+	if (selectedEvent) {
+		buttonText = "Edit Remindsy";
+	}
 	const getValues = () => {
-		if (route.params.id) {
-			const eventId = route.params.id;
-			const selectedEvent: Event = useSelector(
-				(state: any) =>
-					state.events.events.find(
-						(event: Event) => event.id === eventId
-					)
-			);
-			buttonText = "Edit Remindsy";
+		if (selectedEvent) {
 			return {
 				type: selectedEvent.type,
 				firstName: selectedEvent.firstName,
 				secondName: selectedEvent.secondName,
 				day: selectedEvent.day,
-				month: months[selectedEvent.month],
+				month: selectedEvent.month,
 				startYear: selectedEvent.startYear,
 				noticeTime: selectedEvent.noticeTime,
 				present: selectedEvent.present,
@@ -122,6 +129,7 @@ const AddEditScreen = (props: any) => {
 		}
 	};
 
+	const dispatch = useDispatch();
 	return (
 		<KeyboardAvoidingView
 			style={{ flex: 1 }}
@@ -142,8 +150,49 @@ const AddEditScreen = (props: any) => {
 								);
 							}
 						}
+						setError("");
+						setIsLoading(true);
+						try {
+							if (selectedEvent) {
+								await dispatch(
+									actions.editEvent(
+										eventId,
+										values.firstName,
+										values.secondName,
+										values.day,
+										values.month,
+										values.type,
+										values.startYear,
+										values.noticeTime,
+										values.present,
+										values.ideas,
+										values.address,
+										values.pushNotification
+									)
+								);
+							} else {
+								await dispatch(
+									actions.addEvent(
+										values.firstName,
+										values.secondName,
+										values.day,
+										values.month,
+										values.type,
+										values.startYear,
+										values.noticeTime,
+										values.present,
+										values.ideas,
+										values.address,
+										values.pushNotification
+									)
+								);
+							}
+							props.navigation.goBack();
+						} catch (err) {
+							setError(err.message);
+						}
+						setIsLoading(false);
 						console.log(values);
-						navigation.goBack();
 					}}
 				>
 					{({
@@ -156,13 +205,15 @@ const AddEditScreen = (props: any) => {
 						isSubmitting,
 						setFieldValue,
 					}) => {
-						if (isSubmitting) {
+						if (isSubmitting || isLoading) {
 							return (
 								<>
-									<ActivityIndicator
-										size="large"
-										color={colours.darkPink}
-									/>
+									<View style={styles.centered}>
+										<ActivityIndicator
+											size="large"
+											color={colours.darkPink}
+										/>
+									</View>
 								</>
 							);
 						} else {

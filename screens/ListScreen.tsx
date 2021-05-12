@@ -43,7 +43,8 @@ const ListScreen = (props: any) => {
 		if (filterDay && filterMonth) {
 			events = events.filter(
 				(item: Event) =>
-					item.day == filterDay && item.month == filterMonth
+					item.day == filterDay &&
+					item.month == filterMonth - 1
 			);
 		}
 	}

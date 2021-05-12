@@ -29,7 +29,7 @@ const EventItem = (props: any) => {
 					useForeground
 				>
 					<View style={styles.detailsContainer}>
-						<View style={styles.iconContainer}>
+						<View>
 							<FontAwesome
 								name={props.icon}
 								size={28}
@@ -41,7 +41,11 @@ const EventItem = (props: any) => {
 							<Text style={styles.names}>
 								{props.names}
 							</Text>
-							<Text style={styles.year}>{props.year}</Text>
+							{props.years ? (
+								<Text style={styles.years}>
+									{props.years}
+								</Text>
+							) : null}
 						</View>
 					</View>
 				</TouchableCmp>
@@ -52,19 +56,37 @@ const EventItem = (props: any) => {
 
 const styles = StyleSheet.create({
 	event: {
-		height: 200,
-		margin: 20,
+		margin: 10,
+		backgroundColor: colours.darkPink,
 	},
 	touchable: {
 		borderRadius: 10,
 		overflow: "hidden",
 	},
-	detailsContainer: {},
-	iconContainer: {},
-	textContainer: {},
-	date: {},
-	names: {},
-	year: {},
+	detailsContainer: {
+		flexDirection: "row",
+		justifyContent: "flex-start",
+		alignItems: "center",
+		margin: 10,
+	},
+	textContainer: {
+		marginHorizontal: 30,
+	},
+	date: {
+		fontFamily: "open-sans",
+		fontSize: 20,
+		color: "white",
+	},
+	names: {
+		fontFamily: "open-sans-bold",
+		fontSize: 20,
+		color: "white",
+	},
+	years: {
+		fontFamily: "open-sans",
+		fontSize: 15,
+		color: colours.lightPink,
+	},
 });
 
 export default EventItem;
