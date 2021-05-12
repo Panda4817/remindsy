@@ -15,7 +15,11 @@ import {
 } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
 import CustomHeaderButton from "../components/UI/HeaderButton";
-import { Ionicons } from "@expo/vector-icons";
+import {
+	FontAwesome5,
+	Fontisto,
+	Ionicons,
+} from "@expo/vector-icons";
 import * as actions from "../store/actions";
 import colours from "../constants/Colours";
 import EventItem from "../components/appSpecific/EventItem";
@@ -108,13 +112,9 @@ const ListScreen = (props: any) => {
 					HeaderButtonComponent={CustomHeaderButton}
 				>
 					<Item
-						IconComponent={Ionicons}
+						IconComponent={FontAwesome5}
 						title="Add Event"
-						iconName={
-							Platform.OS === "android"
-								? "md-add"
-								: "ios-add"
-						}
+						iconName="calendar-plus"
 						onPress={() => {
 							props.navigation.navigate(
 								"AddEdit",
@@ -154,12 +154,8 @@ const ListScreen = (props: any) => {
 			<View style={styles.centered}>
 				<Text style={styles.text}>
 					No Remindsys found. Tap on{" "}
-					<Ionicons
-						name={
-							Platform.OS === "android"
-								? "md-add"
-								: "ios-add"
-						}
+					<FontAwesome5
+						name="calendar-plus"
 						size={18}
 						color="black"
 					/>{" "}

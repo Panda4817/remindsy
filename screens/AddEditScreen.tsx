@@ -69,7 +69,7 @@ const AddEditScreen = (props: any) => {
 	const { navigation, route } = props;
 	let buttonText = "Create Remindsy";
 	const eventId = props.route.params
-		? props.route.params.eventId
+		? props.route.params.id
 		: null;
 	const selectedEvent: Event = useSelector((state: any) =>
 		state.events.events.find(
@@ -129,6 +129,51 @@ const AddEditScreen = (props: any) => {
 		}
 	};
 
+	const submitHandler = async (values: FormikValues) => {
+		setError("");
+		setIsLoading(true);
+		try {
+			if (selectedEvent) {
+				await dispatch(
+					actions.editEvent(
+						eventId,
+						values.firstName,
+						values.secondName,
+						values.day,
+						values.month,
+						values.type,
+						values.startYear,
+						values.noticeTime,
+						values.present,
+						values.ideas,
+						values.address,
+						values.pushNotification
+					)
+				);
+			} else {
+				await dispatch(
+					actions.addEvent(
+						values.firstName,
+						values.secondName,
+						values.day,
+						values.month,
+						values.type,
+						values.startYear,
+						values.noticeTime,
+						values.present,
+						values.ideas,
+						values.address,
+						values.pushNotification
+					)
+				);
+			}
+			props.navigation.goBack();
+		} catch (err) {
+			setError(err.message);
+		}
+		setIsLoading(false);
+	};
+
 	const dispatch = useDispatch();
 	return (
 		<KeyboardAvoidingView
@@ -150,49 +195,7 @@ const AddEditScreen = (props: any) => {
 								);
 							}
 						}
-						setError("");
-						setIsLoading(true);
-						try {
-							if (selectedEvent) {
-								await dispatch(
-									actions.editEvent(
-										eventId,
-										values.firstName,
-										values.secondName,
-										values.day,
-										values.month,
-										values.type,
-										values.startYear,
-										values.noticeTime,
-										values.present,
-										values.ideas,
-										values.address,
-										values.pushNotification
-									)
-								);
-							} else {
-								await dispatch(
-									actions.addEvent(
-										values.firstName,
-										values.secondName,
-										values.day,
-										values.month,
-										values.type,
-										values.startYear,
-										values.noticeTime,
-										values.present,
-										values.ideas,
-										values.address,
-										values.pushNotification
-									)
-								);
-							}
-							props.navigation.goBack();
-						} catch (err) {
-							setError(err.message);
-						}
-						setIsLoading(false);
-						console.log(values);
+						submitHandler(values);
 					}}
 				>
 					{({
@@ -205,226 +208,211 @@ const AddEditScreen = (props: any) => {
 						isSubmitting,
 						setFieldValue,
 					}) => {
-						if (isSubmitting || isLoading) {
-							return (
-								<>
-									<View style={styles.centered}>
-										<ActivityIndicator
-											size="large"
-											color={colours.darkPink}
-										/>
-									</View>
-								</>
-							);
-						} else {
-							return (
-								<>
-									<View style={styles.form}>
-										<CustomPicker
-											value={values.type}
-											onValueChangeHandler={(
-												itemValue: any
-											) => setFieldValue("type", itemValue)}
-											label="Remindsy type"
-											items={[
-												{ label: "Other", value: "Other" },
-												{
-													label: "Wedding Anniversary",
-													value: "Wedding Anniversary",
-												},
-												{
-													label: "Birthday",
-													value: "Birthday",
-												},
-											]}
-											error={errors.type}
-											touched={touched.type}
-										/>
-										<CustomPicker
-											value={values.day}
-											onValueChangeHandler={(
-												itemValue: any
-											) => setFieldValue("day", itemValue)}
-											label="Day"
-											items={Array(31)
-												.fill(0)
-												.map(
-													(val: number, index: number) => {
-														return {
-															label: `${index + 1}`,
-															value: index + 1,
-														};
-													}
-												)}
-											error={errors.day}
-											touched={touched.day}
-										/>
-										<CustomPicker
-											value={values.month}
-											onValueChangeHandler={(
-												itemValue: any
-											) =>
-												setFieldValue("month", itemValue)
-											}
-											label="Month"
-											items={Array(12)
-												.fill(0)
-												.map(
-													(val: string, index: number) => {
-														return {
-															label: months[index],
-															value: index,
-														};
-													}
-												)}
-											error={errors.month}
-											touched={touched.month}
-										/>
+						return (
+							<>
+								<View style={styles.form}>
+									<CustomPicker
+										value={values.type}
+										onValueChangeHandler={(
+											itemValue: any
+										) => setFieldValue("type", itemValue)}
+										label="Remindsy type"
+										items={[
+											{ label: "Other", value: "Other" },
+											{
+												label: "Wedding Anniversary",
+												value: "Wedding Anniversary",
+											},
+											{
+												label: "Birthday",
+												value: "Birthday",
+											},
+										]}
+										error={errors.type}
+										touched={touched.type}
+									/>
+									<CustomPicker
+										value={values.day}
+										onValueChangeHandler={(
+											itemValue: any
+										) => setFieldValue("day", itemValue)}
+										label="Day"
+										items={Array(31)
+											.fill(0)
+											.map((val: number, index: number) => {
+												return {
+													label: `${index + 1}`,
+													value: index + 1,
+												};
+											})}
+										error={errors.day}
+										touched={touched.day}
+									/>
+									<CustomPicker
+										value={values.month}
+										onValueChangeHandler={(
+											itemValue: any
+										) => setFieldValue("month", itemValue)}
+										label="Month"
+										items={Array(12)
+											.fill(0)
+											.map((val: string, index: number) => {
+												return {
+													label: months[index],
+													value: index,
+												};
+											})}
+										error={errors.month}
+										touched={touched.month}
+									/>
+									<Input
+										onChangeText={handleChange("firstName")}
+										onBlur={handleBlur("firstName")}
+										value={values.firstName}
+										label="Name"
+										error={errors.firstName}
+										touched={touched.firstName}
+									/>
+									{values.type == "Wedding Anniversary" ? (
 										<Input
 											onChangeText={handleChange(
-												"firstName"
+												"secondName"
 											)}
-											onBlur={handleBlur("firstName")}
-											value={values.firstName}
-											label="Name"
-											error={errors.firstName}
-											touched={touched.firstName}
+											onBlur={handleBlur("secondName")}
+											value={values.secondName}
+											label="Second Name"
+											error={errors.secondName}
+											touched={touched.secondName}
+											placeholder="No name provided"
 										/>
-										{values.type ==
-										"Wedding Anniversary" ? (
-											<Input
-												onChangeText={handleChange(
-													"secondName"
-												)}
-												onBlur={handleBlur("secondName")}
-												value={values.secondName}
-												label="Second Name"
-												error={errors.secondName}
-												touched={touched.secondName}
-												placeholder="No name provided"
-											/>
-										) : null}
+									) : null}
+									<Input
+										onChangeText={(itemValue: string) => {
+											if (
+												/^\d+$/.test(itemValue) ||
+												itemValue === ""
+											) {
+												setFieldValue(
+													"startYear",
+													itemValue
+												);
+											}
+										}}
+										onBlur={handleBlur("startYear")}
+										value={values.startYear.toString()}
+										label={
+											values.type == "Birthday"
+												? "Year of birth"
+												: values.type ==
+												  "Wedding Anniversary"
+												? "Wedding year"
+												: "Start year"
+										}
+										keyboardType="numeric"
+										error={errors.startYear}
+										touched={touched.startYear}
+									/>
+									<CustomSwitch
+										value={values.present}
+										label={
+											values.present
+												? "Change to card only?"
+												: "Add present too?"
+										}
+										extraLabel={
+											values.present
+												? "Card and present reminder"
+												: "Card only reminder"
+										}
+										onValueChangeHandler={(
+											itemValue: Boolean
+										) =>
+											setFieldValue("present", itemValue)
+										}
+										error={errors.present}
+										touched={touched.present}
+									/>
+									{values.present ? (
 										<Input
-											onChangeText={(itemValue: string) => {
-												if (
-													/^\d+$/.test(itemValue) ||
-													itemValue === ""
-												) {
-													setFieldValue(
-														"startYear",
-														itemValue
-													);
-												}
-											}}
-											onBlur={handleBlur("startYear")}
-											value={values.startYear.toString()}
-											label={
-												values.type == "Birthday"
-													? "Year of birth"
-													: values.type ==
-													  "Wedding Anniversary"
-													? "Wedding year"
-													: "Start year"
-											}
-											keyboardType="numeric"
-											error={errors.startYear}
-											touched={touched.startYear}
-										/>
-										<CustomSwitch
-											label={
-												values.present
-													? "Change to card only?"
-													: "Add present too?"
-											}
-											extraLabel={
-												values.present
-													? "Card and present reminder"
-													: "Card only reminder"
-											}
-											value={values.present}
-											onValueChangeHandler={(
-												itemValue: any
-											) =>
-												setFieldValue("present", itemValue)
-											}
-											error={errors.present}
-											touched={touched.present}
-										/>
-										{values.present ? (
-											<Input
-												onChangeText={handleChange("ideas")}
-												onBlur={handleBlur("ideas")}
-												value={values.ideas}
-												label="Present ideas"
-												multiline={true}
-												error={errors.ideas}
-												touched={touched.ideas}
-												placeholder="No present ideas provided"
-											/>
-										) : null}
-										<Input
-											onChangeText={handleChange("address")}
-											onBlur={handleBlur("address")}
-											value={values.address}
-											label="Address"
+											onChangeText={handleChange("ideas")}
+											onBlur={handleBlur("ideas")}
+											value={values.ideas}
+											label="Present ideas"
 											multiline={true}
-											error={errors.address}
-											touched={touched.address}
-											placeholder="No address provided"
+											error={errors.ideas}
+											touched={touched.ideas}
+											placeholder="No present ideas provided"
 										/>
-										<CustomSwitch
-											label={
-												values.pushNotification
-													? "Disable push notification"
-													: "Enable push notification"
-											}
-											value={values.pushNotification}
+									) : null}
+									<Input
+										onChangeText={handleChange("address")}
+										onBlur={handleBlur("address")}
+										value={values.address}
+										label="Address"
+										multiline={true}
+										error={errors.address}
+										touched={touched.address}
+										placeholder="No address provided"
+									/>
+									<CustomSwitch
+										value={values.pushNotification}
+										label={
+											values.pushNotification
+												? "Disable push notification"
+												: "Enable push notification"
+										}
+										onValueChangeHandler={(
+											itemValue: Boolean
+										) =>
+											setFieldValue(
+												"pushNotification",
+												itemValue
+											)
+										}
+										error={errors.pushNotification}
+										touched={touched.pushNotification}
+									/>
+									{values.pushNotification ? (
+										<CustomPicker
+											value={values.noticeTime}
 											onValueChangeHandler={(
 												itemValue: any
 											) =>
 												setFieldValue(
-													"pushNotification",
+													"noticeTime",
 													itemValue
 												)
 											}
-											error={errors.pushNotification}
-											touched={touched.pushNotification}
+											label="Notification time"
+											items={[
+												{
+													label: "1 week before",
+													value: 1,
+												},
+												{
+													label: "2 weeks before",
+													value: 2,
+												},
+											]}
+											error={errors.noticeTime}
+											touched={touched.noticeTime}
 										/>
-										{values.pushNotification ? (
-											<CustomPicker
-												value={values.noticeTime}
-												onValueChangeHandler={(
-													itemValue: any
-												) =>
-													setFieldValue(
-														"noticeTime",
-														itemValue
-													)
-												}
-												label="Notification time"
-												items={[
-													{
-														label: "1 week before",
-														value: 1,
-													},
-													{
-														label: "2 weeks before",
-														value: 2,
-													},
-												]}
-												error={errors.noticeTime}
-												touched={touched.noticeTime}
-											/>
-										) : null}
+									) : null}
+									{isSubmitting || isLoading ? (
+										<ActivityIndicator
+											size="large"
+											color={colours.darkPink}
+										/>
+									) : (
 										<Button
 											onPress={() => handleSubmit()}
 											title={buttonText}
 											color={colours.darkPink}
 										/>
-									</View>
-								</>
-							);
-						}
+									)}
+								</View>
+							</>
+						);
 					}}
 				</Formik>
 			</ScrollView>

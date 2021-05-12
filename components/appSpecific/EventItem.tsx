@@ -23,11 +23,8 @@ const EventItem = (props: any) => {
 
 	return (
 		<Card style={styles.event}>
-			<View style={styles.touchable}>
-				<TouchableCmp
-					onPress={props.onSelect}
-					useForeground
-				>
+			<TouchableCmp onPress={props.onSelect} useForeground>
+				<View style={styles.touchable}>
 					<View style={styles.detailsContainer}>
 						<View>
 							<FontAwesome
@@ -48,8 +45,8 @@ const EventItem = (props: any) => {
 							) : null}
 						</View>
 					</View>
-				</TouchableCmp>
-			</View>
+				</View>
+			</TouchableCmp>
 		</Card>
 	);
 };

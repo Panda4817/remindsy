@@ -10,7 +10,7 @@ import {
 	HeaderButtons,
 	Item,
 } from "react-navigation-header-buttons";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 import colours from "../constants/Colours";
 import { useSelector } from "react-redux";
@@ -71,13 +71,9 @@ const CalendarScreen = (props: any) => {
 					HeaderButtonComponent={CustomHeaderButton}
 				>
 					<Item
-						IconComponent={Ionicons}
+						IconComponent={FontAwesome5}
 						title="Add Event"
-						iconName={
-							Platform.OS === "android"
-								? "md-add"
-								: "ios-add"
-						}
+						iconName="calendar-plus"
 						onPress={() => {
 							props.navigation.navigate("AddEdit", {});
 						}}

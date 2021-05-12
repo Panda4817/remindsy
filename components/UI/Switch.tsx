@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	View,
 	Text,
@@ -8,6 +8,9 @@ import {
 import colours from "../../constants/Colours";
 
 const CustomSwitch = (props: any) => {
+	const [isEnabled, setIsEnabled] = useState(
+		props.value == 1 ? true : false
+	);
 	return (
 		<View style={styles.formControl}>
 			{props.extraLabel ? (
@@ -23,9 +26,8 @@ const CustomSwitch = (props: any) => {
 					thumbColor={
 						props.value ? colours.darkPink : "#f4f3f4"
 					}
-					ios_backgroundColor="#3e3e3e"
 					onValueChange={props.onValueChangeHandler}
-					value={props.value}
+					value={isEnabled}
 				/>
 			</View>
 

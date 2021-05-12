@@ -127,7 +127,7 @@ export const editEvent = (
 			dispatch({
 				type: UPDATE_EVENT,
 				eventData: {
-					id: dbResult.insertId.toString(),
+					id: id.toString(),
 					firstName: firstName,
 					secondName: secondName,
 					day: day,
