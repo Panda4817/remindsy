@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
 	StyleSheet,
 	KeyboardAvoidingView,
@@ -14,9 +14,7 @@ const AddEditScreen = (props: any) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const { navigation, route } = props;
-	const eventId = props.route.params
-		? props.route.params.id
-		: null;
+	const eventId = route.params ? route.params.id : null;
 	const selectedEvent: Event = useSelector((state: any) =>
 		state.events.events.find(
 			(event: Event) => event.id === eventId
@@ -61,7 +59,7 @@ const AddEditScreen = (props: any) => {
 					)
 				);
 			}
-			props.navigation.goBack();
+			navigation.goBack();
 		} catch (err) {
 			setError(err.message);
 		}

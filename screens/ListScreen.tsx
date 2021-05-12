@@ -84,15 +84,9 @@ const ListScreen = (props: any) => {
 		});
 	}, [dispatch, loadEvents]);
 
-	const selectEventHandler = (
-		id: string,
-		icon: string,
-		type: string
-	) => {
+	const selectEventHandler = (id: string) => {
 		props.navigation.navigate("Event", {
 			eventId: id,
-			icon: icon,
-			type: type,
 		});
 	};
 
@@ -184,11 +178,7 @@ const ListScreen = (props: any) => {
 					years={handleOutputYears(itemData.item)}
 					icon={handleOutputTypeIcon(itemData.item)}
 					onSelect={() => {
-						selectEventHandler(
-							itemData.item.id,
-							handleOutputTypeIcon(itemData.item),
-							itemData.item.type
-						);
+						selectEventHandler(itemData.item.id);
 					}}
 				/>
 			)}

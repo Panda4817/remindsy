@@ -69,7 +69,22 @@ const EventScreen = (props: any) => {
 	};
 
 	useEffect(() => {
+		let type = selectedEvent.type;
+		if (type == "Wedding Anniversary") {
+			type = "Anniversary";
+		}
+		let icon = handleOutputTypeIcon(selectedEvent);
 		props.navigation.setOptions({
+			headerTitle: () => (
+				<View style={styles.headerContainer}>
+					<FontAwesome5
+						name={icon}
+						size={24}
+						color={colours.yellow}
+					/>
+					<Text style={styles.header}>{type}</Text>
+				</View>
+			),
 			headerRight: () => (
 				<View style={styles.iconsContainer}>
 					<HeaderButtons
@@ -168,25 +183,7 @@ const EventScreen = (props: any) => {
 	);
 };
 
-export const screenOptions = (navData: any) => {
-	let type = navData.route.params.type;
-	if (type == "Wedding Anniversary") {
-		type = "Anniversary";
-	}
-	let icon = navData.route.params.icon;
-	return {
-		headerTitle: () => (
-			<View style={styles.headerContainer}>
-				<FontAwesome5
-					name={icon}
-					size={24}
-					color={colours.yellow}
-				/>
-				<Text style={styles.header}>{type}</Text>
-			</View>
-		),
-	};
-};
+export const screenOptions = {};
 
 export default EventScreen;
 

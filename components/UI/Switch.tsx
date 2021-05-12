@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	View,
 	Text,
@@ -8,9 +8,12 @@ import {
 import colours from "../../constants/Colours";
 
 const CustomSwitch = (props: any) => {
-	const [isEnabled, setIsEnabled] = useState(
-		props.value == 1 ? true : false
-	);
+	// const [isEnabled, setIsEnabled] = useState(
+	// 	props.value == 1 ? true : false
+	// );
+	// useEffect(() => {
+	// 	setIsEnabled(props.value == 1 ? true : false);
+	// }, [props.value]);
 	return (
 		<View style={styles.formControl}>
 			{props.extraLabel ? (
@@ -27,7 +30,11 @@ const CustomSwitch = (props: any) => {
 						props.value ? colours.darkPink : "#f4f3f4"
 					}
 					onValueChange={props.onValueChangeHandler}
-					value={isEnabled}
+					value={
+						props.value == 1 || props.value == true
+							? true
+							: false
+					}
 				/>
 			</View>
 

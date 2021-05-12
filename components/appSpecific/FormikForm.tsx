@@ -6,6 +6,7 @@ import {
 	ActivityIndicator,
 } from "react-native";
 import { Formik, FormikValues } from "formik";
+import * as Notifications from "expo-notifications";
 import * as Yup from "yup";
 import CustomPicker from "../UI/Picker";
 import Input from "../UI/Input";
@@ -119,11 +120,15 @@ const FormikForm = (props: any) => {
 			validationSchema={formSchema}
 			onSubmit={async (values: FormikValues) => {
 				for (const key in values) {
-					if (values[key] == "") {
+					if (values[key] === "") {
 						values[key] = formSchema.getDefault()[key];
 					}
-					if (key == "startYear") {
-						values.startYear = parseInt(values.startYear);
+				}
+				values.startYear = parseInt(values.startYear);
+				if (values.pushNotification === true) {
+					const statusObj = await Notifications.getPermissionsAsync();
+					if (statusObj.status !== "granted") {
+						const statusObj = await Notifications.requestPermissionsAsync();
 					}
 				}
 				props.submitHandler(values);

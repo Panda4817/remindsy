@@ -21,7 +21,10 @@ export const convertToNextDate = (
 ) => {
 	let today = new Date();
 	let date = new Date(today.getFullYear(), month, day);
-	if (date < today) {
+	if (
+		date < today &&
+		today.toDateString() !== date.toDateString()
+	) {
 		date.setFullYear(today.getFullYear() + 1);
 	}
 	return date;
@@ -62,7 +65,8 @@ export const handleOutputYears = (item: Event) => {
 	if (item.startYear == 0) {
 		return "";
 	}
-	let diff = new Date().getFullYear() - item.startYear;
+	let date = convertToNextDate(item.day, item.month);
+	let diff = date.getFullYear() - item.startYear;
 	let res = `${diff.toString()} years`;
 	if (item.type == "Birthday") {
 		res += " old";
