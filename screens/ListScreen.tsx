@@ -15,11 +15,7 @@ import {
 } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
 import CustomHeaderButton from "../components/UI/HeaderButton";
-import {
-	FontAwesome5,
-	Fontisto,
-	Ionicons,
-} from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import * as actions from "../store/actions";
 import colours from "../constants/Colours";
 import EventItem from "../components/appSpecific/EventItem";
@@ -89,8 +85,7 @@ const ListScreen = (props: any) => {
 			eventId: id,
 		});
 	};
-
-	useEffect(() => {
+	const getParams = () => {
 		let paramsObj = {};
 		if (props.route.params) {
 			const filterDay = props.route.params.filterDay;
@@ -100,6 +95,10 @@ const ListScreen = (props: any) => {
 				filterMonth: filterMonth,
 			};
 		}
+		return paramsObj;
+	};
+
+	useEffect(() => {
 		props.navigation.setOptions({
 			headerRight: () => (
 				<HeaderButtons
@@ -112,7 +111,7 @@ const ListScreen = (props: any) => {
 						onPress={() => {
 							props.navigation.navigate(
 								"AddEdit",
-								paramsObj
+								getParams()
 							);
 						}}
 					></Item>
@@ -146,14 +145,29 @@ const ListScreen = (props: any) => {
 	if (!isLoading && events.length === 0) {
 		return (
 			<View style={styles.centered}>
-				<Text style={styles.text}>
-					No Remindsys found. Tap on{" "}
+				<Text style={styles.text}>No Remindsys found.</Text>
+				<View style={styles.buttonContainer}>
+					<Button
+						title="Add a Remindsy"
+						color={colours.darkPink}
+						onPress={() => {
+							props.navigation.navigate(
+								"AddEdit",
+								getParams()
+							);
+						}}
+					/>
+				</View>
+
+				<Text style={styles.textSmall}></Text>
+				<Text style={styles.textSmall}>
+					Alternatively tap on{" "}
 					<FontAwesome5
 						name="calendar-plus"
 						size={18}
 						color="black"
 					/>{" "}
-					to add some or tap on{" "}
+					to add a remindsy or tap on{" "}
 					<Ionicons
 						name="settings"
 						size={18}
@@ -166,23 +180,25 @@ const ListScreen = (props: any) => {
 		);
 	}
 	return (
-		<FlatList
-			onRefresh={loadEvents}
-			refreshing={isRefreshing}
-			data={events}
-			keyExtractor={(item) => item.id}
-			renderItem={(itemData) => (
-				<EventItem
-					names={handleOutputNames(itemData.item)}
-					date={handleOutputDate(itemData.item)}
-					years={handleOutputYears(itemData.item)}
-					icon={handleOutputTypeIcon(itemData.item)}
-					onSelect={() => {
-						selectEventHandler(itemData.item.id);
-					}}
-				/>
-			)}
-		/>
+		<>
+			<FlatList
+				onRefresh={loadEvents}
+				refreshing={isRefreshing}
+				data={events}
+				keyExtractor={(item) => item.id}
+				renderItem={(itemData) => (
+					<EventItem
+						names={handleOutputNames(itemData.item)}
+						date={handleOutputDate(itemData.item)}
+						years={handleOutputYears(itemData.item)}
+						icon={handleOutputTypeIcon(itemData.item)}
+						onSelect={() => {
+							selectEventHandler(itemData.item.id);
+						}}
+					/>
+				)}
+			/>
+		</>
 	);
 };
 
@@ -215,9 +231,20 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginHorizontal: 10,
 	},
+	buttonContainer: {
+		marginHorizontal: "25%",
+		marginBottom: 10,
+	},
 	text: {
 		textAlign: "center",
 		fontFamily: "open-sans",
 		fontSize: 18,
+		marginVertical: 10,
+	},
+	textSmall: {
+		textAlign: "center",
+		fontFamily: "open-sans",
+		fontSize: 15,
+		marginVertical: 10,
 	},
 });

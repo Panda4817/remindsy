@@ -65,7 +65,7 @@ export const addEvent = (
 				address,
 				pushNotification
 			);
-			console.log(dbResult);
+			// setup  notification if wanted
 			dispatch({
 				type: ADD_EVENT,
 				eventData: {
@@ -123,7 +123,7 @@ export const editEvent = (
 				address,
 				pushNotification
 			);
-			console.log(dbResult);
+			// update/setup notification if wanted
 			dispatch({
 				type: UPDATE_EVENT,
 				eventData: {
@@ -188,6 +188,7 @@ export const delEvent = (id: number) => {
 	) => {
 		try {
 			const dbResult: any = await deleteEvent(id);
+			// remove  notification
 			dispatch({
 				type: DELETE_EVENT,
 				eventData: {

@@ -60,9 +60,9 @@ const formSchema = Yup.object().shape({
 });
 
 const FormikForm = (props: any) => {
-	let buttonText = "Create Remindsy";
+	let buttonText = "Save new Remindsy";
 	if (props.selectedEvent) {
-		buttonText = "Edit Remindsy";
+		buttonText = "Save changes";
 	}
 	const getValues = () => {
 		if (props.selectedEvent) {
@@ -272,6 +272,15 @@ const FormikForm = (props: any) => {
 									placeholder="No present ideas provided"
 								/>
 							) : null}
+							{
+								// Add a way to retrieve address from contacts
+								// button
+								// expo-contacts
+								// get permission
+								// search by name
+								// show results in a modal
+								// pick a result and fills in input with address, back to form
+							}
 							<Input
 								onChangeText={handleChange("address")}
 								onBlur={handleBlur("address")}
@@ -284,11 +293,7 @@ const FormikForm = (props: any) => {
 							/>
 							<CustomSwitch
 								value={values.pushNotification}
-								label={
-									values.pushNotification
-										? "Disable notification"
-										: "Enable notification"
-								}
+								label="Enable notifications"
 								onValueChangeHandler={(
 									itemValue: Boolean
 								) =>

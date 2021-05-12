@@ -56,14 +56,14 @@ const EventScreen = (props: any) => {
 	const deleteHandler = () => {
 		Alert.alert(
 			"Are you sure?",
-			"Do you really want to delete this item?",
+			"Do you really want to delete this Remindsy?",
 			[
-				{ text: "No", style: "default" },
 				{
 					text: "Yes",
 					style: "destructive",
 					onPress: deleteSubmit,
 				},
+				{ text: "No", style: "default" },
 			]
 		);
 	};
@@ -114,7 +114,7 @@ const EventScreen = (props: any) => {
 				</View>
 			),
 		});
-	});
+	}, []);
 
 	useEffect(() => {
 		if (error) {
@@ -179,6 +179,26 @@ const EventScreen = (props: any) => {
 					) : null}
 				</View>
 			</Card>
+			<View style={styles.buttonContainer}>
+				<View style={styles.buttonBox}>
+					<Button
+						title="Edit"
+						color={colours.darkBlue}
+						onPress={() => {
+							props.navigation.navigate("AddEdit", {
+								id: selectedEvent.id,
+							});
+						}}
+					/>
+				</View>
+				<View style={styles.buttonBox}>
+					<Button
+						title="Delete"
+						onPress={() => deleteHandler()}
+						color={colours.darkPink}
+					/>
+				</View>
+			</View>
 		</ScrollView>
 	);
 };
@@ -268,5 +288,14 @@ const styles = StyleSheet.create({
 		fontFamily: "open-sans",
 		color: colours.lightPink,
 		fontSize: 24,
+	},
+	buttonContainer: {
+		margin: 10,
+		flexDirection: "row",
+		justifyContent: "space-around",
+		alignItems: "center",
+	},
+	buttonBox: {
+		width: "25%",
 	},
 });
