@@ -3,14 +3,15 @@ import {
 	SET_EVENTS,
 	UPDATE_EVENT,
 	DELETE_EVENT,
-	myAction,
 } from "./actions";
 import Event from "../models/eventClass";
 import "react-native-get-random-values";
-
-export interface myState {
-	events: Array<Event>;
-}
+import { myState, myAction, eventData } from "./storeTypes";
+import {
+	createNotification,
+	updateNotification,
+	deleteNotification,
+} from "../helpers/notifications";
 
 const initialState = {
 	events: [],
@@ -33,6 +34,9 @@ export default (state = initialState, action: myAction) => {
 				action.eventData.address,
 				action.eventData.pushNotification
 			);
+			if (newEvent.pushNotification === true) {
+				createNotification(newEvent);
+			}
 			return {
 				events: state.events.concat(newEvent),
 			};
@@ -58,6 +62,7 @@ export default (state = initialState, action: myAction) => {
 				action.eventData.address,
 				action.eventData.pushNotification
 			);
+			updateNotification(updatedEvent);
 			if (index >= 0) {
 				return {
 					events: state.events
@@ -70,6 +75,7 @@ export default (state = initialState, action: myAction) => {
 			}
 
 		case DELETE_EVENT:
+			deleteNotification(action.eventData.id);
 			return {
 				events: state.events.filter(
 					(event) => event.id !== action.eventData.id

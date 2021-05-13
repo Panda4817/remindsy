@@ -1,6 +1,7 @@
 import { ThunkDispatch } from "redux-thunk";
 import Event from "../models/eventClass";
-import { myState } from "./reducers";
+import { myState } from "./storeTypes";
+import { myAction, eventData } from "./storeTypes";
 
 export const SET_EVENTS = "SET_EVENTS";
 export const ADD_EVENT = "ADD_EVENT";
@@ -13,27 +14,6 @@ import {
 	updateEvent,
 	deleteEvent,
 } from "../helpers/db";
-
-export interface eventData {
-	id: string;
-	firstName: string;
-	secondName: string;
-	day: number;
-	month: number;
-	type: string;
-	startYear: number;
-	noticeTime: number;
-	present: boolean;
-	ideas: string;
-	address: string;
-	pushNotification: boolean;
-}
-
-export interface myAction {
-	type: string;
-	eventData: eventData;
-	events: Array<Event>;
-}
 
 export const addEvent = (
 	firstName: string,
@@ -65,7 +45,6 @@ export const addEvent = (
 				address,
 				pushNotification
 			);
-			// setup  notification if wanted
 			dispatch({
 				type: ADD_EVENT,
 				eventData: {
@@ -123,7 +102,6 @@ export const editEvent = (
 				address,
 				pushNotification
 			);
-			// update/setup notification if wanted
 			dispatch({
 				type: UPDATE_EVENT,
 				eventData: {

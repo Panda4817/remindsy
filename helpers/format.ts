@@ -102,3 +102,15 @@ export const handleNoticeOutput = (item: Event) => {
 	}
 	return "Notification disabled";
 };
+
+export const handleNoticeOutputNotifications = (
+	item: Event
+) => {
+	if (item.pushNotification && item.noticeTime == 1) {
+		return "1 week";
+	}
+	if (item.pushNotification && item.noticeTime == 2) {
+		return "2 weeks";
+	}
+	return "";
+};
