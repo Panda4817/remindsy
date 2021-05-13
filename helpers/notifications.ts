@@ -40,8 +40,8 @@ export const createNotification = async (event: Event) => {
 			trigger: {
 				day: nDate.getDate(),
 				month: nDate.getMonth(),
-				hour: 12,
-				minute: 15,
+				hour: 8,
+				minute: 0,
 				repeats: true,
 			},
 		});

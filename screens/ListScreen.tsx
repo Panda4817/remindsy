@@ -15,6 +15,7 @@ import {
 } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
 import CustomHeaderButton from "../components/UI/HeaderButton";
+import CustomButton from "../components/UI/CustomButton";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import * as actions from "../store/actions";
 import colours from "../constants/Colours";
@@ -147,33 +148,36 @@ const ListScreen = (props: any) => {
 			<View style={styles.centered}>
 				<Text style={styles.text}>No Remindsys found.</Text>
 				<View style={styles.buttonContainer}>
-					<Button
-						title="Add a Remindsy"
-						color={colours.darkPink}
+					<CustomButton
 						onPress={() => {
 							props.navigation.navigate(
 								"AddEdit",
 								getParams()
 							);
 						}}
-					/>
+					>
+						<FontAwesome5
+							name="calendar-plus"
+							size={18}
+							color="white"
+						/>
+						<Text
+							style={{ ...styles.text, color: "white" }}
+						>
+							Add a Remindsy
+						</Text>
+					</CustomButton>
 				</View>
 
 				<Text style={styles.textSmall}></Text>
 				<Text style={styles.textSmall}>
-					Alternatively tap on{" "}
-					<FontAwesome5
-						name="calendar-plus"
-						size={18}
-						color="black"
-					/>{" "}
-					to add a remindsy or tap on{" "}
+					Tap on{" "}
 					<Ionicons
 						name="settings"
 						size={18}
 						color="black"
 					/>{" "}
-					to import from other sources.
+					to import events.
 				</Text>
 			</View>
 		);
@@ -231,7 +235,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 	},
 	buttonContainer: {
-		marginHorizontal: "25%",
+		width: "70%",
 		marginBottom: 10,
 	},
 	text: {

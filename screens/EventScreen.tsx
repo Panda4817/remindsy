@@ -29,6 +29,7 @@ import {
 	handleOutputYears,
 } from "../helpers/formatting";
 import * as actions from "../store/actions";
+import CustomButton from "../components/UI/CustomButton";
 
 const EventScreen = (props: any) => {
 	const [error, setError] = useState("");
@@ -181,22 +182,48 @@ const EventScreen = (props: any) => {
 			</Card>
 			<View style={styles.buttonContainer}>
 				<View style={styles.buttonBox}>
-					<Button
-						title="Edit"
-						color={colours.darkBlue}
+					<CustomButton
 						onPress={() => {
 							props.navigation.navigate("AddEdit", {
 								id: selectedEvent.id,
 							});
 						}}
-					/>
+						style={{ backgroundColor: colours.lightBlue }}
+					>
+						<FontAwesome5
+							name="edit"
+							size={18}
+							color="white"
+						/>
+						<Text
+							style={{
+								...styles.buttonText,
+								color: "white",
+							}}
+						>
+							Edit
+						</Text>
+					</CustomButton>
 				</View>
 				<View style={styles.buttonBox}>
-					<Button
-						title="Delete"
+					<CustomButton
 						onPress={() => deleteHandler()}
-						color={colours.darkPink}
-					/>
+						style={{ backgroundColor: colours.lightPink }}
+					>
+						<FontAwesome5
+							name="trash-alt"
+							size={18}
+							color="white"
+						/>
+						<Text
+							style={{
+								...styles.buttonText,
+								color: "white",
+							}}
+						>
+							Delete
+						</Text>
+					</CustomButton>
 				</View>
 			</View>
 		</ScrollView>
@@ -296,6 +323,11 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	buttonBox: {
-		width: "25%",
+		width: "40%",
+	},
+	buttonText: {
+		fontFamily: "open-sans",
+		fontSize: 18,
+		marginVertical: 10,
 	},
 });
