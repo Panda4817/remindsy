@@ -27,7 +27,7 @@ import {
 	handleOutputNames,
 	handleOutputTypeIcon,
 	handleOutputYears,
-} from "../helpers/format";
+} from "../helpers/formatting";
 import * as actions from "../store/actions";
 
 const EventScreen = (props: any) => {

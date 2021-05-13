@@ -26,7 +26,7 @@ import {
 	handleOutputNames,
 	handleOutputTypeIcon,
 	handleOutputYears,
-} from "../helpers/format";
+} from "../helpers/formatting";
 
 const ListScreen = (props: any) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -173,8 +173,7 @@ const ListScreen = (props: any) => {
 						size={18}
 						color="black"
 					/>{" "}
-					to import birthdays and anniversaries from other
-					sources.
+					to import from other sources.
 				</Text>
 			</View>
 		);
@@ -245,6 +244,6 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontFamily: "open-sans",
 		fontSize: 15,
-		marginVertical: 10,
+		margin: 20,
 	},
 });

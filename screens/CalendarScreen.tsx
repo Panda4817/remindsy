@@ -14,7 +14,7 @@ import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 import colours from "../constants/Colours";
 import { useSelector } from "react-redux";
-import { convertToNextDate } from "../helpers/format";
+import { convertToNextDate } from "../helpers/formatting";
 import Event from "../models/eventClass";
 
 const CalendarScreen = (props: any) => {

@@ -5,7 +5,7 @@ import {
 	handleCardOrPresOutput,
 	handleNoticeOutputNotifications,
 	handleOutputNames,
-} from "./format";
+} from "./formatting";
 
 const getNotificationDate = (
 	week: number,
@@ -23,51 +23,28 @@ export const createNotification = async (event: Event) => {
 		event.day,
 		event.month
 	);
-	await Notifications.scheduleNotificationAsync({
-		content: {
-			title: "Remindsy Update",
-			body: `${handleNoticeOutputNotifications(
-				event
-			)} until ${handleOutputNames(event)}'s ${
-				event.type
-			}! Buy a ${handleCardOrPresOutput(event)}.`,
-			data: { id: event.id, weeks: event.noticeTime },
-		},
-		trigger: {
-			day: nDate.getDate(),
-			month: nDate.getMonth(),
-			hour: 0,
-			minute: 0,
-			repeats: true,
-		},
-	});
-	return;
-};
-
-export const updateNotification = async (event: Event) => {
-	const res =
-		await Notifications.getAllScheduledNotificationsAsync();
-	let updated = false;
-	res.map(async (val) => {
-		if (
-			val.content.data.id === event.id &&
-			val.content.data.weeks !== event.noticeTime &&
-			event.pushNotification === true
-		) {
-			await Notifications.cancelScheduledNotificationAsync(
-				val.identifier
-			);
-			await createNotification(event);
-			updated = true;
-		}
-		return;
-	});
-	if (updated) {
-		return;
-	}
-	if (event.pushNotification === true) {
-		await createNotification(event);
-	}
+	const identifier =
+		await Notifications.scheduleNotificationAsync({
+			content: {
+				title: "Remindsy Update",
+				body: `${handleNoticeOutputNotifications(
+					event
+				)} until ${handleOutputNames(event)}'s ${
+					event.type
+				}! Buy a ${handleCardOrPresOutput(
+					event
+				).toLowerCase()}.`,
+				data: { id: event.id },
+				sound: "default",
+			},
+			trigger: {
+				day: nDate.getDate(),
+				month: nDate.getMonth(),
+				hour: 12,
+				minute: 15,
+				repeats: true,
+			},
+		});
 	return;
 };
 
@@ -82,5 +59,13 @@ export const deleteNotification = async (id: string) => {
 		}
 		return;
 	});
+	return;
+};
+
+export const updateNotification = async (event: Event) => {
+	await deleteNotification(event.id);
+	if (event.pushNotification === true) {
+		await createNotification(event);
+	}
 	return;
 };

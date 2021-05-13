@@ -37,7 +37,7 @@ Notifications.setNotificationHandler({
 	handleNotification: async () => {
 		return {
 			shouldShowAlert: true,
-			shouldPlaySound: false,
+			shouldPlaySound: true,
 			shouldSetBadge: false,
 		};
 	},

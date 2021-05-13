@@ -12,7 +12,7 @@ import CustomPicker from "../UI/Picker";
 import Input from "../UI/Input";
 import CustomSwitch from "../UI/Switch";
 import colours from "../../constants/Colours";
-import { months } from "../../helpers/format";
+import { months } from "../../helpers/formatting";
 
 const formSchema = Yup.object().shape({
 	type: Yup.string()
@@ -125,10 +125,14 @@ const FormikForm = (props: any) => {
 					}
 				}
 				values.startYear = parseInt(values.startYear);
+				values.pushNotification =
+					values.pushNotification == 1 ? true : false;
 				if (values.pushNotification === true) {
-					const statusObj = await Notifications.getPermissionsAsync();
+					const statusObj =
+						await Notifications.getPermissionsAsync();
 					if (statusObj.status !== "granted") {
-						const statusObj = await Notifications.requestPermissionsAsync();
+						const statusObj =
+							await Notifications.requestPermissionsAsync();
 					}
 				}
 				props.submitHandler(values);
