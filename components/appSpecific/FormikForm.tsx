@@ -14,6 +14,9 @@ import CustomSwitch from "../UI/Switch";
 import colours from "../../constants/Colours";
 import { months } from "../../helpers/formatting";
 import { regular } from "../../constants/Fonts";
+import CustomButton from "../UI/CustomButton";
+import CustomText from "../UI/CustomText";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const formSchema = Yup.object().shape({
 	type: Yup.string()
@@ -337,11 +340,29 @@ const FormikForm = (props: any) => {
 									color={colours.darkPink}
 								/>
 							) : (
-								<Button
-									onPress={() => handleSubmit()}
-									title={buttonText}
-									color={colours.darkPink}
-								/>
+								<CustomButton
+									onPress={() => {
+										handleSubmit();
+									}}
+									style={{
+										backgroundColor: colours.darkPink,
+										marginHorizontal: 50,
+									}}
+								>
+									<FontAwesome5
+										name="save"
+										size={18}
+										color="white"
+									/>
+									<CustomText
+										style={{
+											...styles.buttonText,
+											color: "white",
+										}}
+									>
+										{buttonText}
+									</CustomText>
+								</CustomButton>
 							)}
 						</View>
 					</>
@@ -366,5 +387,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
+	},
+	buttonText: {
+		fontSize: 18,
+		marginVertical: 10,
 	},
 });
