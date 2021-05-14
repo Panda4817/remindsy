@@ -15,6 +15,12 @@ export const months = [
 	"December",
 ];
 
+export const leapYear = (year: number) => {
+	return year % 100 === 0
+		? year % 400 === 0
+		: year % 4 === 0;
+};
+
 export const convertToNextDate = (
 	day: number,
 	month: number
@@ -26,6 +32,10 @@ export const convertToNextDate = (
 		today.toDateString() !== date.toDateString()
 	) {
 		date.setFullYear(today.getFullYear() + 1);
+	}
+	if (!leapYear(date.getFullYear())) {
+		date.setDate(28);
+		date.setMonth(1);
 	}
 	return date;
 };

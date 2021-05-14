@@ -3310,6 +3310,13 @@ expo-notifications@~0.11.6:
     unimodules-permissions-interface "~6.1.0"
     uuid "^3.4.0"
 
+expo-screen-orientation@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/expo-screen-orientation/-/expo-screen-orientation-3.1.0.tgz#7df254a7f5778e89eafa9a1b8e3b3f4798b41f90"
+  integrity sha512-8sGbKObxl6AE9TcbSRerV5uo8Xsi/7j3UrdeRU62eaUb7am9NbFkMN0co/58b/P41NkOPNe4GF+ZELkP93PjKw==
+  dependencies:
+    "@expo/config-plugins" "^1.0.18"
+
 expo-splash-screen@~0.10.2:
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.10.2.tgz#3e3d7c24c4ed180a60ce3ec64a77eefd04dd0d97"

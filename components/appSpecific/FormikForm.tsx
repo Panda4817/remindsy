@@ -13,6 +13,7 @@ import Input from "../UI/Input";
 import CustomSwitch from "../UI/Switch";
 import colours from "../../constants/Colours";
 import { months } from "../../helpers/formatting";
+import { regular } from "../../constants/Fonts";
 
 const formSchema = Yup.object().shape({
 	type: Yup.string()
@@ -255,8 +256,8 @@ const FormikForm = (props: any) => {
 								}
 								extraLabel={
 									values.present
-										? "Card and present reminder"
-										: "Card only reminder"
+										? "Card and present reminder selected"
+										: "Card only reminder selected"
 								}
 								onValueChangeHandler={(
 									itemValue: Boolean
@@ -359,7 +360,7 @@ const styles = StyleSheet.create({
 	picker: {
 		margin: 0,
 		padding: 0,
-		fontFamily: "open-sans",
+		fontFamily: regular,
 	},
 	centered: {
 		flex: 1,

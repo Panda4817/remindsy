@@ -1,5 +1,6 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import colours from "../constants/Colours";
+import { regular } from "../constants/Fonts";
 
 export const defaultNavOptions = {
 	headerStyle: {
@@ -7,11 +8,11 @@ export const defaultNavOptions = {
 		height: 80,
 	},
 	headerTitleStyle: {
-		fontFamily: "open-sans",
+		fontFamily: regular,
 		fontSize: 24,
 	},
 	headerBackTitleStyle: {
-		fontFamily: "open-sans",
+		fontFamily: regular,
 	},
 	headerTintColor: colours.yellow,
 	headerTitleAlign: "center",

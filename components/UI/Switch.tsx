@@ -6,21 +6,16 @@ import {
 	Switch,
 } from "react-native";
 import colours from "../../constants/Colours";
+import CustomText from "./CustomText";
 
 const CustomSwitch = (props: any) => {
-	// const [isEnabled, setIsEnabled] = useState(
-	// 	props.value == 1 ? true : false
-	// );
-	// useEffect(() => {
-	// 	setIsEnabled(props.value == 1 ? true : false);
-	// }, [props.value]);
 	return (
 		<View style={styles.formControl}>
 			{props.extraLabel ? (
-				<Text style={styles.label}>{props.extraLabel}</Text>
+				<CustomText>{props.extraLabel}</CustomText>
 			) : null}
 			<View style={styles.rowContainer}>
-				<Text style={styles.label}>{props.label}</Text>
+				<CustomText>{props.label}</CustomText>
 				<Switch
 					trackColor={{
 						false: "#767577",
@@ -40,9 +35,9 @@ const CustomSwitch = (props: any) => {
 
 			{props.error && props.touched ? (
 				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>
+					<CustomText style={styles.errorText}>
 						{props.error}
-					</Text>
+					</CustomText>
 				</View>
 			) : null}
 		</View>
@@ -53,19 +48,20 @@ const styles = StyleSheet.create({
 	formControl: {
 		width: "100%",
 		marginVertical: 5,
+		padding: 5,
+		borderColor: "#ccc",
+		borderRadius: 10,
+		borderWidth: 1,
 	},
 	rowContainer: {
 		flexDirection: "row",
 		justifyContent: "space-between",
-	},
-	label: {
-		fontFamily: "open-sans",
+		alignItems: "center",
 	},
 	errorContainer: {
 		marginVertical: 5,
 	},
 	errorText: {
-		fontFamily: "open-sans",
 		color: "red",
 		fontSize: 13,
 	},

@@ -5,17 +5,20 @@ import {
 	TextInput,
 	StyleSheet,
 } from "react-native";
+import CustomText from "./CustomText";
 
 const Input = (props: any) => {
 	return (
 		<View style={styles.formControl}>
-			<Text style={styles.label}>{props.label}</Text>
-			<TextInput {...props} style={styles.input} />
+			<CustomText style={styles.label}>
+				{props.label}
+			</CustomText>
+			<TextInput {...props} />
 			{props.error && props.touched ? (
 				<View style={styles.errorContainer}>
-					<Text style={styles.errorText}>
+					<CustomText style={styles.errorText}>
 						{props.error}
-					</Text>
+					</CustomText>
 				</View>
 			) : null}
 		</View>
@@ -26,22 +29,18 @@ const styles = StyleSheet.create({
 	formControl: {
 		width: "100%",
 		marginVertical: 5,
+		padding: 5,
+		borderColor: "#ccc",
+		borderRadius: 10,
+		borderWidth: 1,
 	},
 	label: {
-		fontFamily: "open-sans",
 		marginVertical: 8,
-	},
-	input: {
-		paddingHorizontal: 2,
-		paddingVertical: 5,
-		borderBottomColor: "#ccc",
-		borderBottomWidth: 1,
 	},
 	errorContainer: {
 		marginVertical: 5,
 	},
 	errorText: {
-		fontFamily: "open-sans",
 		color: "red",
 		fontSize: 13,
 	},

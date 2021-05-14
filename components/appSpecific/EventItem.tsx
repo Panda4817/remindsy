@@ -11,6 +11,8 @@ import { FontAwesome } from "@expo/vector-icons";
 import colours from "../../constants/Colours";
 
 import Card from "../UI/Card";
+import CustomText from "../UI/CustomText";
+import { bold } from "../../constants/Fonts";
 
 const EventItem = (props: any) => {
 	let TouchableCmp: any;
@@ -34,14 +36,16 @@ const EventItem = (props: any) => {
 							/>
 						</View>
 						<View style={styles.textContainer}>
-							<Text style={styles.date}>{props.date}</Text>
-							<Text style={styles.names}>
+							<CustomText style={styles.date}>
+								{props.date}
+							</CustomText>
+							<CustomText style={styles.names}>
 								{props.names}
-							</Text>
+							</CustomText>
 							{props.years ? (
-								<Text style={styles.years}>
+								<CustomText style={styles.years}>
 									{props.years}
-								</Text>
+								</CustomText>
 							) : null}
 						</View>
 					</View>
@@ -70,17 +74,15 @@ const styles = StyleSheet.create({
 		marginHorizontal: 30,
 	},
 	date: {
-		fontFamily: "open-sans",
 		fontSize: 20,
 		color: "white",
 	},
 	names: {
-		fontFamily: "open-sans-bold",
+		fontFamily: bold,
 		fontSize: 20,
 		color: "white",
 	},
 	years: {
-		fontFamily: "open-sans",
 		fontSize: 15,
 		color: colours.lightPink,
 	},

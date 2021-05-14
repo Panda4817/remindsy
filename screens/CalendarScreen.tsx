@@ -1,16 +1,12 @@
 import React from "react";
 import { useEffect } from "react";
 import { CalendarList } from "react-native-calendars";
-import {
-	Platform,
-	SafeAreaView,
-	StyleSheet,
-} from "react-native";
+import { SafeAreaView } from "react-native";
 import {
 	HeaderButtons,
 	Item,
 } from "react-navigation-header-buttons";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 import colours from "../constants/Colours";
 import { useSelector } from "react-redux";
@@ -53,13 +49,28 @@ const CalendarScreen = (props: any) => {
 		}
 		switch (item.type) {
 			case "Birthday":
-				markedDates[dateString].dots.push(birthday);
+				if (
+					markedDates[dateString].dots.indexOf(birthday) < 0
+				) {
+					markedDates[dateString].dots.push(birthday);
+				}
+
 				return;
 			case "Wedding Anniversary":
-				markedDates[dateString].dots.push(anniversary);
+				if (
+					markedDates[dateString].dots.indexOf(
+						anniversary
+					) < 0
+				) {
+					markedDates[dateString].dots.push(anniversary);
+				}
 				return;
 			default:
-				markedDates[dateString].dots.push(other);
+				if (
+					markedDates[dateString].dots.indexOf(other) < 0
+				) {
+					markedDates[dateString].dots.push(other);
+				}
 				return;
 		}
 	});
@@ -108,5 +119,3 @@ export const screenOptions = {
 };
 
 export default CalendarScreen;
-
-const styles = StyleSheet.create({});

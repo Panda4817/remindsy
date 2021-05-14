@@ -101,11 +101,6 @@ const styles = StyleSheet.create({
 	form: {
 		margin: 20,
 	},
-	picker: {
-		margin: 0,
-		padding: 0,
-		fontFamily: "open-sans",
-	},
 	centered: {
 		flex: 1,
 		justifyContent: "center",

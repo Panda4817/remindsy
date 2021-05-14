@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import AppLoading from "expo-app-loading";
 import * as Font from "expo-font";
 import {
@@ -11,6 +10,8 @@ import {
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 import * as Notifications from "expo-notifications";
+import * as ScreenOrientation from "expo-screen-orientation";
+import { StatusBar } from "expo-status-bar";
 
 import AppNavigator from "./navigation/AppNavigator";
 import reducers from "./store/reducers";
@@ -42,11 +43,14 @@ Notifications.setNotificationHandler({
 		};
 	},
 });
+ScreenOrientation.lockAsync(
+	ScreenOrientation.OrientationLock.PORTRAIT
+);
 
 const fetchFonts = () => {
 	return Font.loadAsync({
-		"open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-		"open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+		regular: require("./assets/fonts/OpenSans-Regular.ttf"),
+		bold: require("./assets/fonts/OpenSans-Bold.ttf"),
 	});
 };
 export default function App() {

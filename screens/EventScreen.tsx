@@ -3,12 +3,9 @@ import { useEffect, useState } from "react";
 import {
 	ActivityIndicator,
 	Alert,
-	Platform,
 	ScrollView,
 	StyleSheet,
-	Text,
 	View,
-	Button,
 } from "react-native";
 import {
 	HeaderButtons,
@@ -30,6 +27,8 @@ import {
 } from "../helpers/formatting";
 import * as actions from "../store/actions";
 import CustomButton from "../components/UI/CustomButton";
+import CustomText from "../components/UI/CustomText";
+import { bold, regular } from "../constants/Fonts";
 
 const EventScreen = (props: any) => {
 	const [error, setError] = useState("");
@@ -83,7 +82,9 @@ const EventScreen = (props: any) => {
 						size={24}
 						color={colours.yellow}
 					/>
-					<Text style={styles.header}>{type}</Text>
+					<CustomText style={styles.header}>
+						{type}
+					</CustomText>
 				</View>
 			),
 			headerRight: () => (
@@ -139,44 +140,50 @@ const EventScreen = (props: any) => {
 		<ScrollView style={styles.outerContainer}>
 			<Card style={styles.sharedContainer}>
 				<View style={styles.dateContainer}>
-					<Text style={styles.date}>
+					<CustomText style={styles.date}>
 						{handleOutputDate(selectedEvent)}
-					</Text>
+					</CustomText>
+					{selectedEvent.day == 29 &&
+					selectedEvent.month == 1 ? (
+						<CustomText style={styles.details}>
+							(Leap day)
+						</CustomText>
+					) : null}
 				</View>
 				<View style={styles.namesContainer}>
-					<Text style={styles.names}>
+					<CustomText style={styles.names}>
 						{handleOutputNames(selectedEvent)}
-					</Text>
+					</CustomText>
 				</View>
 				{selectedEvent.startYear !== 0 ? (
 					<View style={styles.yearsContainer}>
-						<Text style={styles.years}>
+						<CustomText style={styles.years}>
 							{handleOutputYears(selectedEvent)}
-						</Text>
+						</CustomText>
 					</View>
 				) : null}
 				<View style={styles.detailsContainer}>
-					<Text style={styles.details}>
+					<CustomText style={styles.details}>
 						{handleCardOrPresOutput(selectedEvent)}
-					</Text>
+					</CustomText>
 
 					{selectedEvent.present &&
 					selectedEvent.ideas !==
 						"No present ideas provided" ? (
-						<Text style={styles.details}>
+						<CustomText style={styles.details}>
 							{selectedEvent.ideas}
-						</Text>
+						</CustomText>
 					) : null}
 					{selectedEvent.address !==
 					"No address provided" ? (
-						<Text style={styles.details}>
+						<CustomText style={styles.details}>
 							{selectedEvent.address}
-						</Text>
+						</CustomText>
 					) : null}
 					{selectedEvent.pushNotification ? (
-						<Text style={styles.details}>
+						<CustomText style={styles.details}>
 							{handleNoticeOutput(selectedEvent)}
-						</Text>
+						</CustomText>
 					) : null}
 				</View>
 			</Card>
@@ -195,14 +202,14 @@ const EventScreen = (props: any) => {
 							size={18}
 							color="white"
 						/>
-						<Text
+						<CustomText
 							style={{
 								...styles.buttonText,
 								color: "white",
 							}}
 						>
 							Edit
-						</Text>
+						</CustomText>
 					</CustomButton>
 				</View>
 				<View style={styles.buttonBox}>
@@ -215,14 +222,14 @@ const EventScreen = (props: any) => {
 							size={18}
 							color="white"
 						/>
-						<Text
+						<CustomText
 							style={{
 								...styles.buttonText,
 								color: "white",
 							}}
 						>
 							Delete
-						</Text>
+						</CustomText>
 					</CustomButton>
 				</View>
 			</View>
@@ -252,7 +259,6 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		textAlignVertical: "center",
-		fontFamily: "open-sans",
 		fontSize: 24,
 		color: colours.yellow,
 		marginHorizontal: 10,
@@ -274,7 +280,7 @@ const styles = StyleSheet.create({
 	},
 	date: {
 		textAlign: "center",
-		fontFamily: "open-sans-bold",
+		fontFamily: bold,
 		color: "white",
 		fontSize: 30,
 	},
@@ -286,7 +292,7 @@ const styles = StyleSheet.create({
 	},
 	names: {
 		textAlign: "center",
-		fontFamily: "open-sans-bold",
+		fontFamily: bold,
 		color: "white",
 		fontSize: 30,
 	},
@@ -298,7 +304,6 @@ const styles = StyleSheet.create({
 	},
 	years: {
 		textAlign: "center",
-		fontFamily: "open-sans",
 		color: colours.yellow,
 		fontSize: 30,
 	},
@@ -312,7 +317,6 @@ const styles = StyleSheet.create({
 	},
 	details: {
 		textAlign: "center",
-		fontFamily: "open-sans",
 		color: colours.lightPink,
 		fontSize: 24,
 	},
@@ -326,7 +330,6 @@ const styles = StyleSheet.create({
 		width: "40%",
 	},
 	buttonText: {
-		fontFamily: "open-sans",
 		fontSize: 18,
 		marginVertical: 10,
 	},

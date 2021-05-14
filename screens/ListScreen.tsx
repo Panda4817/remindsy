@@ -27,7 +27,9 @@ import {
 	handleOutputNames,
 	handleOutputTypeIcon,
 	handleOutputYears,
+	leapYear,
 } from "../helpers/formatting";
+import CustomText from "../components/UI/CustomText";
 
 const ListScreen = (props: any) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -42,11 +44,23 @@ const ListScreen = (props: any) => {
 		const filterDay = props.route.params.filterDay;
 		const filterMonth = props.route.params.filterMonth;
 		if (filterDay && filterMonth) {
-			events = events.filter(
-				(item: Event) =>
-					item.day == filterDay &&
-					item.month == filterMonth - 1
-			);
+			events = events.filter((item: Event) => {
+				if (
+					filterDay == 28 &&
+					filterMonth == 2 &&
+					!leapYear(props.route.params.filterYear)
+				) {
+					return (
+						(item.day == filterDay || item.day == 29) &&
+						item.month == filterMonth - 1
+					);
+				} else {
+					return (
+						item.day == filterDay &&
+						item.month == filterMonth - 1
+					);
+				}
+			});
 		}
 	}
 
@@ -124,7 +138,7 @@ const ListScreen = (props: any) => {
 	if (error) {
 		return (
 			<View style={styles.centered}>
-				<Text>An error occurred!</Text>
+				<CustomText>An error occurred!</CustomText>
 				<Button
 					title="Try again"
 					onPress={loadEvents}
@@ -146,7 +160,9 @@ const ListScreen = (props: any) => {
 	if (!isLoading && events.length === 0) {
 		return (
 			<View style={styles.centered}>
-				<Text style={styles.text}>No Remindsys found.</Text>
+				<CustomText style={styles.text}>
+					No Remindsys found.
+				</CustomText>
 				<View style={styles.buttonContainer}>
 					<CustomButton
 						onPress={() => {
@@ -161,16 +177,14 @@ const ListScreen = (props: any) => {
 							size={18}
 							color="white"
 						/>
-						<Text
+						<CustomText
 							style={{ ...styles.text, color: "white" }}
 						>
 							Add a Remindsy
-						</Text>
+						</CustomText>
 					</CustomButton>
 				</View>
-
-				<Text style={styles.textSmall}></Text>
-				<Text style={styles.textSmall}>
+				<CustomText style={styles.textSmall}>
 					Tap on{" "}
 					<Ionicons
 						name="settings"
@@ -178,7 +192,7 @@ const ListScreen = (props: any) => {
 						color="black"
 					/>{" "}
 					to import events.
-				</Text>
+				</CustomText>
 			</View>
 		);
 	}
@@ -240,13 +254,11 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		textAlign: "center",
-		fontFamily: "open-sans",
 		fontSize: 18,
 		marginVertical: 10,
 	},
 	textSmall: {
 		textAlign: "center",
-		fontFamily: "open-sans",
 		fontSize: 15,
 		margin: 20,
 	},
