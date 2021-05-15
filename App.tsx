@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import React from "react";
 import AppLoading from "expo-app-loading";
-import * as Font from "expo-font";
+import { useFonts } from "expo-font";
 import {
 	createStore,
 	combineReducers,
@@ -47,23 +46,14 @@ ScreenOrientation.lockAsync(
 	ScreenOrientation.OrientationLock.PORTRAIT
 );
 
-const fetchFonts = () => {
-	return Font.loadAsync({
+const App = () => {
+	let [fontsLoaded] = useFonts({
 		regular: require("./assets/fonts/OpenSans-Regular.ttf"),
 		bold: require("./assets/fonts/OpenSans-Bold.ttf"),
 	});
-};
-export default function App() {
-	const [dataLoaded, setDataLoaded] = useState(false);
 
-	if (!dataLoaded) {
-		return (
-			<AppLoading
-				startAsync={fetchFonts}
-				onFinish={() => setDataLoaded(true)}
-				onError={(err) => console.log(err)}
-			/>
-		);
+	if (!fontsLoaded) {
+		return <AppLoading />;
 	}
 	return (
 		<Provider store={store}>
@@ -71,13 +61,6 @@ export default function App() {
 			<AppNavigator />
 		</Provider>
 	);
-}
+};
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});
+export default App;

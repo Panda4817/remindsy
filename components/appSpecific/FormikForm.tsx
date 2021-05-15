@@ -2,12 +2,12 @@ import React from "react";
 import {
 	StyleSheet,
 	View,
-	Button,
 	ActivityIndicator,
 } from "react-native";
 import { Formik, FormikValues } from "formik";
 import * as Notifications from "expo-notifications";
 import * as Yup from "yup";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import CustomPicker from "../UI/Picker";
 import Input from "../UI/Input";
 import CustomSwitch from "../UI/Switch";
@@ -16,9 +16,8 @@ import { months } from "../../helpers/formatting";
 import { regular } from "../../constants/Fonts";
 import CustomButton from "../UI/CustomButton";
 import CustomText from "../UI/CustomText";
-import { FontAwesome5 } from "@expo/vector-icons";
 
-const formSchema = Yup.object().shape({
+export const formSchema = Yup.object().shape({
 	type: Yup.string()
 		.default("Birthday")
 		.required("Remindsy type is required"),
@@ -129,6 +128,7 @@ const FormikForm = (props: any) => {
 					}
 				}
 				values.startYear = parseInt(values.startYear);
+				values.present = values.present == 1 ? true : false;
 				values.pushNotification =
 					values.pushNotification == 1 ? true : false;
 				if (values.pushNotification === true) {
@@ -174,6 +174,7 @@ const FormikForm = (props: any) => {
 								]}
 								error={errors.type}
 								touched={touched.type}
+								testID="typePicker"
 							/>
 							<CustomPicker
 								value={values.day}
@@ -191,6 +192,7 @@ const FormikForm = (props: any) => {
 									})}
 								error={errors.day}
 								touched={touched.day}
+								testID="dayPicker"
 							/>
 							<CustomPicker
 								value={values.month}
@@ -208,6 +210,7 @@ const FormikForm = (props: any) => {
 									})}
 								error={errors.month}
 								touched={touched.month}
+								testID="monthPicker"
 							/>
 							<Input
 								onChangeText={handleChange("firstName")}
@@ -216,6 +219,7 @@ const FormikForm = (props: any) => {
 								label="Name"
 								error={errors.firstName}
 								touched={touched.firstName}
+								testID="firstNameInput"
 							/>
 							{values.type == "Wedding Anniversary" ? (
 								<Input
@@ -226,6 +230,7 @@ const FormikForm = (props: any) => {
 									error={errors.secondName}
 									touched={touched.secondName}
 									placeholder="No name provided"
+									testID="secondNameInput"
 								/>
 							) : null}
 							<Input
@@ -249,6 +254,7 @@ const FormikForm = (props: any) => {
 								keyboardType="numeric"
 								error={errors.startYear}
 								touched={touched.startYear}
+								testID="yearInput"
 							/>
 							<CustomSwitch
 								value={values.present}
@@ -267,6 +273,7 @@ const FormikForm = (props: any) => {
 								) => setFieldValue("present", itemValue)}
 								error={errors.present}
 								touched={touched.present}
+								testID="presentSwitch"
 							/>
 							{values.present ? (
 								<Input
@@ -278,6 +285,7 @@ const FormikForm = (props: any) => {
 									error={errors.ideas}
 									touched={touched.ideas}
 									placeholder="No present ideas provided"
+									testID="ideasInput"
 								/>
 							) : null}
 							{
@@ -298,6 +306,7 @@ const FormikForm = (props: any) => {
 								error={errors.address}
 								touched={touched.address}
 								placeholder="No address provided"
+								testID="addressInput"
 							/>
 							<CustomSwitch
 								value={values.pushNotification}
@@ -312,6 +321,7 @@ const FormikForm = (props: any) => {
 								}
 								error={errors.pushNotification}
 								touched={touched.pushNotification}
+								testID="notificationSwitch"
 							/>
 							{values.pushNotification ? (
 								<CustomPicker
@@ -332,6 +342,7 @@ const FormikForm = (props: any) => {
 									]}
 									error={errors.noticeTime}
 									touched={touched.noticeTime}
+									testID="noticePicker"
 								/>
 							) : null}
 							{isSubmitting || props.isLoading ? (
@@ -348,6 +359,7 @@ const FormikForm = (props: any) => {
 										backgroundColor: colours.darkPink,
 										marginHorizontal: 50,
 									}}
+									testID="submitButton"
 								>
 									<FontAwesome5
 										name="save"

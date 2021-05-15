@@ -1,15 +1,13 @@
 import React from "react";
 import {
 	View,
-	Text,
 	StyleSheet,
 	TouchableOpacity,
 	TouchableNativeFeedback,
 	Platform,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import colours from "../../constants/Colours";
-
 import Card from "../UI/Card";
 import CustomText from "../UI/CustomText";
 import { bold } from "../../constants/Fonts";

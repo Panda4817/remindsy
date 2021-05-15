@@ -6,12 +6,31 @@
 		"ios": "expo start --ios",
 		"web": "expo start --web",
 		"eject": "expo eject",
-		"test": "jest"
+		"test": "node_modules/.bin/jest -u",
+		"test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
 	},
 	"jest": {
-		"preset": "jest-expo",
-		"transformIgnorePatterns": [
-			"node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+		"projects": [
+			{
+				"preset": "jest-expo/ios",
+				"transformIgnorePatterns": [
+					"node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@sentry/.*|@react-native-picker/picker|react-native-safe-area-context|expo-status-bar|@react-native-picker/.*)"
+				]
+			},
+			{
+				"preset": "jest-expo/android",
+				"transformIgnorePatterns": [
+					"node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@sentry/.*|@react-native-picker/picker|react-native-safe-area-context|expo-status-bar|@react-native-picker/.*)"
+				]
+			}
+		],
+		"collectCoverage": true,
+		"collectCoverageFrom": [
+			"**/*.{ts,tsx}",
+			"!**/coverage/**",
+			"!**/node_modules/**",
+			"!**/babel.config.js",
+			"!**/jest.setup.js"
 		]
 	},
 	"dependencies": {
@@ -53,9 +72,14 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.0",
+		"@testing-library/jest-native": "^4.0.1",
+		"@testing-library/react-native": "^7.2.0",
+		"@types/jest": "^26.0.23",
 		"@types/react": "~16.9.35",
 		"@types/react-native": "~0.63.2",
+		"@types/react-test-renderer": "^17.0.1",
 		"jest-expo": "^41.0.0",
+		"prettier": "^2.3.0",
 		"react-test-renderer": "16.13.1",
 		"typescript": "~4.0.0"
 	},

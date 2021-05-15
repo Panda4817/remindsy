@@ -33,10 +33,15 @@ export const convertToNextDate = (
 	) {
 		date.setFullYear(today.getFullYear() + 1);
 	}
-	if (!leapYear(date.getFullYear())) {
+	if (
+		!leapYear(date.getFullYear()) &&
+		day == 29 &&
+		month == 1
+	) {
 		date.setDate(28);
 		date.setMonth(1);
 	}
+	date.setHours(0, 0, 0, 0);
 	return date;
 };
 

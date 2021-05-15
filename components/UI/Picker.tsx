@@ -11,6 +11,7 @@ const CustomPicker = (props: any) => {
 			<Picker
 				selectedValue={props.value}
 				onValueChange={props.onValueChangeHandler}
+				testID={props.testID}
 			>
 				{props.items.map((obj: any, index: number) => {
 					return (

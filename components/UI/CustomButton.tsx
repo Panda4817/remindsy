@@ -20,7 +20,11 @@ const CustomButton = (props: any) => {
 	}
 	return (
 		<Card style={{ ...styles.card, ...props.style }}>
-			<TouchableCmp onPress={props.onPress} useForeground>
+			<TouchableCmp
+				onPress={props.onPress}
+				useForeground
+				testID={props.testID}
+			>
 				<View style={styles.touchable}>
 					{props.children}
 				</View>

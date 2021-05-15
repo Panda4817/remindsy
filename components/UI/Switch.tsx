@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-	View,
-	Text,
-	StyleSheet,
-	Switch,
-} from "react-native";
+import { View, StyleSheet, Switch } from "react-native";
 import colours from "../../constants/Colours";
 import CustomText from "./CustomText";
 
@@ -30,6 +25,7 @@ const CustomSwitch = (props: any) => {
 							? true
 							: false
 					}
+					testID={props.testID}
 				/>
 			</View>
 
