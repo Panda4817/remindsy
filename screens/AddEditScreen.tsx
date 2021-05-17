@@ -26,9 +26,9 @@ const AddEditScreen = (props: any) => {
 		setIsLoading(true);
 		try {
 			if (selectedEvent) {
-				await dispatch(
+				dispatch(
 					actions.editEvent(
-						eventId,
+						parseInt(eventId),
 						values.firstName,
 						values.secondName,
 						values.day,
@@ -43,7 +43,7 @@ const AddEditScreen = (props: any) => {
 					)
 				);
 			} else {
-				await dispatch(
+				dispatch(
 					actions.addEvent(
 						values.firstName,
 						values.secondName,

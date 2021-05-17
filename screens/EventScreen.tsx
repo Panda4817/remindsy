@@ -45,7 +45,7 @@ const EventScreen = (props: any) => {
 		setError("");
 		setIsLoading(true);
 		try {
-			await dispatch(actions.delEvent(eventId));
+			dispatch(actions.delEvent(parseInt(eventId)));
 			props.navigation.goBack();
 		} catch (err) {
 			setError(err.message);

@@ -170,7 +170,6 @@ export const delEvent = (id: number) => {
 	) => {
 		try {
 			const dbResult: any = await deleteEvent(db, id);
-			// remove  notification
 			dispatch({
 				type: DELETE_EVENT,
 				eventData: {

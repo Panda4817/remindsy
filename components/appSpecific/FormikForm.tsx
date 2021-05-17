@@ -5,7 +5,6 @@ import {
 	ActivityIndicator,
 } from "react-native";
 import { Formik, FormikValues } from "formik";
-import * as Notifications from "expo-notifications";
 import * as Yup from "yup";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import CustomPicker from "../UI/Picker";
