@@ -116,7 +116,7 @@ const EventScreen = (props: any) => {
 				</View>
 			),
 		});
-	}, []);
+	}, [selectedEvent]);
 
 	useEffect(() => {
 		if (error) {

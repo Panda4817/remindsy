@@ -110,6 +110,8 @@ it("compare", () => {
 it("handleOutputNames", () => {
 	expect(handleOutputNames(a)).toBe("Name");
 	expect(handleOutputNames(b)).toBe("Name2 & Name3");
+	a.secondName = "Name2";
+	expect(handleOutputNames(a)).toBe("Name");
 });
 
 it("handleOutputDate", () => {

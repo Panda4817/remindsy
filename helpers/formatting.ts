@@ -65,7 +65,10 @@ export const compare = (a: Event, b: Event) => {
 
 export const handleOutputNames = (item: Event) => {
 	let name = item.firstName;
-	if (item.secondName !== "No name provided") {
+	if (
+		item.secondName !== "No name provided" &&
+		item.type !== "Birthday"
+	) {
 		name += ` & ${item.secondName}`;
 	}
 	return name;

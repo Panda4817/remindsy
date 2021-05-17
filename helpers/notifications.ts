@@ -17,6 +17,31 @@ const getNotificationDate = (
 	return date;
 };
 
+export const setNotifications = () => {
+	Notifications.setNotificationHandler({
+		handleNotification: async () => {
+			return {
+				shouldShowAlert: true,
+				shouldPlaySound: true,
+				shouldSetBadge: false,
+			};
+		},
+	});
+};
+
+export const getNotificationsPermissions = async (
+	value: boolean
+) => {
+	if (value === true) {
+		const statusObj =
+			await Notifications.getPermissionsAsync();
+		if (statusObj.status !== "granted") {
+			const statusObj =
+				await Notifications.requestPermissionsAsync();
+		}
+	}
+};
+
 export const createNotification = async (event: Event) => {
 	let nDate = getNotificationDate(
 		event.noticeTime,

@@ -8,21 +8,17 @@ import {
 } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
-import * as Notifications from "expo-notifications";
 import * as ScreenOrientation from "expo-screen-orientation";
 import { StatusBar } from "expo-status-bar";
+import * as SQLite from "expo-sqlite";
 
 import AppNavigator from "./navigation/AppNavigator";
 import reducers from "./store/reducers";
-import { init } from "./helpers/db";
+import { createDb, init } from "./helpers/db";
+import { setNotifications } from "./helpers/notifications";
 
-init()
-	.then(() => {
-		console.log("done");
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+const db = createDb(SQLite);
+init(db);
 
 const rootReducer = combineReducers({
 	events: reducers,
@@ -33,15 +29,7 @@ const store = createStore(
 	applyMiddleware(ReduxThunk)
 );
 
-Notifications.setNotificationHandler({
-	handleNotification: async () => {
-		return {
-			shouldShowAlert: true,
-			shouldPlaySound: true,
-			shouldSetBadge: false,
-		};
-	},
-});
+setNotifications();
 ScreenOrientation.lockAsync(
 	ScreenOrientation.OrientationLock.PORTRAIT
 );
@@ -54,13 +42,14 @@ const App = () => {
 
 	if (!fontsLoaded) {
 		return <AppLoading />;
+	} else {
+		return (
+			<Provider store={store}>
+				<StatusBar style="light" />
+				<AppNavigator />
+			</Provider>
+		);
 	}
-	return (
-		<Provider store={store}>
-			<StatusBar style="light" />
-			<AppNavigator />
-		</Provider>
-	);
 };
 
 export default App;

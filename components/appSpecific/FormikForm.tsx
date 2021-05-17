@@ -16,6 +16,7 @@ import { months } from "../../helpers/formatting";
 import { regular } from "../../constants/Fonts";
 import CustomButton from "../UI/CustomButton";
 import CustomText from "../UI/CustomText";
+import { getNotificationsPermissions } from "../../helpers/notifications";
 
 export const formSchema = Yup.object().shape({
 	type: Yup.string()
@@ -61,6 +62,19 @@ export const formSchema = Yup.object().shape({
 		.default(1)
 		.required(),
 });
+
+export const formatValues = (values: FormikValues) => {
+	for (const key in values) {
+		if (values[key] === "") {
+			values[key] = formSchema.getDefault()[key];
+		}
+	}
+	values.startYear = parseInt(values.startYear);
+	values.present = values.present == 1 ? true : false;
+	values.pushNotification =
+		values.pushNotification == 1 ? true : false;
+	return values;
+};
 
 const FormikForm = (props: any) => {
 	let buttonText = "Save new Remindsy";
@@ -122,23 +136,10 @@ const FormikForm = (props: any) => {
 			initialValues={getValues()}
 			validationSchema={formSchema}
 			onSubmit={async (values: FormikValues) => {
-				for (const key in values) {
-					if (values[key] === "") {
-						values[key] = formSchema.getDefault()[key];
-					}
-				}
-				values.startYear = parseInt(values.startYear);
-				values.present = values.present == 1 ? true : false;
-				values.pushNotification =
-					values.pushNotification == 1 ? true : false;
-				if (values.pushNotification === true) {
-					const statusObj =
-						await Notifications.getPermissionsAsync();
-					if (statusObj.status !== "granted") {
-						const statusObj =
-							await Notifications.requestPermissionsAsync();
-					}
-				}
+				values = formatValues(values);
+				getNotificationsPermissions(
+					values.pushNotification
+				);
 				props.submitHandler(values);
 			}}
 		>

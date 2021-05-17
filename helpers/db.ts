@@ -1,10 +1,10 @@
-import * as SQLite from "expo-sqlite";
+export const createDb = (SQLite: any) => {
+	return SQLite.openDatabase("events.db");
+};
 
-const db = SQLite.openDatabase("events.db");
-
-export const init = () => {
+export const init = (db: any) => {
 	const promise = new Promise((resolve, reject) => {
-		db.transaction((tx) => {
+		db.transaction((tx: any) => {
 			tx.executeSql(
 				`CREATE TABLE IF NOT EXISTS events (
                     id INTEGER PRIMARY KEY NOT NULL, 
@@ -20,10 +20,10 @@ export const init = () => {
                     address TEXT NOT NULL, 
                     pushNotification BOOLEAN NOT NULL);`,
 				[],
-				(_, result) => {
+				(_: any, result: any) => {
 					resolve(result);
 				},
-				(_, err): any => {
+				(_: any, err: any) => {
 					reject(err);
 				}
 			);
@@ -33,6 +33,7 @@ export const init = () => {
 };
 
 export const insertEvent = (
+	db: any,
 	firstName: string,
 	secondName: string,
 	day: number,
@@ -46,7 +47,7 @@ export const insertEvent = (
 	pushNotification: boolean
 ) => {
 	const promise = new Promise((resolve, reject) => {
-		db.transaction((tx) => {
+		db.transaction((tx: any) => {
 			tx.executeSql(
 				`INSERT INTO events (
                     firstName, 
@@ -74,10 +75,10 @@ export const insertEvent = (
 					address,
 					pushNotification,
 				],
-				(_, result) => {
+				(_: any, result: any) => {
 					resolve(result);
 				},
-				(_, err): any => {
+				(_: any, err: any) => {
 					reject(err);
 				}
 			);
@@ -87,6 +88,7 @@ export const insertEvent = (
 };
 
 export const updateEvent = (
+	db: any,
 	id: number,
 	firstName: string,
 	secondName: string,
@@ -101,7 +103,7 @@ export const updateEvent = (
 	pushNotification: boolean
 ) => {
 	const promise = new Promise((resolve, reject) => {
-		db.transaction((tx) => {
+		db.transaction((tx: any) => {
 			tx.executeSql(
 				`UPDATE events SET
                     firstName = ?, 
@@ -129,10 +131,10 @@ export const updateEvent = (
 					pushNotification,
 					id,
 				],
-				(_, result) => {
+				(_: any, result: any) => {
 					resolve(result);
 				},
-				(_, err): any => {
+				(_: any, err: any) => {
 					reject(err);
 				}
 			);
@@ -141,16 +143,16 @@ export const updateEvent = (
 	return promise;
 };
 
-export const getEvents = () => {
+export const getEvents = (db: any) => {
 	const promise = new Promise((resolve, reject) => {
-		db.transaction((tx) => {
+		db.transaction((tx: any) => {
 			tx.executeSql(
 				"SELECT * FROM events",
 				[],
-				(_, result) => {
+				(_: any, result: any) => {
 					resolve(result);
 				},
-				(_, err): any => {
+				(_: any, err: any) => {
 					reject(err);
 				}
 			);
@@ -159,16 +161,16 @@ export const getEvents = () => {
 	return promise;
 };
 
-export const deleteEvent = (id: number) => {
+export const deleteEvent = (db: any, id: number) => {
 	const promise = new Promise((resolve, reject) => {
-		db.transaction((tx) => {
+		db.transaction((tx: any) => {
 			tx.executeSql(
 				"DELETE FROM events WHERE events.id == ?",
 				[id],
-				(_, result) => {
+				(_: any, result: any) => {
 					resolve(result);
 				},
-				(_, err): any => {
+				(_: any, err: any) => {
 					reject(err);
 				}
 			);

@@ -2,6 +2,7 @@ import { ThunkDispatch } from "redux-thunk";
 import Event from "../models/eventClass";
 import { myState } from "./storeTypes";
 import { myAction, eventData } from "./storeTypes";
+import * as SQLite from "expo-sqlite";
 
 export const SET_EVENTS = "SET_EVENTS";
 export const ADD_EVENT = "ADD_EVENT";
@@ -9,12 +10,13 @@ export const UPDATE_EVENT = "UPDATE_EVENT";
 export const DELETE_EVENT = "DELETE_EVENT";
 
 import {
+	createDb,
 	getEvents,
 	insertEvent,
 	updateEvent,
 	deleteEvent,
 } from "../helpers/db";
-
+const db = createDb(SQLite);
 export const addEvent = (
 	firstName: string,
 	secondName: string,
@@ -33,6 +35,7 @@ export const addEvent = (
 	) => {
 		try {
 			const dbResult: any = await insertEvent(
+				db,
 				firstName,
 				secondName,
 				day,
@@ -89,6 +92,7 @@ export const editEvent = (
 	) => {
 		try {
 			const dbResult: any = await updateEvent(
+				db,
 				id,
 				firstName,
 				secondName,
@@ -132,7 +136,7 @@ export const loadEvents = () => {
 		dispatch: ThunkDispatch<myState, any, myAction>
 	) => {
 		try {
-			const dbResult: any = await getEvents();
+			const dbResult: any = await getEvents(db);
 			dispatch({
 				type: SET_EVENTS,
 				eventData: {} as eventData,
@@ -165,7 +169,7 @@ export const delEvent = (id: number) => {
 		dispatch: ThunkDispatch<myState, any, myAction>
 	) => {
 		try {
-			const dbResult: any = await deleteEvent(id);
+			const dbResult: any = await deleteEvent(db, id);
 			// remove  notification
 			dispatch({
 				type: DELETE_EVENT,

@@ -11,6 +11,7 @@ import {
 	waitForElementToBeRemoved,
 } from "@testing-library/react-native";
 import FormikForm, {
+	formatValues,
 	formSchema,
 } from "../../../components/appSpecific/FormikForm";
 import Event from "../../../models/eventClass";
@@ -136,8 +137,8 @@ const valuesBefore = {
 	startYear: "0",
 	noticeTime: 1,
 	present: 0,
-	ideas: "No present ideas provided",
-	address: "No address provided",
+	ideas: "",
+	address: "",
 	pushNotification: 0,
 };
 const valuesAfter = {
@@ -154,20 +155,23 @@ const valuesAfter = {
 	address: "No address provided",
 	pushNotification: false,
 };
-const onSubmitMock = jest.fn((values) => {
-	for (const key in values) {
-		if (values[key] === "") {
-			values[key] = formSchema.getDefault()[key];
-		}
-	}
-	values.startYear = parseInt(values.startYear);
-	values.present = values.present == 1 ? true : false;
-	values.pushNotification =
-		values.pushNotification == 1 ? true : false;
-	return values;
+
+it("formatValues", () => {
+	expect(formatValues(valuesBefore)).toStrictEqual(
+		valuesAfter
+	);
+	valuesBefore.present = 1;
+	valuesBefore.pushNotification = 1;
+	valuesAfter.present = true;
+	valuesAfter.pushNotification = true;
+	expect(formatValues(valuesBefore)).toStrictEqual(
+		valuesAfter
+	);
 });
+
+const onSubmitMock = jest.fn(() => {});
 const onHandleSubmitMock = jest.fn(() => {
-	onSubmitMock(valuesBefore);
+	onSubmitMock();
 });
 it(`submitting form`, async () => {
 	const promise = Promise.resolve();
@@ -181,7 +185,7 @@ it(`submitting form`, async () => {
 		/>
 	);
 	const formik = container.findByType(Formik);
-	formik.props.onSubmit = onSubmitMock(valuesBefore);
+	formik.props.onSubmit = onSubmitMock();
 
 	const button = getByTestId("submitButton");
 	button.props.onClick = onHandleSubmitMock();
@@ -193,9 +197,6 @@ it(`submitting form`, async () => {
 	expect(element).toBeFalsy();
 	expect(onHandleSubmitMock).toBeCalled();
 	expect(onSubmitMock).toBeCalled();
-	expect(onSubmitMock.mock.results[0].value).toStrictEqual(
-		valuesAfter
-	);
 	await act(() => promise);
 });
 
@@ -226,6 +227,16 @@ it(`Change type`, async () => {
 		expect(picker.props.selectedIndex).toBe(1);
 	}
 	expect(queryByTestId("secondNameInput")).toBeTruthy();
+	const input = getByTestId("yearInput");
+	expect(input.props.label).toBe("Wedding year");
+
+	fireEvent(picker, "onValueChange", "Other");
+	if (Platform.OS === "android") {
+		expect(picker.props.selected).toBe(0);
+	} else {
+		expect(picker.props.selectedIndex).toBe(0);
+	}
+	expect(input.props.label).toBe("Start year");
 	await act(() => promise);
 });
 
@@ -323,7 +334,7 @@ it(`Change SecondName`, async () => {
 	await act(() => promise);
 });
 
-it(`Change year`, async () => {
+it(`Change startYear`, async () => {
 	const promise = Promise.resolve();
 	const { getByTestId, queryByTestId, container } = render(
 		<FormikForm
@@ -336,6 +347,7 @@ it(`Change year`, async () => {
 	);
 	const input = getByTestId("yearInput");
 	expect(input.props.value).toBe("0");
+	expect(input.props.label).toBe("Year of birth");
 	fireEvent(input, "onChangeText", "-");
 	expect(input.props.value).toBe("0");
 	fireEvent(input, "onChangeText", "1991");

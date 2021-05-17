@@ -31,6 +31,12 @@
 			"!**/node_modules/**",
 			"!**/babel.config.js",
 			"!**/jest.setup.js"
+		],
+		"moduleFileExtensions": [
+			"ts",
+			"tsx",
+			"js",
+			"jsx"
 		]
 	},
 	"dependencies": {
@@ -73,6 +79,7 @@
 	"devDependencies": {
 		"@babel/core": "^7.9.0",
 		"@testing-library/jest-native": "^4.0.1",
+		"@testing-library/react-hooks": "^5.1.2",
 		"@testing-library/react-native": "^7.2.0",
 		"@types/jest": "^26.0.23",
 		"@types/react": "~16.9.35",
