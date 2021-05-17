@@ -7,13 +7,16 @@ import {
 	handleOutputNames,
 } from "./formatting";
 
-const getNotificationDate = (
+export const getNotificationDate = (
 	week: number,
 	day: number,
 	month: number
 ) => {
 	let date = convertToNextDate(day, month);
-	date.setDate(date.getDate() - week * 7);
+	if (week !== 0) {
+		date.setDate(date.getDate() - week * 7);
+	}
+
 	return date;
 };
 
@@ -43,6 +46,9 @@ export const getNotificationsPermissions = async (
 };
 
 export const createNotification = async (event: Event) => {
+	if (event.pushNotification !== true) {
+		return;
+	}
 	let nDate = getNotificationDate(
 		event.noticeTime,
 		event.day,

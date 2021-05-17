@@ -1,6 +1,7 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { ListNavigator } from "./ListNavigator";
 import { CalendarNavigator } from "./CalendarNavigator";
