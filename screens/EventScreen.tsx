@@ -11,7 +11,7 @@ import {
 	HeaderButtons,
 	Item,
 } from "react-navigation-header-buttons";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
 import Event from "../models/eventClass";
@@ -28,7 +28,7 @@ import {
 import * as actions from "../store/actions";
 import CustomButton from "../components/UI/CustomButton";
 import CustomText from "../components/UI/CustomText";
-import { bold, regular } from "../constants/Fonts";
+import { bold } from "../constants/Fonts";
 
 const EventScreen = (props: any) => {
 	const [error, setError] = useState("");

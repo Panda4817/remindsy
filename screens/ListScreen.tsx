@@ -2,10 +2,8 @@ import React from "react";
 import { useEffect, useState, useCallback } from "react";
 import {
 	View,
-	Text,
 	FlatList,
 	Button,
-	Platform,
 	ActivityIndicator,
 	StyleSheet,
 } from "react-native";
@@ -31,10 +29,27 @@ import {
 } from "../helpers/formatting";
 import CustomText from "../components/UI/CustomText";
 
+export const getParams = (route: any) => {
+	let paramsObj = {};
+	if (
+		route.params &&
+		Object.keys(route.params).length !== 0
+	) {
+		const filterDay = route.params.filterDay;
+		const filterMonth = route.params.filterMonth;
+		paramsObj = {
+			filterDay: filterDay,
+			filterMonth: filterMonth,
+		};
+	}
+	return paramsObj;
+};
+
 const ListScreen = (props: any) => {
-	const [isLoading, setIsLoading] = useState(false);
-	const [isRefreshing, setIsRefreshing] = useState(false);
-	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = React.useState(false);
+	const [isRefreshing, setIsRefreshing] =
+		React.useState(false);
+	const [error, setError] = React.useState("");
 
 	let events = useSelector(
 		(state: any) => state.events.events
@@ -100,18 +115,6 @@ const ListScreen = (props: any) => {
 			eventId: id,
 		});
 	};
-	const getParams = () => {
-		let paramsObj = {};
-		if (props.route.params) {
-			const filterDay = props.route.params.filterDay;
-			const filterMonth = props.route.params.filterMonth;
-			paramsObj = {
-				filterDay: filterDay,
-				filterMonth: filterMonth,
-			};
-		}
-		return paramsObj;
-	};
 
 	useEffect(() => {
 		props.navigation.setOptions({
@@ -126,9 +129,10 @@ const ListScreen = (props: any) => {
 						onPress={() => {
 							props.navigation.navigate(
 								"AddEdit",
-								getParams()
+								getParams(props.route)
 							);
 						}}
+						testID="ListToAddEdit"
 					></Item>
 				</HeaderButtons>
 			),
@@ -137,7 +141,7 @@ const ListScreen = (props: any) => {
 
 	if (error) {
 		return (
-			<View style={styles.centered}>
+			<View style={styles.centered} testID="errorView">
 				<CustomText>An error occurred!</CustomText>
 				<Button
 					title="Try again"
@@ -149,7 +153,7 @@ const ListScreen = (props: any) => {
 	}
 	if (isLoading) {
 		return (
-			<View style={styles.centered}>
+			<View style={styles.centered} testID="loadingView">
 				<ActivityIndicator
 					size="large"
 					color={colours.darkPink}
@@ -159,7 +163,7 @@ const ListScreen = (props: any) => {
 	}
 	if (!isLoading && events.length === 0) {
 		return (
-			<View style={styles.centered}>
+			<View style={styles.centered} testID="noResultsView">
 				<CustomText style={styles.text}>
 					No Remindsys found.
 				</CustomText>
@@ -168,9 +172,10 @@ const ListScreen = (props: any) => {
 						onPress={() => {
 							props.navigation.navigate(
 								"AddEdit",
-								getParams()
+								getParams(props.route)
 							);
 						}}
+						testID="ListToAddEditCustomButton"
 					>
 						<FontAwesome5
 							name="calendar-plus"
@@ -212,8 +217,10 @@ const ListScreen = (props: any) => {
 						onSelect={() => {
 							selectEventHandler(itemData.item.id);
 						}}
+						testID="ListToEvent"
 					/>
 				)}
+				testID="resultsView"
 			/>
 		</>
 	);

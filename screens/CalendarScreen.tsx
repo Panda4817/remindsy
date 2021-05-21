@@ -88,6 +88,7 @@ const CalendarScreen = (props: any) => {
 						onPress={() => {
 							props.navigation.navigate("AddEdit", {});
 						}}
+						testID="calendarToAddEdit"
 					></Item>
 				</HeaderButtons>
 			),

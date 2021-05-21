@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { act, render } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import { Provider } from "react-redux";
 import {
 	applyMiddleware,
@@ -14,7 +14,6 @@ import { CalendarList } from "react-native-calendars";
 import { ADD_EVENT } from "../../store/actions";
 import { convertToNextDate } from "../../helpers/formatting";
 import colours from "../../constants/Colours";
-import { HeaderButtons } from "react-navigation-header-buttons";
 
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
 it("renders correctly (snapshot)", async () => {
