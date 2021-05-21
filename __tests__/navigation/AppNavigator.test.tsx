@@ -6,7 +6,4 @@ import { TabsNavigator } from "../../navigation/TabsNavigator";
 it(`renders correctly`, () => {
 	const tree = renderer.create(<AppNavigator />);
 	expect(tree).toMatchSnapshot();
-	expect(
-		tree.root.findAllByType(TabsNavigator)
-	).toBeTruthy();
 });

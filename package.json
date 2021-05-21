@@ -13,12 +13,18 @@
 		"projects": [
 			{
 				"preset": "jest-expo/ios",
+				"setupFiles": [
+					"./node_modules/react-native-gesture-handler/jestSetup.js"
+				],
 				"transformIgnorePatterns": [
 					"node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@sentry/.*|@react-native-picker/picker|react-native-safe-area-context|expo-status-bar|@react-native-picker/.*)"
 				]
 			},
 			{
 				"preset": "jest-expo/android",
+				"setupFiles": [
+					"./node_modules/react-native-gesture-handler/jestSetup.js"
+				],
 				"transformIgnorePatterns": [
 					"node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|@sentry/.*|@react-native-picker/picker|react-native-safe-area-context|expo-status-bar|@react-native-picker/.*)"
 				]

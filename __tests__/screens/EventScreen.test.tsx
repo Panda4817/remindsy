@@ -242,7 +242,7 @@ it("renders correctly with data - delete event", async () => {
 		</Provider>
 	);
 	const deleteButton = await findAllByTestId(
-		"DeleteEventToListToo"
+		"DeleteEventToListToo1"
 	);
 	expect(deleteButton.length).toBe(1);
 	const spy = jest.spyOn(Alert, "alert");

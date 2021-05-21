@@ -16,12 +16,6 @@ jest.mock("@expo/vector-icons/Ionicons", () => {
 		React.createElement("Icon", props);
 	return Icon;
 });
-it(`renders tabs navigator`, () => {
-	const tree = renderer.create(<AppNavigator />);
-	expect(
-		tree.root.findAllByType(TabsNavigator)
-	).toBeTruthy();
-});
 
 it(`returns tabs navigator`, () => {
 	const res = TabsNavigator();

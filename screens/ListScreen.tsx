@@ -217,7 +217,7 @@ const ListScreen = (props: any) => {
 						onSelect={() => {
 							selectEventHandler(itemData.item.id);
 						}}
-						testID="ListToEvent"
+						testID={`ListToEvent${itemData.item.id}`}
 					/>
 				)}
 				testID="resultsView"

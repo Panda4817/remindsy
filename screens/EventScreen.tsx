@@ -204,7 +204,7 @@ const EventScreen = (props: any) => {
 								id: selectedEvent.id,
 							});
 						}}
-						testId="EventToAddEditToo"
+						testID={`EventToAddEditToo${selectedEvent.id}`}
 						style={{ backgroundColor: colours.lightBlue }}
 					>
 						<FontAwesome5
@@ -226,7 +226,7 @@ const EventScreen = (props: any) => {
 					<CustomButton
 						onPress={() => deleteHandler()}
 						style={{ backgroundColor: colours.lightPink }}
-						testID="DeleteEventToListToo"
+						testID={`DeleteEventToListToo${selectedEvent.id}`}
 					>
 						<FontAwesome5
 							name="trash-alt"
