@@ -31,14 +31,16 @@ import CustomText from "../components/UI/CustomText";
 import { bold } from "../constants/Fonts";
 
 const EventScreen = (props: any) => {
-	const [error, setError] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
-	const eventId = props.route.params.eventId;
+	const [error, setError] = React.useState("");
+	const [isLoading, setIsLoading] = React.useState(false);
+	const { navigation, route } = props;
+	const eventId = route.params.eventId;
 	const selectedEvent = useSelector((state: any) =>
 		state.events.events.find(
 			(event: Event) => event.id === eventId
 		)
 	);
+
 	const dispatch = useDispatch();
 
 	const deleteSubmit = async () => {
@@ -46,7 +48,7 @@ const EventScreen = (props: any) => {
 		setIsLoading(true);
 		try {
 			dispatch(actions.delEvent(parseInt(eventId)));
-			props.navigation.goBack();
+			navigation.goBack();
 		} catch (err) {
 			setError(err.message);
 		}
@@ -69,11 +71,13 @@ const EventScreen = (props: any) => {
 	};
 
 	useEffect(() => {
-		let type = selectedEvent.type;
+		let type = selectedEvent ? selectedEvent.type : "";
 		if (type == "Wedding Anniversary") {
 			type = "Anniversary";
 		}
-		let icon = handleOutputTypeIcon(selectedEvent);
+		let icon = selectedEvent
+			? handleOutputTypeIcon(selectedEvent)
+			: "";
 		props.navigation.setOptions({
 			headerTitle: () => (
 				<View style={styles.headerContainer}>
@@ -101,6 +105,7 @@ const EventScreen = (props: any) => {
 									id: selectedEvent.id,
 								});
 							}}
+							testID="EventToAddEdit"
 						></Item>
 					</HeaderButtons>
 					<HeaderButtons
@@ -111,6 +116,7 @@ const EventScreen = (props: any) => {
 							title="Delete"
 							iconName="trash-alt"
 							onPress={deleteHandler}
+							testID="DeleteEventToList"
 						></Item>
 					</HeaderButtons>
 				</View>
@@ -128,7 +134,7 @@ const EventScreen = (props: any) => {
 
 	if (isLoading || !selectedEvent) {
 		return (
-			<View style={styles.centered}>
+			<View style={styles.centered} testID="noDataYetView">
 				<ActivityIndicator
 					size="large"
 					color={colours.darkPink}
@@ -137,7 +143,10 @@ const EventScreen = (props: any) => {
 		);
 	}
 	return (
-		<ScrollView style={styles.outerContainer}>
+		<ScrollView
+			style={styles.outerContainer}
+			testID="dataView"
+		>
 			<Card style={styles.sharedContainer}>
 				<View style={styles.dateContainer}>
 					<CustomText style={styles.date}>
@@ -195,6 +204,7 @@ const EventScreen = (props: any) => {
 								id: selectedEvent.id,
 							});
 						}}
+						testId="EventToAddEditToo"
 						style={{ backgroundColor: colours.lightBlue }}
 					>
 						<FontAwesome5
@@ -216,6 +226,7 @@ const EventScreen = (props: any) => {
 					<CustomButton
 						onPress={() => deleteHandler()}
 						style={{ backgroundColor: colours.lightPink }}
+						testID="DeleteEventToListToo"
 					>
 						<FontAwesome5
 							name="trash-alt"

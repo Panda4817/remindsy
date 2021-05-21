@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import renderer, { act } from "react-test-renderer";
 import { render } from "@testing-library/react-native";
 import { Provider } from "react-redux";

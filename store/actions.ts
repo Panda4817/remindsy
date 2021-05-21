@@ -91,7 +91,7 @@ export const editEvent = (
 		dispatch: ThunkDispatch<myState, any, myAction>
 	) => {
 		try {
-			const dbResult: any = await updateEvent(
+			await updateEvent(
 				db,
 				id,
 				firstName,
@@ -169,7 +169,7 @@ export const delEvent = (id: number) => {
 		dispatch: ThunkDispatch<myState, any, myAction>
 	) => {
 		try {
-			const dbResult: any = await deleteEvent(db, id);
+			await deleteEvent(db, id);
 			dispatch({
 				type: DELETE_EVENT,
 				eventData: {
