@@ -1,8 +1,10 @@
 import * as React from "react";
 import renderer from "react-test-renderer";
 import Input from "../../../components/UI/Input";
+import { act } from "@testing-library/react-native";
 
-it(`renders correctly`, () => {
+it(`renders correctly`, async () => {
+	const promise = Promise.resolve();
 	const tree = renderer.create(
 		<Input
 			label="text"
@@ -13,4 +15,5 @@ it(`renders correctly`, () => {
 		/>
 	);
 	expect(tree).toMatchSnapshot();
+	await act(() => promise);
 });

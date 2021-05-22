@@ -1,9 +1,11 @@
 import React from "react";
 import AppNavigator from "../../navigation/AppNavigator";
 import renderer from "react-test-renderer";
-import { TabsNavigator } from "../../navigation/TabsNavigator";
+import { act } from "@testing-library/react-native";
 
-it(`renders correctly`, () => {
+it(`renders correctly`, async () => {
+	const promise = Promise.resolve();
 	const tree = renderer.create(<AppNavigator />);
 	expect(tree).toMatchSnapshot();
+	await act(() => promise);
 });

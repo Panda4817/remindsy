@@ -1,8 +1,6 @@
-import React from "react";
-import AppNavigator from "../../navigation/AppNavigator";
-import renderer from "react-test-renderer";
 import { TabsNavigator } from "../../navigation/TabsNavigator";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { act } from "@testing-library/react-native";
 
 jest.mock("@expo/vector-icons/FontAwesome5", () => {
 	const React = require("react");
@@ -17,7 +15,8 @@ jest.mock("@expo/vector-icons/Ionicons", () => {
 	return Icon;
 });
 
-it(`returns tabs navigator`, () => {
+it(`returns tabs navigator`, async () => {
+	const promise = Promise.resolve();
 	const res = TabsNavigator();
 	expect(res).toBeTruthy();
 	expect(res.type).toBe(
@@ -51,4 +50,5 @@ it(`returns tabs navigator`, () => {
 			color: "#ccc",
 		});
 	expect(props).toStrictEqual(actualIcon.props);
+	await act(() => promise);
 });

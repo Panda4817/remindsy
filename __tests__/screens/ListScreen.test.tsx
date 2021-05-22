@@ -72,7 +72,7 @@ it("renders correctly with no results", async () => {
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce(["", jest.fn()]);
 
-	const { container, findAllByTestId } = render(
+	const { findAllByTestId } = render(
 		<Provider store={store}>
 			<ListScreen
 				navigation={props.navigation}
@@ -128,7 +128,7 @@ it("renders correctly with results", async () => {
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce(["", jest.fn()]);
-	const { container, findAllByTestId } = render(
+	const { findAllByTestId } = render(
 		<Provider store={store}>
 			<ListScreen
 				navigation={props.navigation}
@@ -168,7 +168,7 @@ it("renders correctly with error", async () => {
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce([error, jest.fn()]);
 
-	const { container, findAllByTestId } = render(
+	const { findAllByTestId } = render(
 		<Provider store={store}>
 			<ListScreen
 				navigation={props.navigation}
@@ -207,7 +207,7 @@ it("renders correctly with loading view", async () => {
 		.mockReturnValueOnce([true, jest.fn()])
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce(["", jest.fn()]);
-	const { container, findAllByTestId } = render(
+	const { findAllByTestId } = render(
 		<Provider store={store}>
 			<ListScreen
 				navigation={props.navigation}
@@ -253,7 +253,7 @@ it("renders correctly with props and no results", async () => {
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce(["", jest.fn()]);
 
-	const { container, findAllByTestId } = render(
+	const { findAllByTestId } = render(
 		<Provider store={store}>
 			<ListScreen
 				navigation={props.navigation}
@@ -315,7 +315,7 @@ it("renders correctly with props and results but results filtered out", async ()
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce(["", jest.fn()]);
-	const { container, findAllByTestId } = render(
+	const { findAllByTestId } = render(
 		<Provider store={store}>
 			<ListScreen
 				navigation={props.navigation}
@@ -331,7 +331,7 @@ it("renders correctly with props and results but results filtered out", async ()
 	await act(() => promise);
 });
 
-it("renders correctly with props and results but results filtered out (leapday)", async () => {
+it("renders correctly with props and results but results filtered out (leap Day)", async () => {
 	const promise = Promise.resolve();
 	const rootReducer = combineReducers({
 		events: reducers,
@@ -380,7 +380,7 @@ it("renders correctly with props and results but results filtered out (leapday)"
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce([false, jest.fn()])
 		.mockReturnValueOnce(["", jest.fn()]);
-	const { container, findAllByTestId } = render(
+	const { findAllByTestId } = render(
 		<Provider store={store}>
 			<ListScreen
 				navigation={props.navigation}

@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import renderer from "react-test-renderer";
 import CustomButton from "../../../components/UI/CustomButton";
-
+import { act } from "@testing-library/react-native";
 if (Platform.OS === "android") {
 	Object.defineProperty(Platform, "Version", {
 		get: () => 21,
@@ -14,7 +14,8 @@ if (Platform.OS === "android") {
 }
 
 if (Platform.OS === "ios") {
-	it(`renders correctly ios`, () => {
+	it(`renders correctly ios`, async () => {
+		const promise = Promise.resolve();
 		const tree = renderer.create(
 			<CustomButton>Test ios</CustomButton>
 		);
@@ -22,12 +23,14 @@ if (Platform.OS === "ios") {
 		expect(
 			tree.root.findByType(TouchableOpacity)
 		).toBeTruthy();
+		await act(() => promise);
 	});
 } else if (
 	Platform.OS === "android" &&
 	Platform.Version >= 21
 ) {
-	it(`renders correctly android`, () => {
+	it(`renders correctly android`, async () => {
+		const promise = Promise.resolve();
 		const tree = renderer.create(
 			<CustomButton>Test android</CustomButton>
 		);
@@ -35,9 +38,11 @@ if (Platform.OS === "ios") {
 		expect(
 			tree.root.findByType(TouchableNativeFeedback)
 		).toBeTruthy();
+		await act(() => promise);
 	});
 } else if (Platform.OS === "android") {
-	it(`renders correctly ios`, () => {
+	it(`renders correctly ios`, async () => {
+		const promise = Promise.resolve();
 		const tree = renderer.create(
 			<CustomButton>Test ios</CustomButton>
 		);
@@ -45,5 +50,6 @@ if (Platform.OS === "ios") {
 		expect(
 			tree.root.findByType(TouchableOpacity)
 		).toBeTruthy();
+		await act(() => promise);
 	});
 }

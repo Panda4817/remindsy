@@ -1,8 +1,9 @@
 import * as React from "react";
 import renderer from "react-test-renderer";
 import CustomSwitch from "../../../components/UI/Switch";
-
-it(`renders correctly`, () => {
+import { act } from "@testing-library/react-native";
+it(`renders correctly`, async () => {
+	const promise = Promise.resolve();
 	const tree = renderer.create(
 		<CustomSwitch
 			value={true}
@@ -13,4 +14,5 @@ it(`renders correctly`, () => {
 		/>
 	);
 	expect(tree).toMatchSnapshot();
+	await act(() => promise);
 });

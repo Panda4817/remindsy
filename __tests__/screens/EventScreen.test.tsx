@@ -26,7 +26,6 @@ jest.mock("@expo/vector-icons/Ionicons", () => "Icon");
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
 import * as actions from "../../store/actions";
-// const mockStore = configureMockStore([thunk]);
 
 it("renders correctly (snapshot)", async () => {
 	const promise = Promise.resolve();
@@ -246,7 +245,9 @@ it("renders correctly with data - delete event", async () => {
 	);
 	expect(deleteButton.length).toBe(1);
 	const spy = jest.spyOn(Alert, "alert");
-	fireEvent(deleteButton[0], "onPress");
+	await act(async () =>
+		fireEvent(deleteButton[0], "onPress")
+	);
 	expect(spy).toBeCalled();
 	const spyNav = jest.spyOn(props.navigation, "goBack");
 

@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { render } from "@testing-library/react-native";
+import { act, render } from "@testing-library/react-native";
 import { Provider } from "react-redux";
 import {
 	applyMiddleware,
@@ -17,6 +17,7 @@ import colours from "../../constants/Colours";
 
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
 it("renders correctly (snapshot)", async () => {
+	const promise = Promise.resolve();
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
@@ -38,9 +39,11 @@ it("renders correctly (snapshot)", async () => {
 		</Provider>
 	);
 	expect(tree).toMatchSnapshot();
+	await act(() => promise);
 });
 
 it("renders correctly with no events", async () => {
+	const promise = Promise.resolve();
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
@@ -66,12 +69,15 @@ it("renders correctly with no events", async () => {
 		</Provider>
 	);
 	expect(spyHeader).toBeCalled();
-	const calendarList =
-		container.findAllByType(CalendarList)[0];
+	const calendarList = await container.findAllByType(
+		CalendarList
+	)[0];
 	expect(calendarList.props.markedDates).toStrictEqual({});
+	await act(() => promise);
 });
 
 it("renders correctly with events", async () => {
+	const promise = Promise.resolve();
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
@@ -154,8 +160,9 @@ it("renders correctly with events", async () => {
 		</Provider>
 	);
 	expect(spyHeader).toBeCalled();
-	const calendarList =
-		container.findAllByType(CalendarList)[0];
+	const calendarList = await container.findAllByType(
+		CalendarList
+	)[0];
 	let date = convertToNextDate(1, 0);
 	let dateString = date.getFullYear().toString() + "-01-01";
 	let obj: any = {};
@@ -176,9 +183,11 @@ it("renders correctly with events", async () => {
 		],
 	};
 	expect(calendarList.props.markedDates).toStrictEqual(obj);
+	await act(() => promise);
 });
 
 it("Check pressing on a date works", async () => {
+	const promise = Promise.resolve();
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
@@ -208,14 +217,18 @@ it("Check pressing on a date works", async () => {
 		</Provider>
 	);
 	expect(spyHeader).toBeCalled();
-	const calendarList =
-		container.findAllByType(CalendarList)[0];
+	const calendarList = await container.findAllByType(
+		CalendarList
+	)[0];
 
 	const spy = jest.spyOn(props.navigation, "navigate");
-	calendarList.props.onDayPress({
-		day: 1,
-		month: 1,
-		year: new Date().getFullYear() + 1,
-	});
+	await act(async () =>
+		calendarList.props.onDayPress({
+			day: 1,
+			month: 1,
+			year: new Date().getFullYear() + 1,
+		})
+	);
 	expect(spy).toBeCalled();
+	await act(() => promise);
 });

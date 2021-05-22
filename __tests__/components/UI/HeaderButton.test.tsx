@@ -5,8 +5,10 @@ import {
 	Item,
 } from "react-navigation-header-buttons";
 import renderer from "react-test-renderer";
+import { act } from "@testing-library/react-native";
 
-it(`renders correctly`, () => {
+it(`renders correctly`, async () => {
+	const promise = Promise.resolve();
 	const tree = renderer.create(
 		<HeaderButtons
 			HeaderButtonComponent={CustomHeaderButton}
@@ -15,4 +17,5 @@ it(`renders correctly`, () => {
 		</HeaderButtons>
 	);
 	expect(tree).toMatchSnapshot();
+	await act(() => promise);
 });

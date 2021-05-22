@@ -1,3 +1,4 @@
+import { act } from "@testing-library/react-native";
 import * as Notifications from "expo-notifications";
 import { convertToNextDate } from "../../helpers/formatting";
 import * as notification from "../../helpers/notifications";
@@ -28,20 +29,49 @@ it("setNotifications", () => {
 	spy.mockClear();
 });
 
-it("getNotificationsPermissions", () => {
+it("getNotificationsPermissions (already granted)", async () => {
 	const spy = jest.spyOn(
 		Notifications,
 		"getPermissionsAsync"
 	);
-	notification.getNotificationsPermissions(true);
+	spy.mockResolvedValueOnce(
+		//ts-ignore
+		{ status: "granted" }
+	);
+	await notification.getNotificationsPermissions(true);
 	expect(spy).toBeCalled();
 	spy.mockClear();
-	notification.getNotificationsPermissions(false);
+	await notification.getNotificationsPermissions(false);
 	expect(spy).not.toBeCalled();
 	spy.mockClear();
 });
 
-it("createNotification with pushNotification field is false ", () => {
+it("getNotificationsPermissions (not granted yet)", async () => {
+	const spy = jest.spyOn(
+		Notifications,
+		"getPermissionsAsync"
+	);
+	const spy2 = jest.spyOn(
+		Notifications,
+		"requestPermissionsAsync"
+	);
+	spy.mockResolvedValueOnce(
+		//ts-ignore
+		{ status: "" }
+	);
+	await notification.getNotificationsPermissions(true);
+	expect(spy).toBeCalled();
+	expect(spy2).toBeCalled();
+	spy.mockClear();
+	spy2.mockClear();
+	await notification.getNotificationsPermissions(false);
+	expect(spy).not.toBeCalled();
+	expect(spy2).not.toBeCalled();
+	spy.mockClear();
+	spy2.mockClear();
+});
+
+it("createNotification with pushNotification field is false ", async () => {
 	const spy = jest.spyOn(
 		Notifications,
 		"scheduleNotificationAsync"
@@ -61,12 +91,12 @@ it("createNotification with pushNotification field is false ", () => {
 		false
 	);
 	expect(event.pushNotification).toBeFalsy();
-	notification.createNotification(event);
+	await notification.createNotification(event);
 	expect(spy).not.toBeCalled();
 	spy.mockClear();
 });
 
-it("createNotification with pushNotification field is true ", () => {
+it("createNotification with pushNotification field is true ", async () => {
 	const spy = jest.spyOn(
 		Notifications,
 		"scheduleNotificationAsync"
@@ -86,24 +116,26 @@ it("createNotification with pushNotification field is true ", () => {
 		true
 	);
 	expect(event.pushNotification).toBeTruthy();
-	notification.createNotification(event);
+	await notification.createNotification(event);
 	expect(spy).toBeCalled();
 });
 
-it("deleteNotification", () => {
+it("deleteNotification", async () => {
 	const spy = jest.spyOn(
 		Notifications,
 		"getAllScheduledNotificationsAsync"
 	);
-	notification.deleteNotification("1");
+	spy.mockResolvedValueOnce([]);
+	await notification.deleteNotification("1");
 	expect(spy).toBeCalled();
 });
 
-it("updateNotification with pushNotification field is true", () => {
+it("updateNotification with pushNotification field is true", async () => {
 	const spy = jest.spyOn(
 		Notifications,
 		"getAllScheduledNotificationsAsync"
 	);
+	spy.mockResolvedValueOnce([]);
 	const spy2 = jest.spyOn(
 		Notifications,
 		"scheduleNotificationAsync"
@@ -122,7 +154,7 @@ it("updateNotification with pushNotification field is true", () => {
 		"No address provided",
 		true
 	);
-	notification.createNotification(eventBeforeUpdate);
+	await notification.createNotification(eventBeforeUpdate);
 	const eventAfterUpdate = new Event(
 		"1",
 		"Name",
@@ -137,15 +169,26 @@ it("updateNotification with pushNotification field is true", () => {
 		"No address provided",
 		true
 	);
+
+	//ts-ignore
+	spy.mockResolvedValueOnce([
+		{
+			content: {
+				data: {
+					id: "1",
+				},
+			},
+		},
+	]);
 	expect(eventAfterUpdate.pushNotification).toBeTruthy();
-	notification.updateNotification(eventAfterUpdate);
+	await notification.updateNotification(eventAfterUpdate);
 	expect(spy).toBeCalled();
 	expect(spy2).toBeCalled();
 	spy.mockClear();
 	spy2.mockClear();
 });
 
-it("updateNotification with pushNotification field is false", () => {
+it("updateNotification with pushNotification field is false", async () => {
 	const spy = jest.spyOn(
 		Notifications,
 		"getAllScheduledNotificationsAsync"
@@ -168,8 +211,18 @@ it("updateNotification with pushNotification field is false", () => {
 		"No address provided",
 		false
 	);
+	//ts-ignore
+	spy.mockResolvedValueOnce([
+		{
+			content: {
+				data: {
+					id: "1",
+				},
+			},
+		},
+	]);
 	expect(event.pushNotification).toBeFalsy();
-	notification.updateNotification(event);
+	await act(() => notification.updateNotification(event));
 	expect(spy).toBeCalled();
 	expect(spy2).not.toBeCalled();
 });

@@ -18,6 +18,7 @@ import FormikForm, {
 } from "../../components/appSpecific/FormikForm";
 import { Formik } from "formik";
 
+jest.useFakeTimers();
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
 jest.mock(
 	"react-native/Libraries/Components/Switch/Switch",
@@ -30,7 +31,7 @@ jest.mock(
 );
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
-it("renders correctly with empty params", () => {
+it("renders correctly with empty params", async () => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
@@ -60,7 +61,7 @@ it("renders correctly with empty params", () => {
 	});
 });
 
-it("renders correctly with id params", () => {
+it("renders correctly with id params", async () => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
@@ -108,7 +109,7 @@ it("renders correctly with id params", () => {
 	});
 });
 
-it("renders correctly with filterDates params", () => {
+it("renders correctly with filterDates params", async () => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});

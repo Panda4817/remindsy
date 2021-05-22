@@ -1,8 +1,10 @@
 import * as React from "react";
 import renderer from "react-test-renderer";
 import Picker from "../../../components/UI/Picker";
+import { act } from "@testing-library/react-native";
 
-it(`renders correctly`, () => {
+it(`renders correctly`, async () => {
+	const promise = Promise.resolve();
 	const tree = renderer.create(
 		<Picker
 			label="text"
@@ -14,4 +16,5 @@ it(`renders correctly`, () => {
 		/>
 	);
 	expect(tree).toMatchSnapshot();
+	await act(() => promise);
 });
