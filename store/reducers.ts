@@ -6,7 +6,7 @@ import {
 } from "./actions";
 import Event from "../models/eventClass";
 import "react-native-get-random-values";
-import { myState, myAction, eventData } from "./storeTypes";
+import { myState, myAction } from "./storeTypes";
 import {
 	createNotification,
 	updateNotification,
