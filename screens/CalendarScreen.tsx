@@ -13,10 +13,21 @@ import { useSelector } from "react-redux";
 import { convertToNextDate } from "../helpers/formatting";
 import Event from "../models/eventClass";
 
-const CalendarScreen = (props: any) => {
-	const maxPastMonths = 0;
-	const maxFutureMonths = 12;
-	const today = new Date().toISOString().split("T")[0];
+export const getDateString = (item: Event) => {
+	let date = convertToNextDate(item.day, item.month);
+	let month =
+		(date.getMonth() + 1).toString().length == 1
+			? "0" + (date.getMonth() + 1).toString()
+			: (date.getMonth() + 1).toString();
+	let day =
+		date.getDate().toString().length == 1
+			? "0" + date.getDate().toString()
+			: date.getDate().toString();
+	let dateString = `${date.getFullYear()}-${month}-${day}`;
+	return dateString;
+};
+
+export const createMarkedDates = (events: Event[]) => {
 	const birthday = {
 		key: "birthday",
 		color: colours.darkBlue,
@@ -26,22 +37,9 @@ const CalendarScreen = (props: any) => {
 		color: colours.darkPink,
 	};
 	const other = { key: "other", color: colours.yellow };
-
-	const events = useSelector(
-		(state: any) => state.events.events
-	);
 	const markedDates: any = {};
 	events.map((item: Event) => {
-		let date = convertToNextDate(item.day, item.month);
-		let month =
-			(date.getMonth() + 1).toString().length == 1
-				? "0" + (date.getMonth() + 1).toString()
-				: (date.getMonth() + 1).toString();
-		let day =
-			date.getDate().toString().length == 1
-				? "0" + date.getDate().toString()
-				: date.getDate().toString();
-		let dateString = `${date.getFullYear()}-${month}-${day}`;
+		const dateString = getDateString(item);
 		if (!markedDates.hasOwnProperty(dateString)) {
 			markedDates[dateString] = {
 				dots: Array(),
@@ -74,6 +72,19 @@ const CalendarScreen = (props: any) => {
 				return;
 		}
 	});
+	return markedDates;
+};
+
+const CalendarScreen = (props: any) => {
+	const maxPastMonths = 0;
+	const maxFutureMonths = 12;
+	const today = new Date().toISOString().split("T")[0];
+
+	const events = useSelector(
+		(state: any) => state.events.events
+	);
+
+	const markedDates = createMarkedDates(events);
 
 	useEffect(() => {
 		props.navigation.setOptions({

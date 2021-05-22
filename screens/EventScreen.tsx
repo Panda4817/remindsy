@@ -154,43 +154,58 @@ const EventScreen = (props: any) => {
 					</CustomText>
 					{selectedEvent.day == 29 &&
 					selectedEvent.month == 1 ? (
-						<CustomText style={styles.details}>
+						<CustomText
+							style={styles.details}
+							testID="leapDay"
+						>
 							(Leap day)
 						</CustomText>
 					) : null}
 				</View>
 				<View style={styles.namesContainer}>
-					<CustomText style={styles.names}>
+					<CustomText style={styles.names} testID="name">
 						{handleOutputNames(selectedEvent)}
 					</CustomText>
 				</View>
 				{selectedEvent.startYear !== 0 ? (
 					<View style={styles.yearsContainer}>
-						<CustomText style={styles.years}>
+						<CustomText style={styles.years} testID="years">
 							{handleOutputYears(selectedEvent)}
 						</CustomText>
 					</View>
 				) : null}
 				<View style={styles.detailsContainer}>
-					<CustomText style={styles.details}>
+					<CustomText
+						style={styles.details}
+						testID="cardOrPres"
+					>
 						{handleCardOrPresOutput(selectedEvent)}
 					</CustomText>
 
 					{selectedEvent.present &&
 					selectedEvent.ideas !==
 						"No present ideas provided" ? (
-						<CustomText style={styles.details}>
+						<CustomText
+							style={styles.details}
+							testID="ideas"
+						>
 							{selectedEvent.ideas}
 						</CustomText>
 					) : null}
 					{selectedEvent.address !==
 					"No address provided" ? (
-						<CustomText style={styles.details}>
+						<CustomText
+							style={styles.details}
+							testID="address"
+						>
 							{selectedEvent.address}
 						</CustomText>
 					) : null}
 					{selectedEvent.pushNotification ? (
-						<CustomText style={styles.details}>
+						<CustomText
+							style={styles.details}
+							testID="notice"
+						>
 							{handleNoticeOutput(selectedEvent)}
 						</CustomText>
 					) : null}

@@ -126,7 +126,7 @@ it("renders correctly with data - birthday event", async () => {
 			noticeTime: 1,
 			present: false,
 			ideas: "No present ideas provided",
-			address: "1 Test Drive",
+			address: "No address provided",
 			pushNotification: true,
 		},
 		events: [],
@@ -137,7 +137,7 @@ it("renders correctly with data - birthday event", async () => {
 		},
 		route: { params: { eventId: "1" } },
 	};
-	const { findAllByTestId } = render(
+	const { findAllByTestId, queryAllByTestId } = render(
 		<Provider store={store}>
 			<EventScreen
 				navigation={props.navigation}
@@ -147,6 +147,22 @@ it("renders correctly with data - birthday event", async () => {
 	);
 	const views = await findAllByTestId("dataView");
 	expect(views.length).toBe(1);
+	const years = queryAllByTestId("years");
+	const leapDay = queryAllByTestId("leapDay");
+	const names = queryAllByTestId("name");
+	const pres = queryAllByTestId("cardOrPres");
+	const ideas = queryAllByTestId("ideas");
+	const address = queryAllByTestId("address");
+	const notice = queryAllByTestId("notice");
+	expect(years.length).toBe(0);
+	expect(leapDay.length).toBe(0);
+	expect(names[0].children[0]).toBe("Name");
+	expect(pres[0].children[0]).toBe("Card only");
+	expect(ideas.length).toBe(0);
+	expect(address.length).toBe(0);
+	expect(notice[0].children[0]).toBe(
+		"Notified 1 week before"
+	);
 	await act(() => promise);
 });
 
@@ -166,15 +182,15 @@ it("renders correctly with data - anniversary event", async () => {
 			id: "1",
 			firstName: "Name",
 			secondName: "Name2",
-			day: 1,
-			month: 0,
+			day: 29,
+			month: 1,
 			type: "Wedding Anniversary",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
+			startYear: 2000,
+			noticeTime: 2,
+			present: true,
+			ideas: "flowers",
 			address: "1 Test Drive",
-			pushNotification: true,
+			pushNotification: false,
 		},
 		events: [],
 	});
@@ -184,7 +200,7 @@ it("renders correctly with data - anniversary event", async () => {
 		},
 		route: { params: { eventId: "1" } },
 	};
-	const { findAllByTestId } = render(
+	const { findAllByTestId, queryAllByTestId } = render(
 		<Provider store={store}>
 			<EventScreen
 				navigation={props.navigation}
@@ -194,6 +210,20 @@ it("renders correctly with data - anniversary event", async () => {
 	);
 	const views = await findAllByTestId("dataView");
 	expect(views.length).toBe(1);
+	const years = queryAllByTestId("years");
+	const leapDay = queryAllByTestId("leapDay");
+	const names = queryAllByTestId("name");
+	const pres = queryAllByTestId("cardOrPres");
+	const ideas = queryAllByTestId("ideas");
+	const address = queryAllByTestId("address");
+	const notice = queryAllByTestId("notice");
+	expect(years.length).toBe(1);
+	expect(leapDay.length).toBe(1);
+	expect(names[0].children[0]).toBe("Name & Name2");
+	expect(pres[0].children[0]).toBe("Card and present");
+	expect(ideas.length).toBe(1);
+	expect(address.length).toBe(1);
+	expect(notice.length).toBe(0);
 	await act(() => promise);
 });
 

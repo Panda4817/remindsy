@@ -9,6 +9,7 @@ const CustomText = (props: any) => {
 				...styles.text,
 				...props.style,
 			}}
+			testID={props.testID}
 		>
 			{props.children}
 		</Text>

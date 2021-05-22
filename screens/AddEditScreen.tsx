@@ -14,7 +14,7 @@ const AddEditScreen = (props: any) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const { navigation, route } = props;
-	const eventId = route.params ? route.params.id : null;
+	const eventId = route.params.id;
 	const selectedEvent: Event = useSelector((state: any) =>
 		state.events.events.find(
 			(event: Event) => event.id === eventId

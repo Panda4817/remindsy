@@ -20,15 +20,17 @@ export const getNotificationDate = (
 	return date;
 };
 
+export const handler = async () => {
+	return {
+		shouldShowAlert: true,
+		shouldPlaySound: true,
+		shouldSetBadge: false,
+	};
+};
+
 export const setNotifications = () => {
 	Notifications.setNotificationHandler({
-		handleNotification: async () => {
-			return {
-				shouldShowAlert: true,
-				shouldPlaySound: true,
-				shouldSetBadge: false,
-			};
-		},
+		handleNotification: handler,
 	});
 };
 
@@ -76,7 +78,7 @@ export const createNotification = async (event: Event) => {
 				repeats: true,
 			},
 		});
-	return;
+	return identifier;
 };
 
 export const deleteNotification = async (id: string) => {

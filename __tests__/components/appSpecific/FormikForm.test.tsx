@@ -193,8 +193,6 @@ it(`submitting form`, async () => {
 	expect(button).toBeTruthy();
 	await act(async () => fireEvent(button, "press"));
 
-	// const element = queryByTestId("submitButton");
-	// expect(element).toBeFalsy();
 	expect(onHandleSubmitMock).toBeCalled();
 	expect(onSubmitMock).toBeCalled();
 	await act(() => promise);

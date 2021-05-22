@@ -331,6 +331,72 @@ it("renders correctly with props and results but results filtered out", async ()
 	await act(() => promise);
 });
 
+it("renders correctly with props and results with filtering", async () => {
+	const promise = Promise.resolve();
+	const rootReducer = combineReducers({
+		events: reducers,
+	});
+
+	const store = createStore(
+		rootReducer,
+		applyMiddleware(ReduxThunk)
+	);
+	store.dispatch({
+		type: ADD_EVENT,
+		eventData: {
+			id: "1",
+			firstName: "Name",
+			secondName: "No name provided",
+			day: new Date().getDate() >= 28 ? 1 : 28,
+			month: new Date().getMonth(),
+			type: "Birthday",
+			startYear: 0,
+			noticeTime: 1,
+			present: false,
+			ideas: "No present ideas provided",
+			address: "1 Test Drive",
+			pushNotification: true,
+		},
+		events: [],
+	});
+	const props = {
+		navigation: {
+			setOptions: () => jest.fn(),
+			addListener: () => jest.fn(),
+		},
+		route: {
+			params: {
+				filterDay: new Date().getDate() >= 28 ? 1 : 28,
+				filterMonth: new Date().getMonth() + 1,
+				filterYear: new Date().getFullYear(),
+			},
+		},
+	};
+	React.useState = jest
+		.fn()
+		.mockReturnValueOnce([false, jest.fn()])
+		.mockReturnValueOnce([false, jest.fn()])
+		.mockReturnValueOnce(["", jest.fn()]);
+	const { findAllByTestId } = render(
+		<Provider store={store}>
+			<ListScreen
+				navigation={props.navigation}
+				route={props.route}
+			/>
+		</Provider>
+	);
+	const views = await findAllByTestId("resultsView");
+	expect(views).toBeTruthy();
+	expect(screenOptions(props)).toStrictEqual({
+		headerTitle: `${new Date(
+			props.route.params.filterYear,
+			props.route.params.filterMonth - 1,
+			props.route.params.filterDay
+		).toDateString()}`,
+	});
+	await act(() => promise);
+});
+
 it("renders correctly with props and results but results filtered out (leap Day)", async () => {
 	const promise = Promise.resolve();
 	const rootReducer = combineReducers({

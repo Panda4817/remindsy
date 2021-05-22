@@ -19,6 +19,15 @@ it("Notifications date", () => {
 	expect(resp).toStrictEqual(date);
 });
 
+it("handler", async () => {
+	const res = await notification.handler();
+	expect(res).toStrictEqual({
+		shouldShowAlert: true,
+		shouldPlaySound: true,
+		shouldSetBadge: false,
+	});
+});
+
 it("setNotifications", () => {
 	const spy = jest.spyOn(
 		Notifications,
@@ -26,6 +35,10 @@ it("setNotifications", () => {
 	);
 	notification.setNotifications();
 	expect(spy).toBeCalled();
+	expect(spy.mock.results[0].type).toBe("return");
+	expect(spy.mock.calls[0][0]).toHaveProperty(
+		"handleNotification"
+	);
 	spy.mockClear();
 });
 
@@ -95,7 +108,7 @@ it("createNotification with pushNotification field is false ", async () => {
 	expect(spy).not.toBeCalled();
 	spy.mockClear();
 });
-
+var test_identifier: any = "";
 it("createNotification with pushNotification field is true ", async () => {
 	const spy = jest.spyOn(
 		Notifications,
@@ -116,18 +129,60 @@ it("createNotification with pushNotification field is true ", async () => {
 		true
 	);
 	expect(event.pushNotification).toBeTruthy();
-	await notification.createNotification(event);
+	const res = await notification.createNotification(event);
+	test_identifier = res;
 	expect(spy).toBeCalled();
 });
 
-it("deleteNotification", async () => {
+it("deleteNotification with found id", async () => {
 	const spy = jest.spyOn(
 		Notifications,
 		"getAllScheduledNotificationsAsync"
 	);
-	spy.mockResolvedValueOnce([]);
+	const spy2 = jest.spyOn(
+		Notifications,
+		"cancelScheduledNotificationAsync"
+	);
+	//ts-ignore
+	spy.mockResolvedValueOnce([
+		{
+			identifier: test_identifier,
+			content: {
+				data: {
+					id: "1",
+				},
+			},
+		},
+	]);
 	await notification.deleteNotification("1");
 	expect(spy).toBeCalled();
+	expect(spy2).toBeCalled();
+	spy.mockClear();
+	spy2.mockClear();
+});
+it("deleteNotification with not found id", async () => {
+	const spy = jest.spyOn(
+		Notifications,
+		"getAllScheduledNotificationsAsync"
+	);
+	const spy2 = jest.spyOn(
+		Notifications,
+		"cancelScheduledNotificationAsync"
+	);
+	//ts-ignore
+	spy.mockResolvedValueOnce([
+		{
+			identifier: test_identifier,
+			content: {
+				data: {
+					id: "2",
+				},
+			},
+		},
+	]);
+	await notification.deleteNotification("1");
+	expect(spy).toBeCalled();
+	expect(spy2).not.toBeCalled();
 });
 
 it("updateNotification with pushNotification field is true", async () => {
