@@ -67,7 +67,6 @@ export const addEvent = (
 				events: [],
 			} as myAction);
 		} catch (err) {
-			console.log(err);
 			throw err;
 		}
 	};
@@ -125,7 +124,6 @@ export const editEvent = (
 				events: [],
 			} as myAction);
 		} catch (err) {
-			console.log(err);
 			throw err;
 		}
 	};
@@ -158,7 +156,6 @@ export const loadEvents = () => {
 				}),
 			});
 		} catch (err) {
-			console.log(err);
 			throw err;
 		}
 	};
@@ -189,7 +186,6 @@ export const delEvent = (id: number) => {
 				events: [],
 			} as myAction);
 		} catch (err) {
-			console.log(err);
 			throw err;
 		}
 	};
