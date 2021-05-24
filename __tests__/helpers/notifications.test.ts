@@ -48,7 +48,7 @@ it("getNotificationsPermissions (already granted)", async () => {
 		"getPermissionsAsync"
 	);
 	spy.mockResolvedValueOnce(
-		//ts-ignore
+		//@ts-ignore
 		{ status: "granted" }
 	);
 	await notification.getNotificationsPermissions(true);
@@ -69,7 +69,7 @@ it("getNotificationsPermissions (not granted yet)", async () => {
 		"requestPermissionsAsync"
 	);
 	spy.mockResolvedValueOnce(
-		//ts-ignore
+		//@ts-ignore
 		{ status: "" }
 	);
 	await notification.getNotificationsPermissions(true);
@@ -143,10 +143,11 @@ it("deleteNotification with found id", async () => {
 		Notifications,
 		"cancelScheduledNotificationAsync"
 	);
-	//ts-ignore
+
 	spy.mockResolvedValueOnce([
 		{
 			identifier: test_identifier,
+			//@ts-ignore
 			content: {
 				data: {
 					id: "1",
@@ -169,10 +170,11 @@ it("deleteNotification with not found id", async () => {
 		Notifications,
 		"cancelScheduledNotificationAsync"
 	);
-	//ts-ignore
+
 	spy.mockResolvedValueOnce([
 		{
 			identifier: test_identifier,
+			//@ts-ignore
 			content: {
 				data: {
 					id: "2",
@@ -225,9 +227,9 @@ it("updateNotification with pushNotification field is true", async () => {
 		true
 	);
 
-	//ts-ignore
 	spy.mockResolvedValueOnce([
 		{
+			//@ts-ignore
 			content: {
 				data: {
 					id: "1",
@@ -266,9 +268,10 @@ it("updateNotification with pushNotification field is false", async () => {
 		"No address provided",
 		false
 	);
-	//ts-ignore
+
 	spy.mockResolvedValueOnce([
 		{
+			//@ts-ignore
 			content: {
 				data: {
 					id: "1",
