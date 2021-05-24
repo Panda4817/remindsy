@@ -28,13 +28,15 @@ it("convertToNextDate", () => {
 	expect(
 		convertToNextDate(
 			dayAfter.getDate(),
-			dayAfter.getMonth()
+			dayAfter.getMonth(),
+			0
 		)
 	).toStrictEqual(dayAfter);
 	expect(
 		convertToNextDate(
 			dayBefore.getDate(),
-			dayBefore.getMonth()
+			dayBefore.getMonth(),
+			0
 		)
 	).toStrictEqual(dayBefore);
 	let leapDay = new Date();
@@ -45,11 +47,15 @@ it("convertToNextDate", () => {
 	}
 	leapDay.setHours(0, 0, 0, 0);
 	if (leapYear(leapDay.getFullYear())) {
-		expect(convertToNextDate(29, 1)).toStrictEqual(leapDay);
+		expect(convertToNextDate(29, 1, 0)).toStrictEqual(
+			leapDay
+		);
 	} else {
 		leapDay.setDate(28);
 		leapDay.setMonth(1);
-		expect(convertToNextDate(29, 1)).toStrictEqual(leapDay);
+		expect(convertToNextDate(29, 1, 0)).toStrictEqual(
+			leapDay
+		);
 	}
 });
 
@@ -98,6 +104,21 @@ const c: Event = new Event(
 	false
 );
 
+const d: Event = new Event(
+	"4",
+	"future",
+	"No name provided",
+	2,
+	0,
+	"Birthday",
+	new Date().getFullYear() + 1,
+	1,
+	false,
+	"No ideas provided",
+	"No address provided",
+	false
+);
+
 it("compare", () => {
 	let num = compare(a, b);
 	let num2 = compare(b, a);
@@ -117,21 +138,31 @@ it("handleOutputNames", () => {
 it("handleOutputDate", () => {
 	let resp = convertToNextDate(
 		a.day,
-		a.month
+		a.month,
+		a.startYear
 	).toDateString();
 	expect(handleOutputDate(a)).toBe(resp);
 });
 
 it("handleOutputYears", () => {
-	let date = convertToNextDate(a.day, a.month);
+	let date = convertToNextDate(a.day, a.month, a.startYear);
 	let diff = date.getFullYear() - a.startYear;
 	let resp = `${diff.toString()} years old`;
-	let date2 = convertToNextDate(c.day, c.month);
+	let date2 = convertToNextDate(
+		c.day,
+		c.month,
+		c.startYear
+	);
 	let diff2 = date.getFullYear() - c.startYear;
 	let resp2 = `${diff2.toString()} years`;
 	expect(handleOutputYears(a)).toBe(resp);
 	expect(handleOutputYears(b)).toBe("");
 	expect(handleOutputYears(c)).toBe(resp2);
+	expect(handleOutputYears(d)).toBe("Not born yet");
+	d.type = "Wedding Anniversary";
+	expect(handleOutputYears(d)).toBe("Not married yet");
+	d.type = "Other";
+	expect(handleOutputYears(d)).toBe("");
 });
 
 it("handleOutputTypeIcon", () => {

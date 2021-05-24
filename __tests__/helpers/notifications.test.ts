@@ -6,16 +6,16 @@ import Event from "../../models/eventClass";
 jest.mock("expo-notifications");
 
 it("Notifications date", () => {
-	let resp = notification.getNotificationDate(1, 1, 0);
-	let date = convertToNextDate(1, 0);
+	let resp = notification.getNotificationDate(1, 1, 0, 0);
+	let date = convertToNextDate(1, 0, 0);
 	date.setDate(date.getDate() - 1 * 7);
 	expect(resp).toStrictEqual(date);
-	resp = notification.getNotificationDate(2, 1, 0);
-	date = convertToNextDate(1, 0);
+	resp = notification.getNotificationDate(2, 1, 0, 0);
+	date = convertToNextDate(1, 0, 0);
 	date.setDate(date.getDate() - 2 * 7);
 	expect(resp).toStrictEqual(date);
-	resp = notification.getNotificationDate(0, 1, 0);
-	date = convertToNextDate(1, 0);
+	resp = notification.getNotificationDate(0, 1, 0, 0);
+	date = convertToNextDate(1, 0, 0);
 	expect(resp).toStrictEqual(date);
 });
 

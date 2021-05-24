@@ -167,7 +167,7 @@ it("renders correctly with events", async () => {
 	const calendarList = await container.findAllByType(
 		CalendarList
 	)[0];
-	let date = convertToNextDate(1, 0);
+	let date = convertToNextDate(1, 0, 0);
 	let dateString = date.getFullYear().toString() + "-01-01";
 	let obj: any = {};
 	obj[dateString] = {
@@ -254,13 +254,18 @@ it("getDateString", () => {
 	);
 	let date = convertToNextDate(
 		testEvent.day,
-		testEvent.month
+		testEvent.month,
+		testEvent.startYear
 	);
 	let dateString = `${date.getFullYear()}-01-01`;
 	expect(getDateString(testEvent)).toBe(dateString);
 	testEvent.day = 11;
 	testEvent.month = 10;
-	date = convertToNextDate(testEvent.day, testEvent.month);
+	date = convertToNextDate(
+		testEvent.day,
+		testEvent.month,
+		testEvent.startYear
+	);
 	dateString = `${date.getFullYear()}-11-11`;
 	expect(getDateString(testEvent)).toBe(dateString);
 });
@@ -310,7 +315,7 @@ const c = new Event(
 
 it("createMarkedDates with birthday", () => {
 	const events = [a, a];
-	let date = convertToNextDate(1, 0);
+	let date = convertToNextDate(1, 0, 0);
 	let dateString = `${date.getFullYear()}-01-01`;
 	let obj: any = {};
 	obj[dateString] = {
@@ -326,7 +331,7 @@ it("createMarkedDates with birthday", () => {
 
 it("createMarkedDates with anniversary", () => {
 	const events = [b, b];
-	let date = convertToNextDate(1, 0);
+	let date = convertToNextDate(1, 0, 0);
 	let dateString = `${date.getFullYear()}-01-01`;
 	let obj: any = {};
 	obj[dateString] = {
@@ -342,7 +347,7 @@ it("createMarkedDates with anniversary", () => {
 
 it("createMarkedDates with other", () => {
 	const events = [c, c];
-	let date = convertToNextDate(1, 0);
+	let date = convertToNextDate(1, 0, 0);
 	let dateString = `${date.getFullYear()}-01-01`;
 	let obj: any = {};
 	obj[dateString] = {

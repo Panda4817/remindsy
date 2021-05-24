@@ -10,9 +10,10 @@ import {
 export const getNotificationDate = (
 	week: number,
 	day: number,
-	month: number
+	month: number,
+	year: number
 ) => {
-	let date = convertToNextDate(day, month);
+	let date = convertToNextDate(day, month, year);
 	if (week !== 0) {
 		date.setDate(date.getDate() - week * 7);
 	}
@@ -54,7 +55,8 @@ export const createNotification = async (event: Event) => {
 	let nDate = getNotificationDate(
 		event.noticeTime,
 		event.day,
-		event.month
+		event.month,
+		event.startYear
 	);
 	const identifier =
 		await Notifications.scheduleNotificationAsync({

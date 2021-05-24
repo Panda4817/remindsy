@@ -23,10 +23,16 @@ export const leapYear = (year: number) => {
 
 export const convertToNextDate = (
 	day: number,
-	month: number
+	month: number,
+	startYear: number
 ) => {
 	let today = new Date();
-	let date = new Date(today.getFullYear(), month, day);
+	let date: Date;
+	if (startYear > today.getFullYear()) {
+		date = new Date(startYear, month, day);
+	} else {
+		date = new Date(today.getFullYear(), month, day);
+	}
 	if (
 		date < today &&
 		today.toDateString() !== date.toDateString()
@@ -49,11 +55,17 @@ export const compare = (a: Event, b: Event) => {
 	let today = new Date();
 
 	let aDiff =
-		convertToNextDate(a.day, a.month).getTime() -
-		today.getTime();
+		convertToNextDate(
+			a.day,
+			a.month,
+			a.startYear
+		).getTime() - today.getTime();
 	let bDiff =
-		convertToNextDate(b.day, b.month).getTime() -
-		today.getTime();
+		convertToNextDate(
+			b.day,
+			b.month,
+			b.startYear
+		).getTime() - today.getTime();
 	if (aDiff < bDiff) {
 		return -1;
 	}
@@ -75,7 +87,11 @@ export const handleOutputNames = (item: Event) => {
 };
 
 export const handleOutputDate = (item: Event) => {
-	let date = convertToNextDate(item.day, item.month);
+	let date = convertToNextDate(
+		item.day,
+		item.month,
+		item.startYear
+	);
 	return date.toDateString();
 };
 
@@ -83,8 +99,21 @@ export const handleOutputYears = (item: Event) => {
 	if (item.startYear == 0) {
 		return "";
 	}
-	let date = convertToNextDate(item.day, item.month);
+	let date = convertToNextDate(
+		item.day,
+		item.month,
+		item.startYear
+	);
 	let diff = date.getFullYear() - item.startYear;
+	if (diff <= 0) {
+		if (item.type == "Birthday") {
+			return "Not born yet";
+		} else if (item.type == "Wedding Anniversary") {
+			return "Not married yet";
+		} else {
+			return "";
+		}
+	}
 	let res = `${diff.toString()} years`;
 	if (item.type == "Birthday") {
 		res += " old";
