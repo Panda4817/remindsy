@@ -11,6 +11,12 @@ import {
 	leapYear,
 } from "../../helpers/formatting";
 import Event from "../../models/eventClass";
+import {
+	birthdayWithYear,
+	weddingAnniversary,
+	otherWithYearNoNotification,
+	futureEventNoNotification,
+} from "../fakeEvents";
 
 it("leapYear", () => {
 	expect(leapYear(2000)).toBe(true);
@@ -59,141 +65,115 @@ it("convertToNextDate", () => {
 	}
 });
 
-const a: Event = new Event(
-	"1",
-	"Name",
-	"No name provided",
-	1,
-	0,
-	"Birthday",
-	1991,
-	1,
-	false,
-	"No ideas provided",
-	"No address provided",
-	true
-);
-
-const b: Event = new Event(
-	"2",
-	"Name2",
-	"Name3",
-	2,
-	0,
-	"Wedding Anniversary",
-	0,
-	2,
-	true,
-	"No ideas provided",
-	"No address provided",
-	true
-);
-
-const c: Event = new Event(
-	"3",
-	"NameOther",
-	"No name provided",
-	2,
-	0,
-	"Other",
-	1991,
-	1,
-	false,
-	"No ideas provided",
-	"No address provided",
-	false
-);
-
-const d: Event = new Event(
-	"4",
-	"future",
-	"No name provided",
-	2,
-	0,
-	"Birthday",
-	new Date().getFullYear() + 1,
-	1,
-	false,
-	"No ideas provided",
-	"No address provided",
-	false
-);
-
 it("compare", () => {
-	let num = compare(a, b);
-	let num2 = compare(b, a);
-	let num3 = compare(b, c);
+	let num = compare(birthdayWithYear, weddingAnniversary);
+	let num2 = compare(weddingAnniversary, birthdayWithYear);
+	let num3 = compare(
+		weddingAnniversary,
+		otherWithYearNoNotification
+	);
 	expect(num).toBe(-1);
 	expect(num2).toBe(1);
 	expect(num3).toBe(0);
 });
 
 it("handleOutputNames", () => {
-	expect(handleOutputNames(a)).toBe("Name");
-	expect(handleOutputNames(b)).toBe("Name2 & Name3");
-	a.secondName = "Name2";
-	expect(handleOutputNames(a)).toBe("Name");
+	expect(handleOutputNames(birthdayWithYear)).toBe("Name");
+	expect(handleOutputNames(weddingAnniversary)).toBe(
+		"Name2 & Name3"
+	);
+	birthdayWithYear.secondName = "Name2";
+	expect(handleOutputNames(birthdayWithYear)).toBe("Name");
 });
 
 it("handleOutputDate", () => {
 	let resp = convertToNextDate(
-		a.day,
-		a.month,
-		a.startYear
+		birthdayWithYear.day,
+		birthdayWithYear.month,
+		birthdayWithYear.startYear
 	).toDateString();
-	expect(handleOutputDate(a)).toBe(resp);
+	expect(handleOutputDate(birthdayWithYear)).toBe(resp);
 });
 
 it("handleOutputYears", () => {
-	let date = convertToNextDate(a.day, a.month, a.startYear);
-	let diff = date.getFullYear() - a.startYear;
+	let date = convertToNextDate(
+		birthdayWithYear.day,
+		birthdayWithYear.month,
+		birthdayWithYear.startYear
+	);
+	let diff =
+		date.getFullYear() - birthdayWithYear.startYear;
 	let resp = `${diff.toString()} years old`;
 	let date2 = convertToNextDate(
-		c.day,
-		c.month,
-		c.startYear
+		otherWithYearNoNotification.day,
+		otherWithYearNoNotification.month,
+		otherWithYearNoNotification.startYear
 	);
-	let diff2 = date.getFullYear() - c.startYear;
+	let diff2 =
+		date2.getFullYear() -
+		otherWithYearNoNotification.startYear;
 	let resp2 = `${diff2.toString()} years`;
-	expect(handleOutputYears(a)).toBe(resp);
-	expect(handleOutputYears(b)).toBe("");
-	expect(handleOutputYears(c)).toBe(resp2);
-	expect(handleOutputYears(d)).toBe("Not born yet");
-	d.type = "Wedding Anniversary";
-	expect(handleOutputYears(d)).toBe("Not married yet");
-	d.type = "Other";
-	expect(handleOutputYears(d)).toBe("");
+	expect(handleOutputYears(birthdayWithYear)).toBe(resp);
+	expect(handleOutputYears(weddingAnniversary)).toBe("");
+	expect(
+		handleOutputYears(otherWithYearNoNotification)
+	).toBe(resp2);
+	expect(handleOutputYears(futureEventNoNotification)).toBe(
+		"Not born yet"
+	);
+	futureEventNoNotification.type = "Wedding Anniversary";
+	expect(handleOutputYears(futureEventNoNotification)).toBe(
+		"Not married yet"
+	);
+	futureEventNoNotification.type = "Other";
+	expect(handleOutputYears(futureEventNoNotification)).toBe(
+		""
+	);
 });
 
 it("handleOutputTypeIcon", () => {
-	expect(handleOutputTypeIcon(a)).toBe("birthday-cake");
-	expect(handleOutputTypeIcon(b)).toBe("heart");
-	expect(handleOutputTypeIcon(c)).toBe("smile-o");
+	expect(handleOutputTypeIcon(birthdayWithYear)).toBe(
+		"birthday-cake"
+	);
+	expect(handleOutputTypeIcon(weddingAnniversary)).toBe(
+		"heart"
+	);
+	expect(
+		handleOutputTypeIcon(otherWithYearNoNotification)
+	).toBe("smile-o");
 });
 
 it("handleCardOrPresOutput", () => {
-	expect(handleCardOrPresOutput(a)).toBe("Card only");
-	expect(handleCardOrPresOutput(b)).toBe(
+	expect(handleCardOrPresOutput(birthdayWithYear)).toBe(
+		"Card only"
+	);
+	expect(handleCardOrPresOutput(weddingAnniversary)).toBe(
 		"Card and present"
 	);
 });
 
 it("handleNoticeOutput", () => {
-	expect(handleNoticeOutput(a)).toBe(
+	expect(handleNoticeOutput(birthdayWithYear)).toBe(
 		"Notified 1 week before"
 	);
-	expect(handleNoticeOutput(b)).toBe(
+	expect(handleNoticeOutput(weddingAnniversary)).toBe(
 		"Notified 2 weeks before"
 	);
-	expect(handleNoticeOutput(c)).toBe(
-		"Notification disabled"
-	);
+	expect(
+		handleNoticeOutput(otherWithYearNoNotification)
+	).toBe("Notification disabled");
 });
 
 it("handleNoticeOutputNotifications", () => {
-	expect(handleNoticeOutputNotifications(a)).toBe("1 week");
-	expect(handleNoticeOutputNotifications(b)).toBe(
-		"2 weeks"
-	);
-	expect(handleNoticeOutputNotifications(c)).toBe("");
+	expect(
+		handleNoticeOutputNotifications(birthdayWithYear)
+	).toBe("1 week");
+	expect(
+		handleNoticeOutputNotifications(weddingAnniversary)
+	).toBe("2 weeks");
+	expect(
+		handleNoticeOutputNotifications(
+			otherWithYearNoNotification
+		)
+	).toBe("");
 });

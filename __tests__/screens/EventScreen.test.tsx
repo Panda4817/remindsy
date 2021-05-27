@@ -26,33 +26,26 @@ jest.mock("@expo/vector-icons/Ionicons", () => "Icon");
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
 import * as actions from "../../store/actions";
-
-it("renders correctly (snapshot)", async () => {
-	const promise = Promise.resolve();
+import {
+	defaultStringId,
+	defaultWithAddressStringId,
+	weddingAddressIdeasNoNotificationYearLeapDay,
+} from "../fakeEvents";
+let store: any;
+beforeEach(() => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
-
-	const store = createStore(
+	store = createStore(
 		rootReducer,
 		applyMiddleware(ReduxThunk)
 	);
+});
+it("renders correctly (snapshot)", async () => {
+	const promise = Promise.resolve();
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	const props = {
@@ -76,14 +69,6 @@ it("renders correctly (snapshot)", async () => {
 
 it("renders correctly with no event found", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: {
 			setOptions: () => jest.fn(),
@@ -105,30 +90,9 @@ it("renders correctly with no event found", async () => {
 
 it("renders correctly with data - birthday event", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "No address provided",
-			pushNotification: true,
-		},
+		eventData: defaultStringId,
 		events: [],
 	});
 	const props = {
@@ -168,30 +132,9 @@ it("renders correctly with data - birthday event", async () => {
 
 it("renders correctly with data - anniversary event", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "Name2",
-			day: 29,
-			month: 1,
-			type: "Wedding Anniversary",
-			startYear: 2000,
-			noticeTime: 2,
-			present: true,
-			ideas: "flowers",
-			address: "1 Test Drive",
-			pushNotification: false,
-		},
+		eventData: weddingAddressIdeasNoNotificationYearLeapDay,
 		events: [],
 	});
 	const props = {
@@ -229,30 +172,9 @@ it("renders correctly with data - anniversary event", async () => {
 
 it("renders correctly with data - delete event", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	const props = {

@@ -12,15 +12,16 @@ import {
 	render,
 	act,
 	fireEvent,
-	waitFor,
 } from "@testing-library/react-native";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 import CalendarScreen from "../../screens/CalendarScreen";
 import { ADD_EVENT } from "../../store/actions";
-import { CalendarList } from "react-native-calendars";
-import { convertToNextDate } from "../../helpers/formatting";
-import colours from "../../constants/Colours";
+import {
+	defaultWithAddressStringId,
+	weddingWithAddressStringId2,
+	otherWithAddressStringId3,
+} from "../fakeEvents";
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
@@ -28,6 +29,16 @@ jest.mock("@expo/vector-icons/Ionicons", () => "Icon");
 jest.mock(
 	"react-native/Libraries/Animated/src/NativeAnimatedHelper"
 );
+let store: any;
+beforeEach(() => {
+	const rootReducer = combineReducers({
+		events: reducers,
+	});
+	store = createStore(
+		rootReducer,
+		applyMiddleware(ReduxThunk)
+	);
+});
 it(`returns stack navigator`, async () => {
 	const promise = Promise.resolve();
 	const res = CalendarNavigator();
@@ -38,14 +49,6 @@ it(`returns stack navigator`, async () => {
 
 it("navigate from Calendar (no events) to AddEdit screen using header button", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const { findAllByTestId, container } = render(
 		<Provider store={store}>
 			<NavigationContainer>
@@ -67,66 +70,19 @@ it("navigate from Calendar (no events) to AddEdit screen using header button", a
 
 it("navigate from Calendar (with events) to AddEdit screen using header button", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "2",
-			firstName: "Name",
-			secondName: "Name2",
-			day: 1,
-			month: 0,
-			type: "Wedding Anniversary",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: weddingWithAddressStringId2,
 		events: [],
 	});
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "3",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Other",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: otherWithAddressStringId3,
 		events: [],
 	});
 	jest.mock("react-redux", () => ({

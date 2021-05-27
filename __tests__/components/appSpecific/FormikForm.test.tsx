@@ -1,22 +1,16 @@
 import * as React from "react";
-import {
-	ActivityIndicator,
-	Platform,
-	PlatformColor,
-} from "react-native";
+import { ActivityIndicator, Platform } from "react-native";
 import renderer, { act } from "react-test-renderer";
 import {
 	fireEvent,
 	render,
-	waitForElementToBeRemoved,
 } from "@testing-library/react-native";
 import FormikForm, {
 	formatValues,
-	formSchema,
 } from "../../../components/appSpecific/FormikForm";
-import Event from "../../../models/eventClass";
 import { Formik } from "formik";
-jest.useFakeTimers();
+import { defaultEventWithNotificationOff } from "../../fakeEvents";
+
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
 jest.mock(
 	"react-native/Libraries/Components/Switch/Switch",
@@ -55,21 +49,6 @@ it(`renders correctly with no selectedEvent and loading`, async () => {
 	).toBeTruthy();
 });
 
-const a: Event = new Event(
-	"1",
-	"Name",
-	"No name provided",
-	1,
-	0,
-	"Birthday",
-	0,
-	1,
-	false,
-	"No present ideas provided",
-	"No address provided",
-	false
-);
-
 it(`renders correctly with selectedEvent`, async () => {
 	const tree = renderer.create(
 		<FormikForm
@@ -77,7 +56,7 @@ it(`renders correctly with selectedEvent`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	expect(tree).toMatchSnapshot();
@@ -90,7 +69,7 @@ it(`renders correctly with selectedEvent and loading`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={true}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	expect(tree).toMatchSnapshot();
@@ -181,7 +160,7 @@ it(`submitting form`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const formik = container.findByType(Formik);
@@ -206,7 +185,7 @@ it(`Change type`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const picker = getByTestId("typePicker");
@@ -254,7 +233,7 @@ it(`Change day`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const picker = getByTestId("dayPicker");
@@ -284,7 +263,7 @@ it(`Change month`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const picker = getByTestId("monthPicker");
@@ -314,7 +293,7 @@ it(`Change firstName`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const input = getByTestId("firstNameInput");
@@ -334,7 +313,7 @@ it(`Change SecondName`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const picker = getByTestId("typePicker");
@@ -362,7 +341,7 @@ it(`Change startYear`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const input = getByTestId("yearInput");
@@ -387,7 +366,7 @@ it(`Change present switch`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const switchType = getByTestId("presentSwitch");
@@ -409,7 +388,7 @@ it(`Change Ideas`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const switchType = getByTestId("presentSwitch");
@@ -435,7 +414,7 @@ it(`Change address`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const input = getByTestId("addressInput");
@@ -455,7 +434,7 @@ it(`Change notification switch`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const switchType = getByTestId("notificationSwitch");
@@ -477,7 +456,7 @@ it(`Change noticeTime`, async () => {
 			navigation={{}}
 			route={{ params: {} }}
 			isLoading={false}
-			selectedEvent={a}
+			selectedEvent={defaultEventWithNotificationOff}
 		/>
 	);
 	const switchType = getByTestId("notificationSwitch");

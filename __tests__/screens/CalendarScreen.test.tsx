@@ -17,19 +17,29 @@ import { CalendarList } from "react-native-calendars";
 import { ADD_EVENT } from "../../store/actions";
 import { convertToNextDate } from "../../helpers/formatting";
 import colours from "../../constants/Colours";
-import Event from "../../models/eventClass";
+import {
+	defaultEventWithAddress,
+	defaultEventWithNotificationOff,
+	defaultWithAddressStringId,
+	otherEventWithAddress,
+	otherWithAddressStringId3,
+	weddingEventWithAddress,
+	weddingWithAddressStringId2,
+} from "../fakeEvents";
 
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
-it("renders correctly (snapshot)", async () => {
-	const promise = Promise.resolve();
+let store: any;
+beforeEach(() => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
-
-	const store = createStore(
+	store = createStore(
 		rootReducer,
 		applyMiddleware(ReduxThunk)
 	);
+});
+it("renders correctly (snapshot)", async () => {
+	const promise = Promise.resolve();
 	const props = {
 		navigation: { setOptions: () => jest.fn() },
 		route: { params: {} },
@@ -48,14 +58,6 @@ it("renders correctly (snapshot)", async () => {
 
 it("renders correctly with no events", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: { setOptions: () => jest.fn() },
 		route: { params: {} },
@@ -82,66 +84,19 @@ it("renders correctly with no events", async () => {
 
 it("renders correctly with events", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "2",
-			firstName: "Name",
-			secondName: "Name2",
-			day: 1,
-			month: 0,
-			type: "Wedding Anniversary",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: weddingWithAddressStringId2,
 		events: [],
 	});
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "2",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Other",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: otherWithAddressStringId3,
 		events: [],
 	});
 	const props = {
@@ -192,14 +147,6 @@ it("renders correctly with events", async () => {
 
 it("Check pressing on a date works", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 
 	const props = {
 		navigation: {
@@ -238,20 +185,7 @@ it("Check pressing on a date works", async () => {
 });
 
 it("getDateString", () => {
-	const testEvent = new Event(
-		"1",
-		"Name",
-		"No name provided",
-		1,
-		0,
-		"Birthday",
-		0,
-		1,
-		false,
-		"No present ideas provided",
-		"1 Test Drive",
-		true
-	);
+	const testEvent = defaultEventWithAddress;
 	let date = convertToNextDate(
 		testEvent.day,
 		testEvent.month,
@@ -270,48 +204,9 @@ it("getDateString", () => {
 	expect(getDateString(testEvent)).toBe(dateString);
 });
 
-const a = new Event(
-	"1",
-	"Name",
-	"No name provided",
-	1,
-	0,
-	"Birthday",
-	0,
-	1,
-	false,
-	"No present ideas provided",
-	"1 Test Drive",
-	true
-);
-const b = new Event(
-	"2",
-	"Name",
-	"No name provided",
-	1,
-	0,
-	"Wedding Anniversary",
-	0,
-	1,
-	false,
-	"No present ideas provided",
-	"1 Test Drive",
-	true
-);
-const c = new Event(
-	"3",
-	"Name",
-	"No name provided",
-	1,
-	0,
-	"Other",
-	0,
-	1,
-	false,
-	"No present ideas provided",
-	"1 Test Drive",
-	true
-);
+const a = defaultEventWithNotificationOff;
+const b = weddingEventWithAddress;
+const c = otherEventWithAddress;
 
 it("createMarkedDates with birthday", () => {
 	const events = [a, a];

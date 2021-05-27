@@ -22,6 +22,10 @@ import ListScreen from "../../screens/ListScreen";
 import EventScreen from "../../screens/EventScreen";
 import AddEditScreen from "../../screens/AddEditScreen";
 import FormikForm from "../../components/appSpecific/FormikForm";
+import {
+	defaultWithAddressNumId,
+	defaultWithAddressStringId,
+} from "../fakeEvents";
 
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
@@ -39,6 +43,16 @@ jest.mock(
 		);
 	}
 );
+let store: any;
+beforeEach(() => {
+	const rootReducer = combineReducers({
+		events: reducers,
+	});
+	store = createStore(
+		rootReducer,
+		applyMiddleware(ReduxThunk)
+	);
+});
 it(`returns stack navigator`, async () => {
 	const promise = Promise.resolve();
 	const res = ListNavigator();
@@ -49,53 +63,17 @@ it(`returns stack navigator`, async () => {
 
 it("navigate from list to event then to addEdit screen from header button, then submit", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	// @ts-ignore
 	actions.loadEvents.mockReturnValue(() =>
 		Promise.resolve({
 			rows: {
-				_array: [
-					{
-						id: 1,
-						firstName: "Name",
-						secondName: "No name provided",
-						day: 1,
-						month: 0,
-						type: "Birthday",
-						startYear: 0,
-						noticeTime: 1,
-						present: false,
-						ideas: "No present ideas provided",
-						address: "1 Test Drive",
-						pushNotification: true,
-					},
-				],
+				_array: [defaultWithAddressNumId],
 			},
 		})
 	);
@@ -173,53 +151,17 @@ it("navigate from list to event then to addEdit screen from header button, then 
 
 it("navigate from list to event then to addEdit screen from custom button", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	// @ts-ignore
 	actions.loadEvents.mockReturnValue(() =>
 		Promise.resolve({
 			rows: {
-				_array: [
-					{
-						id: 1,
-						firstName: "Name",
-						secondName: "No name provided",
-						day: 1,
-						month: 0,
-						type: "Birthday",
-						startYear: 0,
-						noticeTime: 1,
-						present: false,
-						ideas: "No present ideas provided",
-						address: "1 Test Drive",
-						pushNotification: true,
-					},
-				],
+				_array: [defaultWithAddressNumId],
 			},
 		})
 	);
@@ -278,14 +220,6 @@ it("navigate from list to event then to addEdit screen from custom button", asyn
 
 it("navigate from list to AddEdit screen", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	// @ts-ignore
 	actions.loadEvents.mockReturnValue(() =>
 		Promise.resolve({
@@ -318,14 +252,6 @@ it("navigate from list to AddEdit screen", async () => {
 
 it("navigate from list to AddEdit screen using header button", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	// @ts-ignore
 	actions.loadEvents.mockReturnValue(() =>
 		Promise.resolve({
@@ -354,14 +280,6 @@ it("navigate from list to AddEdit screen using header button", async () => {
 
 it("navigate from list to AddEdit screen using header button and submit form", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	// @ts-ignore
 	actions.loadEvents
 		// @ts-ignore

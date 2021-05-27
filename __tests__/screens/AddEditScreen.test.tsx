@@ -17,6 +17,7 @@ import FormikForm, {
 	formatValues,
 } from "../../components/appSpecific/FormikForm";
 import { Formik } from "formik";
+import { defaultWithAddressStringId } from "../fakeEvents";
 
 jest.useFakeTimers();
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
@@ -31,15 +32,17 @@ jest.mock(
 );
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
-it("renders correctly with empty params", async () => {
+let store: any;
+beforeEach(() => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
-
-	const store = createStore(
+	store = createStore(
 		rootReducer,
 		applyMiddleware(ReduxThunk)
 	);
+});
+it("renders correctly with empty params", async () => {
 	const props = {
 		navigation: {},
 		route: { params: {} },
@@ -62,30 +65,9 @@ it("renders correctly with empty params", async () => {
 });
 
 it("renders correctly with id params", async () => {
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	const props = {
@@ -110,14 +92,6 @@ it("renders correctly with id params", async () => {
 });
 
 it("renders correctly with filterDates params", async () => {
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: {},
 		route: { params: { filterDay: 1, filterMonth: 1 } },
@@ -141,30 +115,9 @@ it("renders correctly with filterDates params", async () => {
 
 it("submitHandler with existing event", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	const props = {
@@ -195,14 +148,6 @@ it("submitHandler with existing event", async () => {
 
 it("submitHandler with new event", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: { goBack: () => true },
 		route: { params: {} },

@@ -15,21 +15,28 @@ import reducers from "../../store/reducers";
 import ReduxThunk from "redux-thunk";
 import { ADD_EVENT } from "../../store/actions";
 import { leapYear } from "../../helpers/formatting";
+import {
+	defaultWithAddressStringId,
+	defaultNotLeapDayAddress,
+	defaultAddressLeapDay,
+} from "../fakeEvents";
 
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
 jest.mock("@expo/vector-icons/Ionicons", () => "Icon");
-it("renders correctly (snapshot)", async () => {
-	const promise = Promise.resolve();
+let store: any;
+beforeEach(() => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
-
-	const store = createStore(
+	store = createStore(
 		rootReducer,
 		applyMiddleware(ReduxThunk)
 	);
+});
+it("renders correctly (snapshot)", async () => {
+	const promise = Promise.resolve();
 	const props = {
 		navigation: {
 			setOptions: () => jest.fn(),
@@ -51,14 +58,6 @@ it("renders correctly (snapshot)", async () => {
 
 it("renders correctly with no results", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: {
 			setOptions: () => jest.fn(),
@@ -90,30 +89,9 @@ it("renders correctly with no results", async () => {
 
 it("renders correctly with results", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 1,
-			month: 0,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultWithAddressStringId,
 		events: [],
 	});
 	const props = {
@@ -146,14 +124,6 @@ it("renders correctly with results", async () => {
 
 it("renders correctly with error", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: {
 			setOptions: () => jest.fn(),
@@ -187,14 +157,6 @@ it("renders correctly with error", async () => {
 
 it("renders correctly with loading view", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: {
 			setOptions: () => jest.fn(),
@@ -226,14 +188,6 @@ it("renders correctly with loading view", async () => {
 
 it("renders correctly with props and no results", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	const props = {
 		navigation: {
 			setOptions: () => jest.fn(),
@@ -271,30 +225,9 @@ it("renders correctly with props and no results", async () => {
 
 it("renders correctly with props and results but results filtered out", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: new Date().getDate() >= 28 ? 1 : 28,
-			month: new Date().getMonth(),
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultNotLeapDayAddress,
 		events: [],
 	});
 	const props = {
@@ -333,30 +266,9 @@ it("renders correctly with props and results but results filtered out", async ()
 
 it("renders correctly with props and results with filtering", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: new Date().getDate() >= 28 ? 1 : 28,
-			month: new Date().getMonth(),
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultNotLeapDayAddress,
 		events: [],
 	});
 	const props = {
@@ -399,30 +311,9 @@ it("renders correctly with props and results with filtering", async () => {
 
 it("renders correctly with props and results but results filtered out (leap Day)", async () => {
 	const promise = Promise.resolve();
-	const rootReducer = combineReducers({
-		events: reducers,
-	});
-
-	const store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
 	store.dispatch({
 		type: ADD_EVENT,
-		eventData: {
-			id: "1",
-			firstName: "Name",
-			secondName: "No name provided",
-			day: 29,
-			month: 1,
-			type: "Birthday",
-			startYear: 0,
-			noticeTime: 1,
-			present: false,
-			ideas: "No present ideas provided",
-			address: "1 Test Drive",
-			pushNotification: true,
-		},
+		eventData: defaultAddressLeapDay,
 		events: [],
 	});
 	const year = leapYear(new Date().getFullYear())
