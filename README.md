@@ -3,10 +3,8 @@
 Reminds you to buy cards and presents for friends and family a week or 2 weeks in advance of their birthday and/or anniversary.
 
 ## Features I want to add
-- Import addresses from phone contacts
 - Import birthdays from contacts and phone calendars
 - Design a cool splash screen
-- Add option for wishing someone via text and notified just on the event day
 
 ## Requirements
 - See package.json

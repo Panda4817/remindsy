@@ -4,7 +4,6 @@ import { StyleSheet, Text, View } from "react-native";
 const SettingsScreen = () => {
 	// Merge with contacts
 	// get events from calendar
-	// get birthdays from facebook
 	return (
 		<View style={styles.centered}>
 			<Text>More features to come</Text>

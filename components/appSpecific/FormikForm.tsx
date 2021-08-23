@@ -1,12 +1,9 @@
-import React from "react";
-import {
-	StyleSheet,
-	View,
-	ActivityIndicator,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, ActivityIndicator, Alert } from "react-native";
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import CustomPicker from "../UI/Picker";
 import Input from "../UI/Input";
 import CustomSwitch from "../UI/Switch";
@@ -16,11 +13,12 @@ import { regular } from "../../constants/Fonts";
 import CustomButton from "../UI/CustomButton";
 import CustomText from "../UI/CustomText";
 import { getNotificationsPermissions } from "../../helpers/notifications";
+import { formatAddress, getContacts } from "../../helpers/contacts";
+import ResultsModal from "./ResultsModal";
+import { Contact } from "expo-contacts";
 
 export const formSchema = Yup.object().shape({
-	type: Yup.string()
-		.default("Birthday")
-		.required("Remindsy type is required"),
+	type: Yup.string().default("Birthday").required("Remindsy type is required"),
 	day: Yup.number()
 		.min(1, "Day should be between 1 and 31")
 		.max(31, "Day should be between 1 and 31")
@@ -31,33 +29,16 @@ export const formSchema = Yup.object().shape({
 		.max(11, "Month should be between January and December")
 		.default(new Date().getMonth())
 		.required(),
-	firstName: Yup.string()
-		.default("")
-		.required("A name is required"),
-	secondName: Yup.string()
-		.default("No name provided")
-		.required(),
-	startYear: Yup.number()
-		.min(0, "The year has to be a positive number")
-		.default(0)
-		.required(),
+	firstName: Yup.string().default("").required("A name is required"),
+	secondName: Yup.string().default("No name provided").required(),
+	startYear: Yup.number().min(0, "The year has to be a positive number").default(0).required(),
 	present: Yup.bool().default(false).required(),
-	ideas: Yup.string()
-		.default("No present ideas provided")
-		.required(),
-	address: Yup.string()
-		.default("No address provided")
-		.required(),
+	ideas: Yup.string().default("No present ideas provided").required(),
+	address: Yup.string().default("No address provided").required(),
 	pushNotification: Yup.bool().default(true).required(),
 	noticeTime: Yup.number()
-		.min(
-			1,
-			"Pick between being notified 1 week before or 2 weeks before"
-		)
-		.max(
-			2,
-			"Pick between being notified 1 week before or 2 weeks before"
-		)
+		.min(1, "Pick between being notified 1 week before or 2 weeks before")
+		.max(2, "Pick between being notified 1 week before or 2 weeks before")
 		.default(1)
 		.required(),
 });
@@ -70,12 +51,13 @@ export const formatValues = (values: FormikValues) => {
 	}
 	values.startYear = parseInt(values.startYear);
 	values.present = values.present == 1 ? true : false;
-	values.pushNotification =
-		values.pushNotification == 1 ? true : false;
+	values.pushNotification = values.pushNotification == 1 ? true : false;
 	return values;
 };
 
 const FormikForm = (props: any) => {
+	const [modalOpenStatus, setModalOpenStatus] = useState(false);
+	const [results, setResults]: any = useState([]);
 	let buttonText = "Save new Remindsy";
 	if (props.selectedEvent) {
 		buttonText = "Save changes";
@@ -93,13 +75,9 @@ const FormikForm = (props: any) => {
 				present: props.selectedEvent.present,
 				ideas: props.selectedEvent.ideas,
 				address: props.selectedEvent.address,
-				pushNotification:
-					props.selectedEvent.pushNotification,
+				pushNotification: props.selectedEvent.pushNotification,
 			};
-		} else if (
-			props.route.params.filterDay &&
-			props.route.params.filterMonth
-		) {
+		} else if (props.route.params.filterDay && props.route.params.filterMonth) {
 			return {
 				type: "Birthday",
 				firstName: "",
@@ -130,15 +108,17 @@ const FormikForm = (props: any) => {
 		}
 	};
 
+	const closeModal = () => {
+		setModalOpenStatus(false);
+	};
+
 	return (
 		<Formik
 			initialValues={getValues()}
 			validationSchema={formSchema}
 			onSubmit={async (values: FormikValues) => {
 				values = formatValues(values);
-				getNotificationsPermissions(
-					values.pushNotification
-				);
+				getNotificationsPermissions(values.pushNotification);
 				props.submitHandler(values);
 			}}
 		>
@@ -152,14 +132,28 @@ const FormikForm = (props: any) => {
 				isSubmitting,
 				setFieldValue,
 			}) => {
+				const selectContact = (contact: Contact) => {
+					setModalOpenStatus(false);
+					setFieldValue("firstName", contact.name);
+					if (contact.birthday && values.type == "Birthday") {
+						setFieldValue("day", contact.birthday.day);
+						setFieldValue("month", contact.birthday.month);
+						if (contact.birthday.year) {
+							setFieldValue("startYear", contact.birthday.year);
+						}
+					}
+					if (contact.addresses) {
+						const addressString = formatAddress(contact.addresses);
+						setFieldValue("address", addressString);
+					}
+					return;
+				};
 				return (
 					<>
 						<View style={styles.form}>
 							<CustomPicker
 								value={values.type}
-								onValueChangeHandler={(itemValue: any) =>
-									setFieldValue("type", itemValue)
-								}
+								onValueChangeHandler={(itemValue: any) => setFieldValue("type", itemValue)}
 								label="Remindsy type"
 								items={[
 									{ label: "Other", value: "Other" },
@@ -175,42 +169,6 @@ const FormikForm = (props: any) => {
 								error={errors.type}
 								touched={touched.type}
 								testID="typePicker"
-							/>
-							<CustomPicker
-								value={values.day}
-								onValueChangeHandler={(itemValue: any) =>
-									setFieldValue("day", itemValue)
-								}
-								label="Day"
-								items={Array(31)
-									.fill(0)
-									.map((val: number, index: number) => {
-										return {
-											label: `${index + 1}`,
-											value: index + 1,
-										};
-									})}
-								error={errors.day}
-								touched={touched.day}
-								testID="dayPicker"
-							/>
-							<CustomPicker
-								value={values.month}
-								onValueChangeHandler={(itemValue: any) =>
-									setFieldValue("month", itemValue)
-								}
-								label="Month"
-								items={Array(12)
-									.fill(0)
-									.map((val: string, index: number) => {
-										return {
-											label: months[index],
-											value: index,
-										};
-									})}
-								error={errors.month}
-								touched={touched.month}
-								testID="monthPicker"
 							/>
 							<Input
 								onChangeText={handleChange("firstName")}
@@ -233,12 +191,81 @@ const FormikForm = (props: any) => {
 									testID="secondNameInput"
 								/>
 							) : null}
+							<CustomButton
+								onPress={async () => {
+									// call getContacts method
+									const contacts = await getContacts(values.type, values.firstName, values.secondName);
+									// if results change modalOpenStatus to True, show modal component
+									if (contacts.length > 0) {
+										console.log(contacts);
+										setModalOpenStatus(true);
+										setResults(contacts);
+									} else {
+										// else alert saying no contacts found
+										Alert.alert(
+											"Oops!",
+											"No contacts found with relevant details (address or  birthday date). Please enter manually or search with different name.",
+											[{ text: "Ok", style: "default" }]
+										);
+									}
+								}}
+								style={{
+									backgroundColor: colours.darkBlue,
+									marginHorizontal: 50,
+								}}
+								testID="contactsButton"
+							>
+								<AntDesign name="contacts" size={20} color="white" />
+								<CustomText
+									style={{
+										...styles.buttonText,
+										color: "white",
+									}}
+								>
+									Fill from contacts
+								</CustomText>
+							</CustomButton>
+							<ResultsModal
+								open={modalOpenStatus}
+								data={results}
+								useContact={selectContact}
+								cancelModal={closeModal}
+							/>
+							<CustomPicker
+								value={values.day}
+								onValueChangeHandler={(itemValue: any) => setFieldValue("day", itemValue)}
+								label="Day"
+								items={Array(31)
+									.fill(0)
+									.map((val: number, index: number) => {
+										return {
+											label: `${index + 1}`,
+											value: index + 1,
+										};
+									})}
+								error={errors.day}
+								touched={touched.day}
+								testID="dayPicker"
+							/>
+							<CustomPicker
+								value={values.month}
+								onValueChangeHandler={(itemValue: any) => setFieldValue("month", itemValue)}
+								label="Month"
+								items={Array(12)
+									.fill(0)
+									.map((val: string, index: number) => {
+										return {
+											label: months[index],
+											value: index,
+										};
+									})}
+								error={errors.month}
+								touched={touched.month}
+								testID="monthPicker"
+							/>
 							<Input
 								onChangeText={(itemValue: string) => {
-									if (
-										/^\d+$/.test(itemValue) ||
-										itemValue === ""
-									) {
+									if (/^\d+$/.test(itemValue) || itemValue === "") {
 										setFieldValue("startYear", itemValue);
 									}
 								}}
@@ -258,19 +285,11 @@ const FormikForm = (props: any) => {
 							/>
 							<CustomSwitch
 								value={values.present}
-								label={
-									values.present
-										? "Change to card only?"
-										: "Add present too?"
-								}
+								label={values.present ? "Change to card only?" : "Add present too?"}
 								extraLabel={
-									values.present
-										? "Card and present reminder selected"
-										: "Card only reminder selected"
+									values.present ? "Card and present reminder selected" : "Card only reminder selected"
 								}
-								onValueChangeHandler={(
-									itemValue: Boolean
-								) => setFieldValue("present", itemValue)}
+								onValueChangeHandler={(itemValue: Boolean) => setFieldValue("present", itemValue)}
 								error={errors.present}
 								touched={touched.present}
 								testID="presentSwitch"
@@ -288,15 +307,6 @@ const FormikForm = (props: any) => {
 									testID="ideasInput"
 								/>
 							) : null}
-							{
-								// Add a way to retrieve address from contacts
-								// button
-								// expo-contacts
-								// get permission
-								// search by name
-								// show results in a modal
-								// pick a result and fills in input with address, back to form
-							}
 							<Input
 								onChangeText={handleChange("address")}
 								onBlur={handleBlur("address")}
@@ -311,14 +321,7 @@ const FormikForm = (props: any) => {
 							<CustomSwitch
 								value={values.pushNotification}
 								label="Enable notifications"
-								onValueChangeHandler={(
-									itemValue: Boolean
-								) =>
-									setFieldValue(
-										"pushNotification",
-										itemValue
-									)
-								}
+								onValueChangeHandler={(itemValue: Boolean) => setFieldValue("pushNotification", itemValue)}
 								error={errors.pushNotification}
 								touched={touched.pushNotification}
 								testID="notificationSwitch"
@@ -326,9 +329,7 @@ const FormikForm = (props: any) => {
 							{values.pushNotification ? (
 								<CustomPicker
 									value={values.noticeTime}
-									onValueChangeHandler={(itemValue: any) =>
-										setFieldValue("noticeTime", itemValue)
-									}
+									onValueChangeHandler={(itemValue: any) => setFieldValue("noticeTime", itemValue)}
 									label="Notification time"
 									items={[
 										{
@@ -346,10 +347,7 @@ const FormikForm = (props: any) => {
 								/>
 							) : null}
 							{isSubmitting || props.isLoading ? (
-								<ActivityIndicator
-									size="large"
-									color={colours.darkPink}
-								/>
+								<ActivityIndicator size="large" color={colours.darkPink} />
 							) : (
 								<CustomButton
 									onPress={() => {
@@ -361,11 +359,7 @@ const FormikForm = (props: any) => {
 									}}
 									testID="submitButton"
 								>
-									<FontAwesome5
-										name="save"
-										size={18}
-										color="white"
-									/>
+									<FontAwesome5 name="save" size={20} color="white" />
 									<CustomText
 										style={{
 											...styles.buttonText,

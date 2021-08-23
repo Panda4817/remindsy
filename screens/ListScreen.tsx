@@ -124,7 +124,7 @@ const ListScreen = (props: any) => {
 	if (!isLoading && events.length === 0) {
 		return (
 			<View style={styles.centered} testID="noResultsView">
-				<CustomText style={styles.text}>No Remindsys found.</CustomText>
+				<CustomText style={styles.text}>Not a single Remindsy found.</CustomText>
 				<View style={styles.buttonContainer}>
 					<CustomButton
 						onPress={() => {
@@ -137,7 +137,7 @@ const ListScreen = (props: any) => {
 					</CustomButton>
 				</View>
 				<CustomText style={styles.textSmall}>
-					Tap on <Ionicons name="settings" size={18} color="black" /> to import events.
+					Or tap on <Ionicons name="settings" size={18} color="black" /> to import events.
 				</CustomText>
 			</View>
 		);
