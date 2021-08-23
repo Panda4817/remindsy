@@ -24,7 +24,7 @@ beforeEach(() => {
 		events: reducers,
 	});
 	store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-});
+}, 10000);
 it("renders correctly (snapshot)", async () => {
 	const promise = Promise.resolve();
 	const props = {
@@ -66,7 +66,7 @@ it("renders correctly with no results", async () => {
 	const views = await findAllByTestId("noResultsView");
 	expect(views).toBeTruthy();
 	expect(screenOptions(props)).toStrictEqual({
-		headerTitle: "Upcoming Remindsys",
+		headerTitle: "Latest Remindsy",
 	});
 	await act(() => promise);
 });
@@ -98,7 +98,7 @@ it("renders correctly with results", async () => {
 	const views = await findAllByTestId("resultsView");
 	expect(views).toBeTruthy();
 	expect(screenOptions(props)).toStrictEqual({
-		headerTitle: "Upcoming Remindsys",
+		headerTitle: "Latest Remindsy",
 	});
 	await act(() => promise);
 });
@@ -128,7 +128,7 @@ it("renders correctly with error", async () => {
 	const views = await findAllByTestId("errorView");
 	expect(views).toBeTruthy();
 	expect(screenOptions(props)).toStrictEqual({
-		headerTitle: "Upcoming Remindsys",
+		headerTitle: "Latest Remindsy",
 	});
 	await act(() => promise);
 });
@@ -156,7 +156,7 @@ it("renders correctly with loading view", async () => {
 	const views = await findAllByTestId("loadingView");
 	expect(views).toBeTruthy();
 	expect(screenOptions(props)).toStrictEqual({
-		headerTitle: "Upcoming Remindsys",
+		headerTitle: "Latest Remindsy",
 	});
 	await act(() => promise);
 });

@@ -1,16 +1,7 @@
 import React from "react";
 import { useEffect, useState, useCallback } from "react";
-import {
-	View,
-	FlatList,
-	Button,
-	ActivityIndicator,
-	StyleSheet,
-} from "react-native";
-import {
-	HeaderButtons,
-	Item,
-} from "react-navigation-header-buttons";
+import { View, FlatList, Button, ActivityIndicator, StyleSheet } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { useSelector, useDispatch } from "react-redux";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 import CustomButton from "../components/UI/CustomButton";
@@ -31,10 +22,7 @@ import CustomText from "../components/UI/CustomText";
 
 export const getParams = (route: any) => {
 	let paramsObj = {};
-	if (
-		route.params &&
-		Object.keys(route.params).length !== 0
-	) {
+	if (route.params && Object.keys(route.params).length !== 0) {
 		const filterDay = route.params.filterDay;
 		const filterMonth = route.params.filterMonth;
 		paramsObj = {
@@ -47,33 +35,20 @@ export const getParams = (route: any) => {
 
 const ListScreen = (props: any) => {
 	const [isLoading, setIsLoading] = React.useState(false);
-	const [isRefreshing, setIsRefreshing] =
-		React.useState(false);
+	const [isRefreshing, setIsRefreshing] = React.useState(false);
 	const [error, setError] = React.useState("");
 
-	let events = useSelector(
-		(state: any) => state.events.events
-	).sort(compare);
+	let events = useSelector((state: any) => state.events.events).sort(compare);
 
 	if (props.route.params) {
 		const filterDay = props.route.params.filterDay;
 		const filterMonth = props.route.params.filterMonth;
 		if (filterDay && filterMonth) {
 			events = events.filter((item: Event) => {
-				if (
-					filterDay == 28 &&
-					filterMonth == 2 &&
-					!leapYear(props.route.params.filterYear)
-				) {
-					return (
-						(item.day == filterDay || item.day == 29) &&
-						item.month == filterMonth - 1
-					);
+				if (filterDay == 28 && filterMonth == 2 && !leapYear(props.route.params.filterYear)) {
+					return (item.day == filterDay || item.day == 29) && item.month == filterMonth - 1;
 				} else {
-					return (
-						item.day == filterDay &&
-						item.month == filterMonth - 1
-					);
+					return item.day == filterDay && item.month == filterMonth - 1;
 				}
 			});
 		}
@@ -86,17 +61,14 @@ const ListScreen = (props: any) => {
 		setIsRefreshing(true);
 		try {
 			await dispatch(actions.loadEvents());
-		} catch (err) {
+		} catch (err: any) {
 			setError(err.message);
 		}
 		setIsRefreshing(false);
 	}, [dispatch, setIsLoading, setError]);
 
 	useEffect(() => {
-		const unsubscribe = props.navigation.addListener(
-			"focus",
-			loadEvents
-		);
+		const unsubscribe = props.navigation.addListener("focus", loadEvents);
 
 		return () => {
 			unsubscribe();
@@ -119,18 +91,13 @@ const ListScreen = (props: any) => {
 	useEffect(() => {
 		props.navigation.setOptions({
 			headerRight: () => (
-				<HeaderButtons
-					HeaderButtonComponent={CustomHeaderButton}
-				>
+				<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
 					<Item
 						IconComponent={FontAwesome5}
 						title="Add Event"
 						iconName="calendar-plus"
 						onPress={() => {
-							props.navigation.navigate(
-								"AddEdit",
-								getParams(props.route)
-							);
+							props.navigation.navigate("AddEdit", getParams(props.route));
 						}}
 						testID="ListToAddEdit"
 					></Item>
@@ -143,60 +110,34 @@ const ListScreen = (props: any) => {
 		return (
 			<View style={styles.centered} testID="errorView">
 				<CustomText>An error occurred!</CustomText>
-				<Button
-					title="Try again"
-					onPress={loadEvents}
-					color={colours.darkPink}
-				/>
+				<Button title="Try again" onPress={loadEvents} color={colours.darkPink} />
 			</View>
 		);
 	}
 	if (isLoading) {
 		return (
 			<View style={styles.centered} testID="loadingView">
-				<ActivityIndicator
-					size="large"
-					color={colours.darkPink}
-				/>
+				<ActivityIndicator size="large" color={colours.darkPink} />
 			</View>
 		);
 	}
 	if (!isLoading && events.length === 0) {
 		return (
 			<View style={styles.centered} testID="noResultsView">
-				<CustomText style={styles.text}>
-					No Remindsys found.
-				</CustomText>
+				<CustomText style={styles.text}>No Remindsys found.</CustomText>
 				<View style={styles.buttonContainer}>
 					<CustomButton
 						onPress={() => {
-							props.navigation.navigate(
-								"AddEdit",
-								getParams(props.route)
-							);
+							props.navigation.navigate("AddEdit", getParams(props.route));
 						}}
 						testID="ListToAddEditCustomButton"
 					>
-						<FontAwesome5
-							name="calendar-plus"
-							size={18}
-							color="white"
-						/>
-						<CustomText
-							style={{ ...styles.text, color: "white" }}
-						>
-							Add a Remindsy
-						</CustomText>
+						<FontAwesome5 name="calendar-plus" size={18} color="white" />
+						<CustomText style={{ ...styles.text, color: "white" }}>Add a Remindsy</CustomText>
 					</CustomButton>
 				</View>
 				<CustomText style={styles.textSmall}>
-					Tap on{" "}
-					<Ionicons
-						name="settings"
-						size={18}
-						color="black"
-					/>{" "}
-					to import events.
+					Tap on <Ionicons name="settings" size={18} color="black" /> to import events.
 				</CustomText>
 			</View>
 		);
@@ -227,17 +168,13 @@ const ListScreen = (props: any) => {
 };
 
 export const screenOptions = (navData: any) => {
-	let title = "Upcoming Remindsys";
+	let title = "Latest Remindsy";
 	if (navData.route.params) {
 		const filterDay = navData.route.params.filterDay;
 		const filterMonth = navData.route.params.filterMonth;
 		const filterYear = navData.route.params.filterYear;
 		if (filterDay && filterMonth) {
-			let date = new Date(
-				filterYear,
-				filterMonth - 1,
-				filterDay
-			);
+			let date = new Date(filterYear, filterMonth - 1, filterDay);
 			title = `${date.toDateString()}`;
 		}
 	}

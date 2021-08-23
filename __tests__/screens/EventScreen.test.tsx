@@ -26,7 +26,7 @@ beforeEach(() => {
 		events: reducers,
 	});
 	store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-});
+}, 10000);
 it("renders correctly (snapshot)", async () => {
 	const promise = Promise.resolve();
 	store.dispatch({

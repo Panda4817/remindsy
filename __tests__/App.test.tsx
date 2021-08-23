@@ -8,7 +8,7 @@ import AppLoading from "expo-app-loading";
 import { act } from "@testing-library/react-native";
 jest.mock("expo-sqlite");
 
-jest.useFakeTimers();
+// jest.useFakeTimers();
 it("renders correctly when fonts not loaded", async () => {
 	const promise = Promise.resolve();
 	const tree = renderer.create(<App />);
@@ -27,8 +27,9 @@ it("renders correctly when fonts are loaded", async () => {
 	const promise = Promise.resolve();
 	const tree = renderer.create(<App />);
 	const hook = renderHook(() => useFonts(FONTS));
-	await act(() => hook.waitForNextUpdate());
-	expect(tree.root).toMatchSnapshot();
-	expect(tree.root.findByType(Provider)).toBeTruthy();
+	hook.waitForNextUpdate().then(() => {
+		expect(tree.root).toMatchSnapshot();
+		expect(tree.root.findByType(Provider)).toBeTruthy();
+	});
 	await act(() => promise);
 });

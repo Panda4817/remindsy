@@ -19,13 +19,7 @@ export const TabsNavigator = () => {
 				component={ListNavigator}
 				options={{
 					tabBarIcon: (tabInfo: any) => {
-						return (
-							<FontAwesome5
-								name="list"
-								size={20}
-								color={tabInfo.color}
-							/>
-						);
+						return <FontAwesome5 name="list" size={20} color={tabInfo.color} />;
 					},
 					tabBarColor: colours.darkBlue,
 				}}
@@ -35,15 +29,9 @@ export const TabsNavigator = () => {
 				component={CalendarNavigator}
 				options={{
 					tabBarIcon: (tabInfo: any) => {
-						return (
-							<FontAwesome5
-								name="calendar-alt"
-								size={20}
-								color={tabInfo.color}
-							/>
-						);
+						return <FontAwesome5 name="calendar-alt" size={20} color={tabInfo.color} />;
 					},
-					tabBarColor: colours.lightBlue,
+					tabBarColor: colours.darkPink,
 				}}
 			/>
 			<Tabs.Screen
@@ -51,15 +39,9 @@ export const TabsNavigator = () => {
 				component={SettingsNavigator}
 				options={{
 					tabBarIcon: (tabInfo: any) => {
-						return (
-							<Ionicons
-								name="settings"
-								size={20}
-								color={tabInfo.color}
-							/>
-						);
+						return <Ionicons name="settings" size={20} color={tabInfo.color} />;
 					},
-					tabBarColor: colours.darkPink,
+					tabBarColor: colours.darkBlue,
 				}}
 			/>
 		</Tabs.Navigator>

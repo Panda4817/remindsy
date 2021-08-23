@@ -6,8 +6,8 @@ const SettingsScreen = () => {
 	// get events from calendar
 	// get birthdays from facebook
 	return (
-		<View>
-			<Text></Text>
+		<View style={styles.centered}>
+			<Text>More features to come</Text>
 		</View>
 	);
 };
@@ -18,4 +18,11 @@ export const screenOptions = {
 
 export default SettingsScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	centered: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		marginHorizontal: 10,
+	},
+});

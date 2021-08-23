@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-	StyleSheet,
-	KeyboardAvoidingView,
-	ScrollView,
-} from "react-native";
+import { StyleSheet, KeyboardAvoidingView, ScrollView } from "react-native";
 import { FormikValues } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "../store/actions";
@@ -16,9 +12,7 @@ const AddEditScreen = (props: any) => {
 	const { navigation, route } = props;
 	const eventId = route.params.id;
 	const selectedEvent: Event = useSelector((state: any) =>
-		state.events.events.find(
-			(event: Event) => event.id === eventId
-		)
+		state.events.events.find((event: Event) => event.id === eventId)
 	);
 
 	const submitHandler = async (values: FormikValues) => {
@@ -60,7 +54,7 @@ const AddEditScreen = (props: any) => {
 				);
 			}
 			navigation.goBack();
-		} catch (err) {
+		} catch (err: any) {
 			setError(err.message);
 		}
 		setIsLoading(false);
@@ -68,10 +62,7 @@ const AddEditScreen = (props: any) => {
 
 	const dispatch = useDispatch();
 	return (
-		<KeyboardAvoidingView
-			style={{ flex: 1 }}
-			behavior="height"
-		>
+		<KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
 			<ScrollView>
 				<FormikForm
 					submitHandler={submitHandler}

@@ -25,7 +25,7 @@ beforeEach(() => {
 		events: reducers,
 	});
 	store = createStore(rootReducer, applyMiddleware(ReduxThunk));
-});
+}, 10000);
 it(`returns stack navigator`, async () => {
 	const promise = Promise.resolve();
 	const res = CalendarNavigator();

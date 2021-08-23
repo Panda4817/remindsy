@@ -2,10 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { CalendarList } from "react-native-calendars";
 import { SafeAreaView } from "react-native";
-import {
-	HeaderButtons,
-	Item,
-} from "react-navigation-header-buttons";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 import colours from "../constants/Colours";
@@ -14,11 +11,7 @@ import { convertToNextDate } from "../helpers/formatting";
 import Event from "../models/eventClass";
 
 export const getDateString = (item: Event) => {
-	let date = convertToNextDate(
-		item.day,
-		item.month,
-		item.startYear
-	);
+	let date = convertToNextDate(item.day, item.month, item.startYear);
 	let month =
 		(date.getMonth() + 1).toString().length == 1
 			? "0" + (date.getMonth() + 1).toString()
@@ -51,26 +44,18 @@ export const createMarkedDates = (events: Event[]) => {
 		}
 		switch (item.type) {
 			case "Birthday":
-				if (
-					markedDates[dateString].dots.indexOf(birthday) < 0
-				) {
+				if (markedDates[dateString].dots.indexOf(birthday) < 0) {
 					markedDates[dateString].dots.push(birthday);
 				}
 
 				return;
 			case "Wedding Anniversary":
-				if (
-					markedDates[dateString].dots.indexOf(
-						anniversary
-					) < 0
-				) {
+				if (markedDates[dateString].dots.indexOf(anniversary) < 0) {
 					markedDates[dateString].dots.push(anniversary);
 				}
 				return;
 			default:
-				if (
-					markedDates[dateString].dots.indexOf(other) < 0
-				) {
+				if (markedDates[dateString].dots.indexOf(other) < 0) {
 					markedDates[dateString].dots.push(other);
 				}
 				return;
@@ -84,18 +69,14 @@ const CalendarScreen = (props: any) => {
 	const maxFutureMonths = 12;
 	const today = new Date().toISOString().split("T")[0];
 
-	const events = useSelector(
-		(state: any) => state.events.events
-	);
+	const events = useSelector((state: any) => state.events.events);
 
 	const markedDates = createMarkedDates(events);
 
 	useEffect(() => {
 		props.navigation.setOptions({
 			headerRight: () => (
-				<HeaderButtons
-					HeaderButtonComponent={CustomHeaderButton}
-				>
+				<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
 					<Item
 						IconComponent={FontAwesome5}
 						title="Add Event"
@@ -131,7 +112,7 @@ const CalendarScreen = (props: any) => {
 };
 
 export const screenOptions = {
-	headerTitle: "All Remindsys",
+	headerTitle: "Remindsy Calendar",
 };
 
 export default CalendarScreen;

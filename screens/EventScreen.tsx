@@ -1,16 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {
-	ActivityIndicator,
-	Alert,
-	ScrollView,
-	StyleSheet,
-	View,
-} from "react-native";
-import {
-	HeaderButtons,
-	Item,
-} from "react-navigation-header-buttons";
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from "react-native";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CustomHeaderButton from "../components/UI/HeaderButton";
 import { useSelector, useDispatch } from "react-redux";
@@ -36,9 +27,7 @@ const EventScreen = (props: any) => {
 	const { navigation, route } = props;
 	const eventId = route.params.eventId;
 	const selectedEvent = useSelector((state: any) =>
-		state.events.events.find(
-			(event: Event) => event.id === eventId
-		)
+		state.events.events.find((event: Event) => event.id === eventId)
 	);
 
 	const dispatch = useDispatch();
@@ -49,25 +38,21 @@ const EventScreen = (props: any) => {
 		try {
 			dispatch(actions.delEvent(parseInt(eventId)));
 			navigation.goBack();
-		} catch (err) {
+		} catch (err: any) {
 			setError(err.message);
 		}
 		setIsLoading(false);
 	};
 
 	const deleteHandler = () => {
-		Alert.alert(
-			"Are you sure?",
-			"Do you really want to delete this Remindsy?",
-			[
-				{
-					text: "Yes",
-					style: "destructive",
-					onPress: deleteSubmit,
-				},
-				{ text: "No", style: "default" },
-			]
-		);
+		Alert.alert("Are you sure?", "Do you really want to delete this Remindsy?", [
+			{
+				text: "Yes",
+				style: "destructive",
+				onPress: deleteSubmit,
+			},
+			{ text: "No", style: "default" },
+		]);
 	};
 
 	useEffect(() => {
@@ -75,27 +60,17 @@ const EventScreen = (props: any) => {
 		if (type == "Wedding Anniversary") {
 			type = "Anniversary";
 		}
-		let icon = selectedEvent
-			? handleOutputTypeIcon(selectedEvent)
-			: "";
+		let icon = selectedEvent ? handleOutputTypeIcon(selectedEvent) : "";
 		props.navigation.setOptions({
 			headerTitle: () => (
 				<View style={styles.headerContainer}>
-					<FontAwesome5
-						name={icon}
-						size={24}
-						color={colours.yellow}
-					/>
-					<CustomText style={styles.header}>
-						{type}
-					</CustomText>
+					<FontAwesome5 name={icon} size={24} color={colours.yellow} />
+					<CustomText style={styles.header}>{type}</CustomText>
 				</View>
 			),
 			headerRight: () => (
 				<View style={styles.iconsContainer}>
-					<HeaderButtons
-						HeaderButtonComponent={CustomHeaderButton}
-					>
+					<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
 						<Item
 							IconComponent={FontAwesome5}
 							title="Edit Event"
@@ -108,9 +83,7 @@ const EventScreen = (props: any) => {
 							testID="EventToAddEdit"
 						></Item>
 					</HeaderButtons>
-					<HeaderButtons
-						HeaderButtonComponent={CustomHeaderButton}
-					>
+					<HeaderButtons HeaderButtonComponent={CustomHeaderButton}>
 						<Item
 							IconComponent={FontAwesome5}
 							title="Delete"
@@ -126,38 +99,24 @@ const EventScreen = (props: any) => {
 
 	useEffect(() => {
 		if (error) {
-			Alert.alert("An error occurred!", error, [
-				{ text: "Okay" },
-			]);
+			Alert.alert("An error occurred!", error, [{ text: "Okay" }]);
 		}
 	}, [error]);
 
 	if (isLoading || !selectedEvent) {
 		return (
 			<View style={styles.centered} testID="noDataYetView">
-				<ActivityIndicator
-					size="large"
-					color={colours.darkPink}
-				/>
+				<ActivityIndicator size="large" color={colours.darkPink} />
 			</View>
 		);
 	}
 	return (
-		<ScrollView
-			style={styles.outerContainer}
-			testID="dataView"
-		>
+		<ScrollView style={styles.outerContainer} testID="dataView">
 			<Card style={styles.sharedContainer}>
 				<View style={styles.dateContainer}>
-					<CustomText style={styles.date}>
-						{handleOutputDate(selectedEvent)}
-					</CustomText>
-					{selectedEvent.day == 29 &&
-					selectedEvent.month == 1 ? (
-						<CustomText
-							style={styles.details}
-							testID="leapDay"
-						>
+					<CustomText style={styles.date}>{handleOutputDate(selectedEvent)}</CustomText>
+					{selectedEvent.day == 29 && selectedEvent.month == 1 ? (
+						<CustomText style={styles.details} testID="leapDay">
 							(Leap day)
 						</CustomText>
 					) : null}
@@ -175,37 +134,22 @@ const EventScreen = (props: any) => {
 					</View>
 				) : null}
 				<View style={styles.detailsContainer}>
-					<CustomText
-						style={styles.details}
-						testID="cardOrPres"
-					>
+					<CustomText style={styles.details} testID="cardOrPres">
 						{handleCardOrPresOutput(selectedEvent)}
 					</CustomText>
 
-					{selectedEvent.present &&
-					selectedEvent.ideas !==
-						"No present ideas provided" ? (
-						<CustomText
-							style={styles.details}
-							testID="ideas"
-						>
+					{selectedEvent.present && selectedEvent.ideas !== "No present ideas provided" ? (
+						<CustomText style={styles.details} testID="ideas">
 							{selectedEvent.ideas}
 						</CustomText>
 					) : null}
-					{selectedEvent.address !==
-					"No address provided" ? (
-						<CustomText
-							style={styles.details}
-							testID="address"
-						>
+					{selectedEvent.address !== "No address provided" ? (
+						<CustomText style={styles.details} testID="address">
 							{selectedEvent.address}
 						</CustomText>
 					) : null}
 					{selectedEvent.pushNotification ? (
-						<CustomText
-							style={styles.details}
-							testID="notice"
-						>
+						<CustomText style={styles.details} testID="notice">
 							{handleNoticeOutput(selectedEvent)}
 						</CustomText>
 					) : null}
@@ -220,13 +164,9 @@ const EventScreen = (props: any) => {
 							});
 						}}
 						testID={`EventToAddEditToo${selectedEvent.id}`}
-						style={{ backgroundColor: colours.lightBlue }}
+						style={{ backgroundColor: colours.darkBlue }}
 					>
-						<FontAwesome5
-							name="edit"
-							size={18}
-							color="white"
-						/>
+						<FontAwesome5 name="edit" size={18} color="white" />
 						<CustomText
 							style={{
 								...styles.buttonText,
@@ -240,14 +180,10 @@ const EventScreen = (props: any) => {
 				<View style={styles.buttonBox}>
 					<CustomButton
 						onPress={() => deleteHandler()}
-						style={{ backgroundColor: colours.lightPink }}
+						style={{ backgroundColor: colours.darkPink }}
 						testID={`DeleteEventToListToo${selectedEvent.id}`}
 					>
-						<FontAwesome5
-							name="trash-alt"
-							size={18}
-							color="white"
-						/>
+						<FontAwesome5 name="trash-alt" size={18} color="white" />
 						<CustomText
 							style={{
 								...styles.buttonText,

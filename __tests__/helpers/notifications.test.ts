@@ -24,29 +24,21 @@ it("handler", async () => {
 	expect(res).toStrictEqual({
 		shouldShowAlert: true,
 		shouldPlaySound: true,
-		shouldSetBadge: false,
+		shouldSetBadge: true,
 	});
 });
 
 it("setNotifications", () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"setNotificationHandler"
-	);
+	const spy = jest.spyOn(Notifications, "setNotificationHandler");
 	notification.setNotifications();
 	expect(spy).toBeCalled();
 	expect(spy.mock.results[0].type).toBe("return");
-	expect(spy.mock.calls[0][0]).toHaveProperty(
-		"handleNotification"
-	);
+	expect(spy.mock.calls[0][0]).toHaveProperty("handleNotification");
 	spy.mockClear();
 });
 
 it("getNotificationsPermissions (already granted)", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"getPermissionsAsync"
-	);
+	const spy = jest.spyOn(Notifications, "getPermissionsAsync");
 	spy.mockResolvedValueOnce(
 		//@ts-ignore
 		{ status: "granted" }
@@ -60,14 +52,8 @@ it("getNotificationsPermissions (already granted)", async () => {
 });
 
 it("getNotificationsPermissions (not granted yet)", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"getPermissionsAsync"
-	);
-	const spy2 = jest.spyOn(
-		Notifications,
-		"requestPermissionsAsync"
-	);
+	const spy = jest.spyOn(Notifications, "getPermissionsAsync");
+	const spy2 = jest.spyOn(Notifications, "requestPermissionsAsync");
 	spy.mockResolvedValueOnce(
 		//@ts-ignore
 		{ status: "" }
@@ -85,10 +71,7 @@ it("getNotificationsPermissions (not granted yet)", async () => {
 });
 
 it("createNotification with pushNotification field is false ", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"scheduleNotificationAsync"
-	);
+	const spy = jest.spyOn(Notifications, "scheduleNotificationAsync");
 	const event = new Event(
 		"1",
 		"Name",
@@ -110,10 +93,7 @@ it("createNotification with pushNotification field is false ", async () => {
 });
 var test_identifier: any = "";
 it("createNotification with pushNotification field is true ", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"scheduleNotificationAsync"
-	);
+	const spy = jest.spyOn(Notifications, "scheduleNotificationAsync");
 	const event = new Event(
 		"1",
 		"Name",
@@ -135,14 +115,8 @@ it("createNotification with pushNotification field is true ", async () => {
 });
 
 it("deleteNotification with found id", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"getAllScheduledNotificationsAsync"
-	);
-	const spy2 = jest.spyOn(
-		Notifications,
-		"cancelScheduledNotificationAsync"
-	);
+	const spy = jest.spyOn(Notifications, "getAllScheduledNotificationsAsync");
+	const spy2 = jest.spyOn(Notifications, "cancelScheduledNotificationAsync");
 
 	spy.mockResolvedValueOnce([
 		{
@@ -162,14 +136,8 @@ it("deleteNotification with found id", async () => {
 	spy2.mockClear();
 });
 it("deleteNotification with not found id", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"getAllScheduledNotificationsAsync"
-	);
-	const spy2 = jest.spyOn(
-		Notifications,
-		"cancelScheduledNotificationAsync"
-	);
+	const spy = jest.spyOn(Notifications, "getAllScheduledNotificationsAsync");
+	const spy2 = jest.spyOn(Notifications, "cancelScheduledNotificationAsync");
 
 	spy.mockResolvedValueOnce([
 		{
@@ -188,15 +156,9 @@ it("deleteNotification with not found id", async () => {
 });
 
 it("updateNotification with pushNotification field is true", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"getAllScheduledNotificationsAsync"
-	);
+	const spy = jest.spyOn(Notifications, "getAllScheduledNotificationsAsync");
 	spy.mockResolvedValueOnce([]);
-	const spy2 = jest.spyOn(
-		Notifications,
-		"scheduleNotificationAsync"
-	);
+	const spy2 = jest.spyOn(Notifications, "scheduleNotificationAsync");
 	const eventBeforeUpdate = new Event(
 		"1",
 		"Name",
@@ -246,14 +208,8 @@ it("updateNotification with pushNotification field is true", async () => {
 });
 
 it("updateNotification with pushNotification field is false", async () => {
-	const spy = jest.spyOn(
-		Notifications,
-		"getAllScheduledNotificationsAsync"
-	);
-	const spy2 = jest.spyOn(
-		Notifications,
-		"scheduleNotificationAsync"
-	);
+	const spy = jest.spyOn(Notifications, "getAllScheduledNotificationsAsync");
+	const spy2 = jest.spyOn(Notifications, "scheduleNotificationAsync");
 	const event = new Event(
 		"1",
 		"Name",
