@@ -5,7 +5,6 @@ Reminds you to buy cards and presents for friends and family a week or 2 weeks i
 ## Features I want to add
 - Import addresses from phone contacts
 - Import birthdays from contacts and phone calendars
-- Import birthdays from facebook and/or Google
 - Design a cool splash screen
 - Add option for wishing someone via text and notified just on the event day
 

@@ -1,20 +1,20 @@
+/* istanbul ignore file */
 import Event from "../models/eventClass";
 
-export const defaultEventWithNotificationOff: Event =
-	new Event(
-		"1",
-		"Name",
-		"No name provided",
-		1,
-		0,
-		"Birthday",
-		0,
-		1,
-		false,
-		"No present ideas provided",
-		"No address provided",
-		false
-	);
+export const defaultEventWithNotificationOff: Event = new Event(
+	"1",
+	"Name",
+	"No name provided",
+	1,
+	0,
+	"Birthday",
+	0,
+	1,
+	false,
+	"No present ideas provided",
+	"No address provided",
+	false
+);
 
 export const defaultEventWithAddress: Event = new Event(
 	"1",
@@ -209,21 +209,20 @@ export const weddingWithAddressStringId2 = {
 	pushNotification: true,
 };
 
-export const weddingAddressIdeasNoNotificationYearLeapDay =
-	{
-		id: "1",
-		firstName: "Name",
-		secondName: "Name2",
-		day: 29,
-		month: 1,
-		type: "Wedding Anniversary",
-		startYear: 2000,
-		noticeTime: 2,
-		present: true,
-		ideas: "flowers",
-		address: "1 Test Drive",
-		pushNotification: false,
-	};
+export const weddingAddressIdeasNoNotificationYearLeapDay = {
+	id: "1",
+	firstName: "Name",
+	secondName: "Name2",
+	day: 29,
+	month: 1,
+	type: "Wedding Anniversary",
+	startYear: 2000,
+	noticeTime: 2,
+	present: true,
+	ideas: "flowers",
+	address: "1 Test Drive",
+	pushNotification: false,
+};
 
 export const otherWithAddressStringId3 = {
 	id: "3",

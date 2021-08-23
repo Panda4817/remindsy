@@ -2,15 +2,8 @@ import React from "react";
 import renderer, { act } from "react-test-renderer";
 import { render } from "@testing-library/react-native";
 import { Provider } from "react-redux";
-import {
-	applyMiddleware,
-	combineReducers,
-	createStore,
-} from "redux";
-import ListScreen, {
-	getParams,
-	screenOptions,
-} from "../../screens/ListScreen";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import ListScreen, { getParams, screenOptions } from "../../screens/ListScreen";
 import reducers from "../../store/reducers";
 import ReduxThunk from "redux-thunk";
 import { ADD_EVENT } from "../../store/actions";
@@ -19,7 +12,7 @@ import {
 	defaultWithAddressStringId,
 	defaultNotLeapDayAddress,
 	defaultAddressLeapDay,
-} from "../fakeEvents";
+} from "../fakeEvents.config";
 
 jest.mock("expo-sqlite");
 jest.mock("../../store/actions");
@@ -30,10 +23,7 @@ beforeEach(() => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
-	store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
+	store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 });
 it("renders correctly (snapshot)", async () => {
 	const promise = Promise.resolve();
@@ -46,10 +36,7 @@ it("renders correctly (snapshot)", async () => {
 	};
 	const tree = renderer.create(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	expect(tree).toMatchSnapshot();
@@ -73,10 +60,7 @@ it("renders correctly with no results", async () => {
 
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("noResultsView");
@@ -108,10 +92,7 @@ it("renders correctly with results", async () => {
 		.mockReturnValueOnce(["", jest.fn()]);
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("resultsView");
@@ -140,10 +121,7 @@ it("renders correctly with error", async () => {
 
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 
@@ -171,10 +149,7 @@ it("renders correctly with loading view", async () => {
 		.mockReturnValueOnce(["", jest.fn()]);
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 
@@ -209,10 +184,7 @@ it("renders correctly with props and no results", async () => {
 
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("noResultsView");
@@ -250,10 +222,7 @@ it("renders correctly with props and results but results filtered out", async ()
 		.mockReturnValueOnce(["", jest.fn()]);
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("noResultsView");
@@ -291,10 +260,7 @@ it("renders correctly with props and results with filtering", async () => {
 		.mockReturnValueOnce(["", jest.fn()]);
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("resultsView");
@@ -339,10 +305,7 @@ it("renders correctly with props and results but results filtered out (leap Day)
 		.mockReturnValueOnce(["", jest.fn()]);
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<ListScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<ListScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("resultsView");

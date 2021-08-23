@@ -2,15 +2,8 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { act, render } from "@testing-library/react-native";
 import { Provider } from "react-redux";
-import {
-	applyMiddleware,
-	combineReducers,
-	createStore,
-} from "redux";
-import CalendarScreen, {
-	createMarkedDates,
-	getDateString,
-} from "../../screens/CalendarScreen";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import CalendarScreen, { createMarkedDates, getDateString } from "../../screens/CalendarScreen";
 import reducers from "../../store/reducers";
 import ReduxThunk from "redux-thunk";
 import { CalendarList } from "react-native-calendars";
@@ -25,7 +18,7 @@ import {
 	otherWithAddressStringId3,
 	weddingEventWithAddress,
 	weddingWithAddressStringId2,
-} from "../fakeEvents";
+} from "../fakeEvents.config";
 
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
 let store: any;
@@ -33,10 +26,7 @@ beforeEach(() => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
-	store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
+	store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 });
 it("renders correctly (snapshot)", async () => {
 	const promise = Promise.resolve();
@@ -46,10 +36,7 @@ it("renders correctly (snapshot)", async () => {
 	};
 	const tree = renderer.create(
 		<Provider store={store}>
-			<CalendarScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<CalendarScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	expect(tree).toMatchSnapshot();
@@ -62,22 +49,14 @@ it("renders correctly with no events", async () => {
 		navigation: { setOptions: () => jest.fn() },
 		route: { params: {} },
 	};
-	const spyHeader = jest.spyOn(
-		props.navigation,
-		"setOptions"
-	);
+	const spyHeader = jest.spyOn(props.navigation, "setOptions");
 	const { container } = render(
 		<Provider store={store}>
-			<CalendarScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<CalendarScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	expect(spyHeader).toBeCalled();
-	const calendarList = await container.findAllByType(
-		CalendarList
-	)[0];
+	const calendarList = await container.findAllByType(CalendarList)[0];
 	expect(calendarList.props.markedDates).toStrictEqual({});
 	await act(() => promise);
 });
@@ -106,22 +85,14 @@ it("renders correctly with events", async () => {
 		},
 		route: { params: {} },
 	};
-	const spyHeader = jest.spyOn(
-		props.navigation,
-		"setOptions"
-	);
+	const spyHeader = jest.spyOn(props.navigation, "setOptions");
 	const { container } = render(
 		<Provider store={store}>
-			<CalendarScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<CalendarScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	expect(spyHeader).toBeCalled();
-	const calendarList = await container.findAllByType(
-		CalendarList
-	)[0];
+	const calendarList = await container.findAllByType(CalendarList)[0];
 	let date = convertToNextDate(1, 0, 0);
 	let dateString = date.getFullYear().toString() + "-01-01";
 	let obj: any = {};
@@ -155,22 +126,14 @@ it("Check pressing on a date works", async () => {
 		},
 		route: { params: {} },
 	};
-	const spyHeader = jest.spyOn(
-		props.navigation,
-		"setOptions"
-	);
+	const spyHeader = jest.spyOn(props.navigation, "setOptions");
 	const { container } = render(
 		<Provider store={store}>
-			<CalendarScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<CalendarScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	expect(spyHeader).toBeCalled();
-	const calendarList = await container.findAllByType(
-		CalendarList
-	)[0];
+	const calendarList = await container.findAllByType(CalendarList)[0];
 
 	const spy = jest.spyOn(props.navigation, "navigate");
 	await act(async () =>
@@ -186,20 +149,12 @@ it("Check pressing on a date works", async () => {
 
 it("getDateString", () => {
 	const testEvent = defaultEventWithAddress;
-	let date = convertToNextDate(
-		testEvent.day,
-		testEvent.month,
-		testEvent.startYear
-	);
+	let date = convertToNextDate(testEvent.day, testEvent.month, testEvent.startYear);
 	let dateString = `${date.getFullYear()}-01-01`;
 	expect(getDateString(testEvent)).toBe(dateString);
 	testEvent.day = 11;
 	testEvent.month = 10;
-	date = convertToNextDate(
-		testEvent.day,
-		testEvent.month,
-		testEvent.startYear
-	);
+	date = convertToNextDate(testEvent.day, testEvent.month, testEvent.startYear);
 	dateString = `${date.getFullYear()}-11-11`;
 	expect(getDateString(testEvent)).toBe(dateString);
 });

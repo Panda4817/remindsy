@@ -1,25 +1,14 @@
 import React from "react";
-import { ActionSheetIOS, Alert } from "react-native";
+import { Alert } from "react-native";
 import renderer from "react-test-renderer";
-import {
-	fireEvent,
-	render,
-	act,
-} from "@testing-library/react-native";
+import { fireEvent, render, act } from "@testing-library/react-native";
 import { Provider } from "react-redux";
-import {
-	applyMiddleware,
-	combineReducers,
-	createStore,
-} from "redux";
-import EventScreen, {
-	screenOptions,
-} from "../../screens/EventScreen";
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import EventScreen, { screenOptions } from "../../screens/EventScreen";
 import reducers from "../../store/reducers";
 
 import ReduxThunk from "redux-thunk";
 import { ADD_EVENT } from "../../store/actions";
-import { leapYear } from "../../helpers/formatting";
 
 jest.mock("@expo/vector-icons/FontAwesome5", () => "Icon");
 jest.mock("@expo/vector-icons/Ionicons", () => "Icon");
@@ -30,16 +19,13 @@ import {
 	defaultStringId,
 	defaultWithAddressStringId,
 	weddingAddressIdeasNoNotificationYearLeapDay,
-} from "../fakeEvents";
+} from "../fakeEvents.config";
 let store: any;
 beforeEach(() => {
 	const rootReducer = combineReducers({
 		events: reducers,
 	});
-	store = createStore(
-		rootReducer,
-		applyMiddleware(ReduxThunk)
-	);
+	store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 });
 it("renders correctly (snapshot)", async () => {
 	const promise = Promise.resolve();
@@ -56,10 +42,7 @@ it("renders correctly (snapshot)", async () => {
 	};
 	const tree = renderer.create(
 		<Provider store={store}>
-			<EventScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<EventScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	expect(tree).toMatchSnapshot();
@@ -77,10 +60,7 @@ it("renders correctly with no event found", async () => {
 	};
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<EventScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<EventScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("noDataYetView");
@@ -103,10 +83,7 @@ it("renders correctly with data - birthday event", async () => {
 	};
 	const { findAllByTestId, queryAllByTestId } = render(
 		<Provider store={store}>
-			<EventScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<EventScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("dataView");
@@ -124,9 +101,7 @@ it("renders correctly with data - birthday event", async () => {
 	expect(pres[0].children[0]).toBe("Card only");
 	expect(ideas.length).toBe(0);
 	expect(address.length).toBe(0);
-	expect(notice[0].children[0]).toBe(
-		"Notified 1 week before"
-	);
+	expect(notice[0].children[0]).toBe("Notified 1 week before");
 	await act(() => promise);
 });
 
@@ -145,10 +120,7 @@ it("renders correctly with data - anniversary event", async () => {
 	};
 	const { findAllByTestId, queryAllByTestId } = render(
 		<Provider store={store}>
-			<EventScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<EventScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
 	const views = await findAllByTestId("dataView");
@@ -186,28 +158,19 @@ it("renders correctly with data - delete event", async () => {
 	};
 	const { findAllByTestId } = render(
 		<Provider store={store}>
-			<EventScreen
-				navigation={props.navigation}
-				route={props.route}
-			/>
+			<EventScreen navigation={props.navigation} route={props.route} />
 		</Provider>
 	);
-	const deleteButton = await findAllByTestId(
-		"DeleteEventToListToo1"
-	);
+	const deleteButton = await findAllByTestId("DeleteEventToListToo1");
 	expect(deleteButton.length).toBe(1);
 	const spy = jest.spyOn(Alert, "alert");
-	await act(async () =>
-		fireEvent(deleteButton[0], "onPress")
-	);
+	await act(async () => fireEvent(deleteButton[0], "onPress"));
 	expect(spy).toBeCalled();
 	const spyNav = jest.spyOn(props.navigation, "goBack");
 
 	// Test correct dispatch
 	// @ts-ignore
-	actions.delEvent.mockReturnValueOnce(() =>
-		Promise.resolve()
-	);
+	actions.delEvent.mockReturnValueOnce(() => Promise.resolve());
 	// @ts-ignore
 	await act(() => spy.mock.calls[0][2][0].onPress());
 	expect(spyNav).toBeCalled();
