@@ -10,11 +10,9 @@ const SettingsStackNavigator = createStackNavigator();
 
 export const SettingsNavigator = () => {
 	return (
-		<SettingsStackNavigator.Navigator
-			screenOptions={defaultNavOptions}
-		>
+		<SettingsStackNavigator.Navigator screenOptions={defaultNavOptions}>
 			<SettingsStackNavigator.Screen
-				name="Settings"
+				name="SettingsScreen"
 				component={SettingsScreen}
 				options={SettingsOptions}
 			/>
