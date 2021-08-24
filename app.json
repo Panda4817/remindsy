@@ -1,14 +1,18 @@
 {
 	"expo": {
-		"name": "remindsy",
+		"name": "Remindsy",
+		"description": "An app to remind you, one or two weeks before a friend's birthday or anniversary, so you have time to send a card and gift.",
 		"slug": "remindsy",
-		"version": "1.0.0",
+		"privacy": "public",
+		"sdkVersion": "42.0.0",
+		"platforms": ["ios", "android"],
 		"orientation": "portrait",
+		"version": "1.0.0",
 		"icon": "./assets/icon.png",
 		"splash": {
 			"image": "./assets/splash.png",
 			"resizeMode": "contain",
-			"backgroundColor": "#ffffff"
+			"backgroundColor": "#381dfc"
 		},
 		"updates": {
 			"fallbackToCacheTimeout": 0
@@ -21,7 +25,7 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#FFFFFF"
+				"backgroundColor": "#381dfc"
 			}
 		},
 		"web": {

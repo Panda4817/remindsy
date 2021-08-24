@@ -2,9 +2,8 @@
 
 Reminds you to buy cards and presents for friends and family a week or 2 weeks in advance of their birthday and/or anniversary.
 
-## Features I want to add
-- Import birthdays/anniversaries from contacts and phone calendars
-- Design a cool splash screen
+## Feature I want to add
+- Import birthdays and anniversaries from contacts and phone calendar with one click from the settings screen
 
 ## Requirements
 - See package.json
