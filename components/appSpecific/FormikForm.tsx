@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, View, ActivityIndicator, Alert } from "react-native";
 import { Formik, FormikValues } from "formik";
 import * as Yup from "yup";
@@ -13,7 +13,7 @@ import { regular } from "../../constants/Fonts";
 import CustomButton from "../UI/CustomButton";
 import CustomText from "../UI/CustomText";
 import { getNotificationsPermissions } from "../../helpers/notifications";
-import { formatAddress, getContacts } from "../../helpers/contacts";
+import { formatAddress, getContactsToFillForm } from "../../helpers/contacts";
 import ResultsModal from "./ResultsModal";
 import { Contact } from "expo-contacts";
 
@@ -56,8 +56,8 @@ export const formatValues = (values: FormikValues) => {
 };
 
 const FormikForm = (props: any) => {
-	const [modalOpenStatus, setModalOpenStatus] = useState(false);
-	const [results, setResults]: any = useState([]);
+	const [modalOpenStatus, setModalOpenStatus] = React.useState(false);
+	const [results, setResults]: any = React.useState([]);
 	let buttonText = "Save new Remindsy";
 	if (props.selectedEvent) {
 		buttonText = "Save changes";
@@ -194,10 +194,13 @@ const FormikForm = (props: any) => {
 							<CustomButton
 								onPress={async () => {
 									// call getContacts method
-									const contacts = await getContacts(values.type, values.firstName, values.secondName);
+									const contacts = await getContactsToFillForm(
+										values.type,
+										values.firstName,
+										values.secondName
+									);
 									// if results change modalOpenStatus to True, show modal component
 									if (contacts.length > 0) {
-										console.log(contacts);
 										setModalOpenStatus(true);
 										setResults(contacts);
 									} else {
@@ -230,6 +233,7 @@ const FormikForm = (props: any) => {
 								data={results}
 								useContact={selectContact}
 								cancelModal={closeModal}
+								testID="resultsModal"
 							/>
 							<CustomPicker
 								value={values.day}

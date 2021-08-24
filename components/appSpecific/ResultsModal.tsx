@@ -7,7 +7,12 @@ import ResultItem from "./ResultItem";
 
 const ResultsModal = (props: any) => {
 	return (
-		<Modal visible={props.open} animationType="slide" onRequestClose={props.cancelModal}>
+		<Modal
+			visible={props.open}
+			animationType="slide"
+			onRequestClose={props.cancelModal}
+			testID={props.testID}
+		>
 			<View>
 				<CustomText style={styles.text}>Select a contact from the search results</CustomText>
 				<FlatList
@@ -19,8 +24,10 @@ const ResultsModal = (props: any) => {
 							date={itemData.item.birthday}
 							address={itemData.item.addresses}
 							onSelect={() => props.useContact(itemData.item)}
+							testID={`resultItem${itemData.item.id}`}
 						/>
 					)}
+					testID="contactsList"
 				/>
 				<CustomButton
 					onPress={props.cancelModal}
@@ -28,6 +35,7 @@ const ResultsModal = (props: any) => {
 						backgroundColor: colours.darkPink,
 						marginHorizontal: 50,
 					}}
+					testID="cancelModalButton"
 				>
 					<CustomText
 						style={{

@@ -9,7 +9,7 @@ export const getContactsPermissions = async () => {
 	return statusObj.status;
 };
 
-export const filterContacts = (contacts: Contacts.Contact[], type: string) => {
+export const filterContactsForForm = (contacts: Contacts.Contact[], type: string) => {
 	const filteredContacts = contacts.filter((contact) => {
 		if (contact.addresses !== undefined) {
 			return contact;
@@ -22,7 +22,7 @@ export const filterContacts = (contacts: Contacts.Contact[], type: string) => {
 	return filteredContacts;
 };
 
-export const getContacts = async (type: string, name: string, secondName: string | "") => {
+export const getContactsToFillForm = async (type: string, name: string, secondName: string) => {
 	const permissionStatus = await getContactsPermissions();
 	if (permissionStatus !== "granted") {
 		return [];
@@ -58,7 +58,7 @@ export const getContacts = async (type: string, name: string, secondName: string
 		).data.map((contact) => contacts.push(contact));
 	}
 
-	return filterContacts(contacts, type);
+	return filterContactsForForm(contacts, type);
 };
 
 export const formatAddress = (lst: Address[]) => {
