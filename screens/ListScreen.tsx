@@ -124,7 +124,7 @@ const ListScreen = (props: any) => {
 	if (!isLoading && events.length === 0) {
 		return (
 			<View style={styles.centered} testID="noResultsView">
-				<CustomText style={styles.text}>Not a single Remindsy found.</CustomText>
+				<CustomText style={styles.text}>No Remindsy reminders found.</CustomText>
 				<View style={styles.buttonContainer}>
 					<CustomButton
 						onPress={() => {

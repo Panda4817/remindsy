@@ -19,14 +19,17 @@
 		},
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
-			"supportsTablet": true,
-			"requireFullScreen": true
+			"supportsTablet": true
 		},
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#381dfc"
 			}
+		},
+		"androidStatusBar": {
+			"barStyle": "light-content",
+			"backgroundColor": "#381dfc"
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"

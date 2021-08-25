@@ -5,7 +5,7 @@ import { regular } from "../constants/Fonts";
 export const defaultNavOptions = {
 	headerStyle: {
 		backgroundColor: colours.darkBlue,
-		height: 80,
+		height: 90,
 	},
 	headerTitleStyle: {
 		fontFamily: regular,

@@ -1,11 +1,7 @@
 import React from "react";
 import AppLoading from "expo-app-loading";
 import { useFonts } from "expo-font";
-import {
-	createStore,
-	combineReducers,
-	applyMiddleware,
-} from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import ReduxThunk from "redux-thunk";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -24,15 +20,10 @@ const rootReducer = combineReducers({
 	events: reducers,
 });
 
-const store = createStore(
-	rootReducer,
-	applyMiddleware(ReduxThunk)
-);
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 setNotifications();
-ScreenOrientation.lockAsync(
-	ScreenOrientation.OrientationLock.PORTRAIT
-);
+ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
 
 const App = () => {
 	let [fontsLoaded] = useFonts({
